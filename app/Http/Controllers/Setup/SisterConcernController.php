@@ -7,6 +7,7 @@ use App\Http\Requests\AddSisterConcern;
 
 // model class
 use App\Models\User;
+use App\Models\Setting;
 use App\Models\Setup\UserEmails;
 use App\Models\Setup\Config;
 use App\Models\Setup\Package;
