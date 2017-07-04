@@ -190,7 +190,8 @@ class PayrollController extends Controller
     	$user_ids = $this->getUserIds($branch_id, $department_id, $unit_id, $user_id);
     	$userInfos = $this->getUserInformations($user_ids, $salary_type, $salary_month, $salary_day);
 
-    	$days = $userInfos['days'];
+        $days = $userInfos['days'];
+    	$month_days = $userInfos['month_days'];
     	$userInfo = $userInfos['userInfo'];
     	$allowance_and_deduction = $userInfos['allowance_and_deduction'];
     	// dd($userInfo);
@@ -201,6 +202,9 @@ class PayrollController extends Controller
     	}else{
     		$maybe_present = 0;
     	}
+
+        //dd($maybe_present);
+
     	$salary_reports = [];
 
     	foreach($userInfo as $user)
@@ -213,8 +217,10 @@ class PayrollController extends Controller
 
     		$user_id = $user->id;
     		$work_hour = 8;
-    		$basic_salary = $user->basic_salary;
-    		$perday_salary = $basic_salary / $days;
+            $basic_salary = $user->basic_salary;
+    		$salary_in_cash = $user->salary_in_cache;
+            // $perday_salary = $basic_salary / $days;
+    		$perday_salary = ($basic_salary + $salary_in_cash) / $month_days;
     		$per_hour_salary = $perday_salary / $work_hour;
 
     		$all_attendance = $user->attendanceTimesheet;
@@ -258,7 +264,7 @@ class PayrollController extends Controller
     						$total_allowance = $total_allowance + $salary_amount;
     					}elseif($info->salary_amount_type == 'percent'){
     						$percent = $salary_amount;
-    						$salary_amount = ($basic_salary * $salary_amount)/100;
+    						$salary_amount = (($basic_salary + $salary_in_cash) * $salary_amount)/100;
     						$total_allowance = $total_allowance + $salary_amount;
     					}
 
@@ -277,7 +283,7 @@ class PayrollController extends Controller
     						$total_deduction = $total_deduction + $salary_amount;
     					}elseif($info->salary_amount_type == 'percent'){
     						$percent = $salary_amount;
-    						$salary_amount = ($basic_salary * $salary_amount)/100;
+    						$salary_amount = (($basic_salary + $salary_in_cash) * $salary_amount)/100;
     						$total_deduction = $total_deduction + $salary_amount;
     					}
 
@@ -317,6 +323,7 @@ class PayrollController extends Controller
     			'employee_type_id' => $user->employee_type_id,
     			'employee_type' => $user->employeeType->type_name,
     			'basic_salary' => number_format($basic_salary, 2),
+                'salary_effective_date' => $user->effective_date,
     			'salary_in_cash' => $user->salary_in_cache,
     			'salary_month' => $salary_month,
     			'days' => $days,
@@ -372,9 +379,10 @@ class PayrollController extends Controller
     {
 		$start_date = Carbon::parse($salary_month)->format('Y-m-d');
 		$end_date = Carbon::parse($salary_month)->format('Y-m-t');
+        $month_days = Carbon::parse($salary_month)->daysInMonth;
 
     	if($salary_type == 'month'){
-    		$days = Carbon::parse($salary_month)->daysInMonth;
+    		$days = $month_days;
 
 			$userInfo = User::with(['employeeType','attendanceTimesheet'=>function($q)use($start_date, $end_date){
 					$q->whereBetween('date', [$start_date, $end_date]);
@@ -410,7 +418,7 @@ class PayrollController extends Controller
 			->where('salary_effective_date','<=',$end_date)
 			->get();
 
-    	return ['days' => $days, 'userInfo' => $userInfo, 'allowance_and_deduction' => $allowance_and_deduction];
+    	return ['days' => $days, 'month_days' =>$month_days,  'userInfo' => $userInfo, 'allowance_and_deduction' => $allowance_and_deduction];
     }
 
 
