@@ -259,6 +259,8 @@ class LevelController extends Controller
 
     public function update(LevelRequest $request){
 
+        $data = [];
+
         if($request->chk_parent == 1){
 
             $parent_id = $request->parent_id;
@@ -302,6 +304,9 @@ class LevelController extends Controller
             if(!empty($data)){
                 LevelSalaryInfoMap::where('level_id', $id)->delete();
                 LevelSalaryInfoMap::insert($data);
+            }
+            else{
+                LevelSalaryInfoMap::where('level_id', $id)->delete();
             }
 
             DB::commit();
