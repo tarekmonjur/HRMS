@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Models\WorkShift;
+use App\Models\CommonWorkShift;
 
 use App\Http\Requests\WorkShiftRequest;
 
@@ -36,7 +37,9 @@ class WorkShiftController extends Controller
     	if($request->ajax()){
     		return WorkShift::get();
     	}else{
-	    	return view('attendance.work_shift');
+            
+            $data['common_val'] = CommonWorkShift::orderBy('id', 'DESC')->first();
+	    	return view('attendance.work_shift', $data);
     	}
     }
 

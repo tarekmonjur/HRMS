@@ -46,7 +46,7 @@ class SetupMenuSeeder extends Seeder
 // (28, 0, 3, 'Index', 'shiftassign/index', 'Work Shift Assign', 'fa fa-level-up', 1, NULL, NULL),
 // (29, 28, 3, 'Assign', 'shiftassign/assign', 'Work Shift Assign', 'fa fa-level-up', 1, NULL, NULL),
 // (30, 0, 3, 'Index', 'attendance/index', 'Attendance', 'fa fa-level-up', 1, NULL, NULL),
-// (31, 30, 3, 'View', 'attendance/view', 'My Attendance', 'fa fa-level-up', 1, NULL, NULL),
+// (31, 0, 3, 'View', 'attendance/view', 'My Attendance', 'fa fa-level-up', 1, NULL, NULL),
 
 // (32, 0, 4, 'View', 'bonus/index', 'Bonus', 'fa fa-level-up', 1, NULL, NULL),
 // (33, 32, 4, 'Add', 'bonus/add', 'Bonus', 'fa fa-level-up', 1, NULL, NULL),
