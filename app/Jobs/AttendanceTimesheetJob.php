@@ -88,10 +88,10 @@ class AttendanceTimesheetJob implements ShouldQueue
         // dd($userIds);
         // dd($today_attendance);
 
-        /* endable for reset previous attendance data
+        /* endable for reset previous attendance data */
         AttendanceTimesheet::whereIn('date', $AttendanceTimesheet)->delete();
         $prev_attendance_data = $prev_attendance->toArray();
-        */
+       
 
         if(count($userIds) > 0)
             AttendanceTimesheet::where('date',$today_date)->whereIn('user_id',$userIds)->delete();
