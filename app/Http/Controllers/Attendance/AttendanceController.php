@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Models\AttendanceTimesheet;
 use App\Models\AttendanceTimesheetArchive;
 use App\Models\WorkShiftEmployeeMap;
+use App\Models\CommonWorkShift;
 
 use App\Jobs\AttendanceTimesheetJob;
 use App\Jobs\ArchiveAttendanceTimesheetJob;
@@ -78,6 +79,7 @@ class AttendanceController extends Controller
     }
 
     public function addAttendance(Request $request){
+
     	$this->validate($request,[
             'date' => 'required',
             'in_time' => 'required',
@@ -91,15 +93,26 @@ class AttendanceController extends Controller
             $late_count_time =  $emp_work_shift->late_count_time;
             
             if(strtotime($request->in_time) > strtotime($late_count_time)){
-                
+                //late
                 $late_hour = date('H.i',strtotime($request->in_time) - strtotime($emp_work_shift->shift_start_time));
             }
             else{
+                //not late
                 $late_hour = null;
             }
         }else{
-            $late_count_time = 0;
-            $late_hour = 0;
+            
+            $common_val = CommonWorkShift::orderBy('id', 'DESC')->first();
+            $late_count_time =  $common_val->common_late_count_time;
+
+            if(strtotime($request->in_time) > strtotime($late_count_time)){
+                //late
+                $late_hour = date('H.i',strtotime($request->in_time) - strtotime($common_val->common_shift_start_time));
+            }
+            else{
+                //not late
+                $late_hour = null;
+            }
         }
 
         $request->offsetSet('late_count_time',$late_count_time);
@@ -151,7 +164,8 @@ class AttendanceController extends Controller
 
         if($observation == 'present'){
             if($attend = AttendanceTimesheet::find($request->time_sheet_id)){
-                $attendance = $attend->update($request->all());
+                $attend->update($request->all());
+                $attendance = AttendanceTimesheet::find($attend->id);    
             }else{
                 $attendance = AttendanceTimesheet::create($request->all());
             }
@@ -159,7 +173,8 @@ class AttendanceController extends Controller
 
         if($observation == 'archive'){
             if($attend = AttendanceTimesheetArchive::find($request->time_sheet_id)){
-                $attendance = $attend->update($request->all());
+                $attend->update($request->all());
+                $attendance = AttendanceTimesheetArchive::find($attend->id);
             }else{
                 $attendance = AttendanceTimesheetArchive::create($request->all());
             }
@@ -386,6 +401,7 @@ class AttendanceController extends Controller
 
             fclose($file);
             Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
+            AttendanceTimesheet::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
             Attendance::insert($csvContent);
             // dispatch(new AttendanceTimesheetJob());
             $request->session()->flash('success','Attendance successfully uploaded!');

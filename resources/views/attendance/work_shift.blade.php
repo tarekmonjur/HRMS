@@ -5,6 +5,41 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="panel-title">
+            <span class="glyphicon glyphicon-tasks"></span>Common Work Shift
+        </div>
+    </div>
+    <div class="panel-body pn">
+        <table class="table table-striped table-hover" cellspacing="0" width="100%">
+            <thead>
+            <tr class="bg-dark">
+                <th>Shift Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Late Count Time</th>
+                <th>Created Date</th>
+                <th>Updated Date</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+                @if(!empty($common_val->common_shift_name))
+                <tr>
+                   <td>{{ $common_val->common_shift_name }}</td>
+                   <td>{{ $common_val->common_shift_start_time }}</td>
+                   <td>{{ $common_val->common_shift_end_time }}</td>
+                   <td>{{ $common_val->common_late_count_time }}</td>
+                   <td>{{ $common_val->created_at }}</td>
+                   <td>{{ $common_val->updated_at }}</td>
+                </tr>
+                @endif
+            </tbody>
+        </table>
+    </div>
+
+    <br/><br/>
+
+    <div class="panel-heading">
+        <div class="panel-title">
             <span class="glyphicon glyphicon-tasks"></span>Work Shift
             <span class="pull-right">
               <a v-on:click="modal_open('#workshift_modal'),workshift = []" onclick="document.getElementById('work_shift_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Work Shift</a>
@@ -21,8 +56,6 @@
                 <th>End Time</th>
                 <th>Late Count Time</th>
                 <th>Status</th>
-<!--                 <th>Created By</th>
-                <th>Updated By</th> -->
                 <th>Created Date</th>
                 <th>Updated Date</th>
                 <th>Action</th>
@@ -36,8 +69,6 @@
                 <th>End Time</th>
                 <th>Late Count Time</th>
                 <th>Status</th>
-<!--                 <th>Created By</th>
-                <th>Updated By</th> -->
                 <th>Created Date</th>
                 <th>Updated Date</th>
                 <th>Action</th>
@@ -55,8 +86,6 @@
                          <a class="btn btn-sm" :class="(workshift.work_shift_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,workshift.id)" :status="workshift.work_shift_status" v-text="(workshift.work_shift_status == 0)?'Active':'Inactive'"></a>
                        </div>
                    </td>
-           <!--         <td v-text="workshift.created_by"></td>
-                   <td v-text="workshift.updated_by"></td> -->
                    <td v-text="workshift.created_at"></td>
                    <td v-text="workshift.updated_at"></td>
                    <td>
