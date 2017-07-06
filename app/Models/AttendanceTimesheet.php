@@ -12,12 +12,12 @@ class AttendanceTimesheet extends Model
 
 
     public function setInTimeAttribute($value){
-        return $this->attributes['in_time'] = date('h:i',strtotime($value));
+        return $this->attributes['in_time'] = date('H:i',strtotime($value));
     }
 
 
     public function setOutTimeAttribute($value){
-        return $this->attributes['out_time'] = date('h:i',strtotime($value));
+        return $this->attributes['out_time'] = date('H:i',strtotime($value));
     }
     
 
