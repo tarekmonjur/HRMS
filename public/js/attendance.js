@@ -125,29 +125,37 @@ new Vue({
         this.from_date = $('#fromDate').val();
         this.to_date = $('#toDate').val();
       	this.errors = [];
-      	
-      	this.loadinShow(this.hideShowId);
 
-      	axios.post('/attendance/index',formData).then((response) => {
-      		this.errors = [];
-          	this.attendances = response.data.attendance;
-          	this.days = response.data.days;
-          	this.dayList = response.data.dayList;
-          	this.loadinHide(this.hideShowId);
+        var date1 = new Date(this.from_date);
+        var date2 = new Date(this.to_date);
 
-        }).catch((error)=>{
-        	this.showAttendance = false;
-          	this.loadinHide(this.hideShowId);
-          	this.errors = [];
+        if(date1.getTime() > date2.getTime()){
 
-          	if(error.response.status == 500 || error.response.data.status == 'danger'){
-              	var error = error.response.data;
-              	this.showMessage(error);
-          	}else if(error.response.status == 422){
-              	this.errors = error.response.data;
-          	}
-        });
+          swal("Oops...", "To Date must be grater then from date!", "error");
+        }
+        else{
+          this.loadinShow(this.hideShowId);
 
+          axios.post('/attendance/index',formData).then((response) => {
+            this.errors = [];
+              this.attendances = response.data.attendance;
+              this.days = response.data.days;
+              this.dayList = response.data.dayList;
+              this.loadinHide(this.hideShowId);
+
+          }).catch((error)=>{
+            this.showAttendance = false;
+              this.loadinHide(this.hideShowId);
+              this.errors = [];
+
+              if(error.response.status == 500 || error.response.data.status == 'danger'){
+                  var error = error.response.data;
+                  this.showMessage(error);
+              }else if(error.response.status == 422){
+                  this.errors = error.response.data;
+              }
+          });
+        }
       },
 
 

@@ -234,7 +234,6 @@ class AttendanceController extends Controller
     	return $attendanceTimesheet;
     }
 
-
     protected function timesheetObservation($from_date, $to_date){
 
         $last_row = $this->attendanceTimesheet->orderBy('date','asc')->first();
@@ -248,7 +247,6 @@ class AttendanceController extends Controller
             return 'both';
         }
     }
-
 
     protected function generateDays($from_date, $to_date){
 
@@ -385,24 +383,57 @@ class AttendanceController extends Controller
                     $dates[] = $date;
                     $userIds[] = $user_id;
 
+
+                    $workShiftMap = new WorkShiftEmployeeMap;
+                    $emp_work_shift = $workShiftMap->get_work_shift_by_user_id_and_date($user_id,$date);
+
+                    if($emp_work_shift){
+                        $late_count_time =  $emp_work_shift->late_count_time;
+                        
+                        if(strtotime($content[2]) > strtotime($late_count_time)){
+                            //late
+                            $late_hour = date('H.i',strtotime($content[2]) - strtotime($emp_work_shift->shift_start_time));
+                        }
+                        else{
+                            //not late
+                            $late_hour = null;
+                        }
+                    }else{
+                        
+                        $common_val = CommonWorkShift::orderBy('id', 'DESC')->first();
+                        $late_count_time =  $common_val->common_late_count_time;
+
+                        if(strtotime($content[2]) > strtotime($late_count_time)){
+                            //late
+                            $late_hour = date('H.i',strtotime($content[2]) - strtotime($common_val->common_shift_start_time));
+                        }
+                        else{
+                            //not late
+                            $late_hour = null;
+                        }
+                    }
+
                     $csvContent[] = [
                         'user_id' => $user_id,
                         'date' => $date,
-                        'in_time' => date('h:i',strtotime($content[2])),
-                        'out_time' => date('h:i',strtotime($content[3])),
+                        'in_time' => date('H:i',strtotime($content[2])),
+                        'out_time' => date('H:i',strtotime($content[3])),
                         'total_work_hour' => date('H.i', strtotime($content[3]) - strtotime($content[2])),
-                        'late_count_time' => Null,
-                        'late_hour' => Null,
+                        'late_count_time' => $late_count_time,
+                        'late_hour' => $late_hour,
                         'created_at' => date('Y-m-d')
                     ];
-                }
-                
+                } 
             }
 
             fclose($file);
-             Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
+            Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
             // AttendanceTimesheet::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
             //dd(Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->get());
+
+
+            // dd($csvContent);
+
             Attendance::insert($csvContent);
             //dispatch(new AttendanceTimesheetJob());
             $request->session()->flash('success','Attendance successfully uploaded!');
