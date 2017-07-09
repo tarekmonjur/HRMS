@@ -159,10 +159,6 @@ var employee = new Vue({
     methods : {
 
         theDuration(){
-            // var diff = Math.abs(new Date($('#job_start_date').val()) - new Date($('#job_end_date').val()));
-            // var year = 1000 * 60 * 60 * 24 * 30 * 12;
-            // var years = Math.abs(diff/year);
-            // this.job_duration =  years.toFixed(1);
 
             var remain_days = 0;
             var month = 0;
@@ -171,8 +167,7 @@ var employee = new Vue({
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 
-            console.log('dateDiff '+diffDays);
-            // var year = (Math.round(diffDays/365)).toFixed(0);
+            // console.log('dateDiff '+diffDays);
             var year = (diffDays/365).toString().split(".")[0];
         
             if(year > 0){
@@ -190,7 +185,7 @@ var employee = new Vue({
             }
 
             var monthYear = year+'.'+month;
-            console.log('Month Year: '+monthYear);
+            // console.log('Month Year: '+monthYear);
             
             this.job_duration = monthYear;
         },
@@ -204,8 +199,7 @@ var employee = new Vue({
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 
-            console.log('dateDiff '+diffDays);
-            // var year = (Math.round(diffDays/365)).toFixed(0);
+            // console.log('dateDiff '+diffDays);
             var year = (diffDays/365).toString().split(".")[0];
         
             if(year > 0){
@@ -223,19 +217,15 @@ var employee = new Vue({
             }
 
             var monthYear = year+'.'+month;
-            console.log('Month Year: '+monthYear);
+            // console.log('Month Year: '+monthYear);
             
             this.job_duration = monthYear;
         },
 
         theDuration3(){
-            // var diff = Math.abs(new Date($('#job_start_date3').val()) - new Date($('#job_end_date3').val()));
-            // var year = 1000 * 60 * 60 * 24 * 30 * 12;
-            // var years = Math.abs(diff/year);
 
             this.singleExperience.job_start_date = $('#job_start_date3').val();
             this.singleExperience.job_end_date = $('#job_end_date3').val();
-            // this.singleExperience.job_duration =  years.toFixed(1);
 
             var remain_days = 0;
             var month = 0;
@@ -244,8 +234,7 @@ var employee = new Vue({
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 
-            console.log('dateDiff '+diffDays);
-            // var year = (Math.round(diffDays/365)).toFixed(0);
+            // console.log('dateDiff '+diffDays);
             var year = (diffDays/365).toString().split(".")[0];
         
             if(year > 0){
@@ -263,7 +252,7 @@ var employee = new Vue({
             }
 
             var monthYear = year+'.'+month;
-            console.log('Month Year: '+monthYear);
+            // console.log('Month Year: '+monthYear);
             
             this.singleExperience.job_duration = monthYear;
         },
