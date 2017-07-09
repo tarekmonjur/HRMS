@@ -114,7 +114,7 @@
                                 <div class="col-md-6" :class="{'has-error': errors.certificate_file}">
                                     <div class="form-group">
                                         <label class="control-label">Achievement:</label>
-                                        <input type="text" name="education.achievement" :value="singleEducation.achievement" class="form-control input-sm">
+                                        <input type="text" name="achievement" :value="singleEducation.achievement" class="form-control input-sm">
                                         <span v-if="errors.achievement" class="text-danger" v-text="errors.achievement[0]"></span>
                                     </div>
                                 </div>
@@ -245,7 +245,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Achievement:</label>
-                                        <input type="text" name="education.achievement" class="form-control input-sm">
+                                        <input type="text" name="achievement" class="form-control input-sm">
                                         <span v-if="errors.achievement" class="text-danger" v-text="errors.achievement[0]"></span>
                                     </div>
                                 </div>
