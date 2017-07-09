@@ -258,7 +258,10 @@ table.tc-med-2 tbody td:first-child{
 
                 <h4>Degree : {{$education->degree->degree_name}}  
                   @if($education->certificate)
-                    <a target="_blank" href="{{url('files/'.$education->user_id.'/'.$education->certificate)}}" class="pull-right">View Certificate</a>
+                    <?php 
+                      $confId = Session('config_id');
+                    ?>
+                    <a target="_blank" href="{{url('files/'.$confId.'/'.$education->user_id.'/'.$education->certificate)}}" class="pull-right">View Certificate</a>
                     @else
                     <span class="pull-right">No certificate file.</span>
                   @endif

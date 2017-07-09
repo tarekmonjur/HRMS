@@ -154,34 +154,107 @@ var employee = new Vue({
             this.getSupervisorByDesignationId(id);
             $('#employee > .panel > .panel-body').LoadingOverlay("hide");
         }
-
     },
-
 
     methods : {
 
         theDuration(){
-            var diff = Math.abs(new Date($('#job_start_date').val()) - new Date($('#job_end_date').val()));
-            var year = 1000 * 60 * 60 * 24 * 30 * 12;
-            var years = Math.abs(diff/year);
-            this.job_duration =  years.toFixed(1);
+
+            var remain_days = 0;
+            var month = 0;
+            var date1 = new Date($('#job_start_date').val());
+            var date2 = new Date($('#job_end_date').val());
+            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+            // console.log('dateDiff '+diffDays);
+            var year = (diffDays/365).toString().split(".")[0];
+        
+            if(year > 0){
+                remain_days = diffDays-(year*365);
+            }
+            else{
+                remain_days = diffDays;
+            }
+
+            month = Math.round(remain_days/30);
+
+            if(month == 12){
+                year = year+1;
+                month = 0;
+            }
+
+            var monthYear = year+'.'+month;
+            // console.log('Month Year: '+monthYear);
+            
+            this.job_duration = monthYear;
         },
 
         theDuration2(){
-            var diff = Math.abs(new Date($('#job_start_date2').val()) - new Date($('#job_end_date2').val()));
-            var year = 1000 * 60 * 60 * 24 * 30 * 12;
-            var years = Math.abs(diff/year);
-            this.job_duration =  years.toFixed(1);
+
+            var remain_days = 0;
+            var month = 0;
+            var date1 = new Date($('#job_start_date2').val());
+            var date2 = new Date($('#job_end_date2').val());
+            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+            // console.log('dateDiff '+diffDays);
+            var year = (diffDays/365).toString().split(".")[0];
+        
+            if(year > 0){
+                remain_days = diffDays-(year*365);
+            }
+            else{
+                remain_days = diffDays;
+            }
+
+            month = Math.round(remain_days/30);
+
+            if(month == 12){
+                year = year+1;
+                month = 0;
+            }
+
+            var monthYear = year+'.'+month;
+            // console.log('Month Year: '+monthYear);
+            
+            this.job_duration = monthYear;
         },
 
         theDuration3(){
-            var diff = Math.abs(new Date($('#job_start_date3').val()) - new Date($('#job_end_date3').val()));
-            var year = 1000 * 60 * 60 * 24 * 30 * 12;
-            var years = Math.abs(diff/year);
 
             this.singleExperience.job_start_date = $('#job_start_date3').val();
             this.singleExperience.job_end_date = $('#job_end_date3').val();
-            this.singleExperience.job_duration =  years.toFixed(1);
+
+            var remain_days = 0;
+            var month = 0;
+            var date1 = new Date($('#job_start_date3').val());
+            var date2 = new Date($('#job_end_date3').val());
+            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+            // console.log('dateDiff '+diffDays);
+            var year = (diffDays/365).toString().split(".")[0];
+        
+            if(year > 0){
+                remain_days = diffDays-(year*365);
+            }
+            else{
+                remain_days = diffDays;
+            }
+
+            month = Math.round(remain_days/30);
+
+            if(month == 12){
+                year = year+1;
+                month = 0;
+            }
+
+            var monthYear = year+'.'+month;
+            // console.log('Month Year: '+monthYear);
+            
+            this.singleExperience.job_duration = monthYear;
         },
 
         // validateBeforeSubmit(){
@@ -216,6 +289,7 @@ var employee = new Vue({
         TypeDependancey(e){
             var type_id = e.target.value;
             this.type_name = this.employeeTypes[type_id-1].type_name;
+            
             // if(type_id == 2 || type_id == 4 || type_id == 1){
             //     this.type_map = true;
             // }else{
@@ -307,7 +381,8 @@ var employee = new Vue({
             var url = this.makeUrl();
             axios.get(url).then(response => {
                 this.basics = response.data;
-                // console.log(this.basics);
+                this.type_name = this.basics['employee_type'].type_name;
+                // console.log(this.basics['employee_type'].type_name);
             });
         },
 
