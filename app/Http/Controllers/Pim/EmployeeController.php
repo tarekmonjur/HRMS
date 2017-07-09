@@ -428,6 +428,7 @@ class EmployeeController extends Controller
      * @return $this|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function addEditEducation(EmployeeEducationRequest $request){
+
         try{
             $message = '';
             if($request->hasFile('certificate_file')){

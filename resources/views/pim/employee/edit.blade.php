@@ -105,7 +105,7 @@
                                         <div class="col-md-2">
                                             <div class="form-group" :class="{'has-error': errors.employee_type_id}">
                                                 <label class="control-label">Employee Type : <span class="text-danger">*</span></label>
-                                                <select class="form-control input-sm" id="employee_type_id" name="employee_type_id" v-model="basics.employee_type_id">
+                                                <select class="form-control input-sm" id="employee_type_id" name="employee_type_id" v-on:change="TypeDependancey" v-model="basics.employee_type_id">
                                                     <option value="">...Select Employee Type...</option>
                                                     <option v-for="(employeeType,index) in employeeTypes" :value="employeeType.id" v-text="employeeType.type_name"></option>
                                                 </select>
@@ -154,7 +154,7 @@
                                     <div class="row">
                                         <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id ==4 || basics.employee_type_id ==1">
                                             <div class="form-group" :class="{'has-error': errors.from_date}">
-                                                <label class="control-label"><span v-text="basics.employee_type.type_name"></span> From Date : <span class="text-danger">*</span></label>
+                                                <label class="control-label"><span v-text="type_name"></span> From Date : <span class="text-danger">*</span></label>
                                                 <input type="text" name="from_date" :value="(basics.employee_type_map)?basics.employee_type_map.from_date:''" v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter From Date" readonly="readonly">
                                                 <span v-if="errors.from_date" class="help-block" v-text="errors.from_date[0]"></span>
                                             </div>
@@ -162,7 +162,7 @@
 
                                         <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id == 4">
                                             <div class="form-group" :class="{'has-error': errors.to_date}">
-                                                <label class="control-label"><span v-text="basics.employee_type.type_name"></span> To Date : <span class="text-danger">*</span></label>
+                                                <label class="control-label"><span v-text="type_name"></span> To Date : <span class="text-danger">*</span></label>
                                                 <input type="text" name="to_date" :value="(basics.employee_type_map)?basics.employee_type_map.to_date:''"
 
                                                  v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter To Date" readonly="readonly">
@@ -172,7 +172,7 @@
 
                                         <div class="col-md-6" v-if="basics.employee_type_id == 2 || basics.employee_type_id == 4 || basics.employee_type_id ==1">
                                             <div class="form-group" :class="{'has-error': errors.remarks}">
-                                                <label class="control-label"><span v-text="basics.employee_type.type_name"></span> Remark :</label>
+                                                <label class="control-label"><span v-text="type_name"></span> Remark :</label>
                                                 <input v-if="basics.employee_type_map" type="text" name="remarks" :value="(basics.employee_type_map)?basics.employee_type_map.remarks:''" class="form-control input-sm">
                                                 <span v-if="errors.remarks" class="help-block" v-text="errors.remarks[0]"></span>
                                             </div>
@@ -1053,6 +1053,7 @@
                                         </div>
 
                                         <hr class="short alt">
+
                                     </div>
                                 </div>
                                 <!-- end v-if -->
