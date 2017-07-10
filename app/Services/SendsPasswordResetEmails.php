@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use App\Models\Setup\UserEmails;
+use Illuminate\Support\Facades\Artisan;
 
 trait SendsPasswordResetEmails
 {
@@ -27,13 +29,20 @@ trait SendsPasswordResetEmails
     {
         $this->validate($request, ['email' => 'required|email']);
 
+
+
+        //For MultiAuth here we Reconnecting System Dyanamically(Custome Change)
+        $this->databaseConnectByEmail($request->email);
+
+
+
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $response = $this->broker()->sendResetLink(
             $request->only('email')
         );
-
+        
         return $response == Password::RESET_LINK_SENT
                     ? $this->sendResetLinkResponse($response)
                     : $this->sendResetLinkFailedResponse($request, $response);
@@ -72,5 +81,20 @@ trait SendsPasswordResetEmails
     public function broker()
     {
         return Password::broker('hrms');
+    }
+
+    public function databaseConnectByEmail($email){
+        $user = UserEmails::where('email',$email)
+            ->join('configs','configs.id','=','user_emails.config_id')
+            ->first();
+
+        if(count($user)){
+            Session(['database'=>$user->database_name, 'config_id' => $user->config_id]);
+            Artisan::call("db:connect", ['database'=> $user->database_name]);
+//            echo \DB::connection()->getDatabaseName();
+            return true;
+        }else{
+            return false;
+        }
     }
 }

@@ -15,7 +15,7 @@ class EmployeeExperience extends Model
     		$duration = explode('.', $value);
     		$month = end($duration);
 
-    		if($month > 10){
+    		if($month >= 10){
     			$month = str_replace('0','',$month);
     		}
     		return $duration[0].' years, '.$month.' months.';

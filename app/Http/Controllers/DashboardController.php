@@ -27,9 +27,8 @@ class DashboardController extends Controller
     }
 
 
-    public function index(){
-        // dd(Session('permission'));
-
+    public function index()
+    {
         if(Session('config_id')){
             $data['sisterConcern'] = $this->getSisterConcern(Session('config_id'));
             $data['motherConcern'] = $this->getMotherConcern(Session('config_id'));

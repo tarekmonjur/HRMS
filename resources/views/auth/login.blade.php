@@ -15,7 +15,12 @@
     <div id="login_section">
         <div class="content">
             <h2>Sign In</h2>
-            {{--<p>Sign in below:</p>--}}
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
+            <p>Sign in below:</p>
             <div style="clear:both"></div>
             <form id="login" class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                 {{ csrf_field() }}
