@@ -42,6 +42,9 @@ trait AuthenticatesUsers
 
         $this->validateLogin($request);
 
+        //databaseConnectByEmail Custom Function
+        //Dyanamically Reconnecting DB with System
+
         if(!$this->databaseConnectByEmail($request->email)){
             return redirect()->back()->withErrors([$this->accessError() =>Lang::get('auth.failed')]);
         }
@@ -78,7 +81,7 @@ trait AuthenticatesUsers
         if(count($user)){
             Session(['database'=>$user->database_name, 'config_id' => $user->config_id]);
             Artisan::call("db:connect", ['database'=> $user->database_name]);
-//            echo \DB::connection()->getDatabaseName();
+            // echo \DB::connection()->getDatabaseName();
             return true;
         }else{
             return false;
