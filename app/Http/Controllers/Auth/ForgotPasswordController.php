@@ -20,11 +20,6 @@ class ForgotPasswordController extends Controller
 
     use SendsPasswordResetEmails;
 
-    // public function showLinkRequestForm(){
-
-    //     echo "testing";
-    // }
-
     /**
      * Create a new controller instance.
      *

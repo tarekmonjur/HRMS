@@ -14,7 +14,7 @@
 @if(count($sisterConcern)>0)
 <div class="panel">
   <div class="panel-heading">
-    <span class="panel-title">Sister Concern</span>
+    <span class="panel-title">Sister Concern  {{session('status')}}</span>
   </div>
   <div class="panel-body panel-scroller scroller-dark scroller-sm scroller-overlay scroller-pn pn">
     <table class="table mbn tc-list-1 tc-text-muted-2 tc-fw600-2">

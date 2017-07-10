@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use App\Services\RedirectsUsers;
+use App\Models\Setup\UserEmails;
+use Illuminate\Support\Facades\Artisan;
 
 trait ResetsPasswords
 {
@@ -36,6 +38,13 @@ trait ResetsPasswords
      */
     public function reset(Request $request)
     {
+        //For MultiAuth here we Reconnecting System Dyanamically(Custome Change)
+        $this->databaseConnectByEmail($request->email);
+        
+
+
+
+
         $this->validate($request, $this->rules(), $this->validationErrorMessages());
 
         // Here we will attempt to reset the user's password. If it is successful we
@@ -50,9 +59,10 @@ trait ResetsPasswords
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
+        
         return $response == Password::PASSWORD_RESET
-                    ? $this->sendResetResponse($response)
-                    : $this->sendResetFailedResponse($request, $response);
+                    ? $this->sendResetResponse('Password changed successfully!')
+                    : $this->sendResetFailedResponse($request, 'Password not changed successfully!');
     }
 
     /**
@@ -106,7 +116,7 @@ trait ResetsPasswords
             'remember_token' => Str::random(60),
         ])->save();
 
-        $this->guard()->login($user);
+        // $this->guard('hrms')->login($user);
     }
 
     /**
@@ -117,8 +127,7 @@ trait ResetsPasswords
      */
     protected function sendResetResponse($response)
     {
-        return redirect($this->redirectPath())
-                            ->with('status', trans($response));
+        return redirect('/login')->with('status', trans($response));
     }
 
     /**
@@ -153,5 +162,24 @@ trait ResetsPasswords
     protected function guard()
     {
         return Auth::guard('hrms');
+    }
+
+
+
+
+
+    public function databaseConnectByEmail($email){
+        $user = UserEmails::where('email',$email)
+            ->join('configs','configs.id','=','user_emails.config_id')
+            ->first();
+
+        if(count($user)){
+            Session(['database'=>$user->database_name, 'config_id' => $user->config_id]);
+            Artisan::call("db:connect", ['database'=> $user->database_name]);
+            //  echo \DB::connection()->getDatabaseName();
+            return true;
+        }else{
+            return false;
+        }
     }
 }
