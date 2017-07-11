@@ -13,9 +13,13 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <span class="panel-title"> Leave Type</span>
-                        
-                        <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" @click="uncheckAll()" style="margin-top: 12px;">Add New Leave Type</button>
-                    
+
+                        <?php 
+                          $chkUrl = \Request::segment(1);
+                        ?>
+                        @if(in_array($chkUrl."/add", session('userMenuShare')))
+                            <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" @click="uncheckAll()" style="margin-top: 12px;">Add New Leave Type</button>
+                        @endif
                     </div>
                     <div class="panel-body">
                         <div id="showData">
@@ -54,9 +58,11 @@
                                         <td v-text="info.leave_type_details"></td>
                                         <td v-text="info.leave_type_status==1?'Active':'Inactive'"></td>
                                         <td>
+                                        @if(in_array($chkUrl."/edit", session('userMenuShare')))
                                             <button type="button" @click="editData(info.id, index)" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target=".dataEdit">
                                                 <i class="fa fa-edit"></i>
                                             </button>
+                                        @endif
                                         </td>
                                     </tr>
                                 </tbody>

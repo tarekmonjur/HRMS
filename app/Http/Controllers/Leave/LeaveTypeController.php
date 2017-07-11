@@ -48,7 +48,7 @@ class LeaveTypeController extends Controller
         ],
         [
 		    'emp_type.required' => 'Effective for is mendatory.',
-		]);     
+		]);   
 
 		$srt_emp_type = implode(', ', $request->emp_type);
 		$is_remain = $request->carry_to_next_year > 0?1:0;
@@ -120,7 +120,7 @@ class LeaveTypeController extends Controller
         ],
         [
 		    'emp_type.required' => 'Effective for is mendatory.',
-		]);
+		]); 
 
 		$srt_emp_type = implode(', ', $request->emp_type);
 		$is_remain = $request->carry_to_next_year > 0?1:0;
@@ -138,7 +138,9 @@ class LeaveTypeController extends Controller
                 'leave_type_details' => $request->type_details,
                 'leave_type_is_earn_leave' => $is_earn,
                 'leave_type_is_sellable' => $is_sellable,
+                'leave_type_max_sell_limit' => $request->max_sell_limit,
                 'leave_type_is_remain' => $is_remain,
+                'leave_type_max_remain_limit' => $request->max_remain_limit,
                 'leave_type_include_holiday' => $include_holiday,
                 'leave_type_active_from_year' => $request->from_year,
                 'leave_type_active_to_year' => $request->to_year,
