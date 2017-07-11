@@ -114,9 +114,40 @@ $(document).on('ready',function(){
       },
 
 
-      deleteWorkShift(index){
-        this.deleted.push(this.employeeShift.work_shift[index].id);
-        this.employeeShift.work_shift.splice(index,1);
+      deleteWorkShift(index, id){
+
+        var _this = this;
+
+        swal({
+          title: "Are you sure?",
+          text: "You will not be able to recover this imaginary file!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm){
+            axios.get('/shiftassign/delete/'+id).then((response) => {
+
+            }).catch((error)=>{
+            
+            });
+
+            _this.deleted.push(_this.employeeShift.work_shift[index].id);
+            _this.employeeShift.work_shift.splice(index,1);
+            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+
+            setTimeout(function(){
+               window.location.reload(1);
+            }, 1000);
+          } else {
+              swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+        });
       },
 
 
