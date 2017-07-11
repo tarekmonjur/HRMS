@@ -373,6 +373,95 @@ class EmployeeController extends Controller
     
     }
 
+    public function insertLeavePermissionEdit($user, $designation_id, $employee_type_id, $oldEmpType){
+
+        //insert menus into user_permisson when user created
+        $desig_info = Designation::find($designation_id);
+        $level_id = $desig_info->level_id;
+        $level_permission = LevelPermission::where('level_id', $level_id)->get();
+
+        foreach($level_permission as $info){
+            $user_permission[] = [
+                'user_id' => $user->id,
+                'menu_id' => $info->menu_id,
+            ];
+        }
+
+        if(!empty($user_permission)){
+            UserPermission::insert($user_permission);
+        }
+        //end insert menu user_permission    
+        
+        //remove leave types of old emp type start
+
+        $leaveTypesAvailable = [];
+
+        $types = LeaveType::where('leave_type_status', 1)->get();
+        
+        foreach($types as $info){
+            $types = explode(",", $info->leave_type_effective_for);
+
+            if(in_array($oldEmpType, $types)){
+                $leaveTypesAvailable[] = $info->id;
+            }
+        }
+
+        if(count($leaveTypesAvailable) > 0){
+            $pp = UserLeaveTypeMap::where('user_id', $user->id)->whereIn('leave_type_id', $leaveTypesAvailable)->delete();
+        }
+
+        //remove leave types end
+
+        //insert leave info depend on emp type start
+        $emp_type = $employee_type_id; 
+        $commonTypeId = [];
+
+        $leaveTypes = LeaveType::where('leave_type_status', 1)->get();
+
+        if(count($leaveTypes) > 0){
+            
+            foreach($leaveTypes as $val){
+                
+                $leaveTypeAry = explode(',', $val->leave_type_effective_for);
+
+                if($val->leave_type_is_earn_leave == 1){
+                    $num_of_days = 0;
+                }
+                else{
+                    $num_of_days = $val->leave_type_number_of_days; 
+                }
+
+                if(in_array($emp_type, $leaveTypeAry)){
+                    $commonTypeId['type_id'][] = $val->id;
+                    $commonTypeId['days'][] = $num_of_days;
+                    $commonTypeId['from_year'][] = $val->leave_type_active_from_year;
+                    $commonTypeId['to_year'][] = $val->leave_type_active_to_year;
+                }
+            }
+
+            $length = count($commonTypeId['type_id']);
+
+            if(!empty($length)){
+                for($i=0 ; $i < $length; $i++){
+                    $user_leave_type[] = [
+                        'user_id' => $user->id,
+                        'leave_type_id' => $commonTypeId['type_id'][$i],
+                        'number_of_days' => $commonTypeId['days'][$i],
+                        'active_from_year' => $commonTypeId['from_year'][$i],
+                        'active_to_year' => $commonTypeId['to_year'][$i],
+                        'status' => 1,
+                    ];
+                }
+            }
+
+            if(!empty($user_leave_type)){
+                UserLeaveTypeMap::insert($user_leave_type);
+            }
+        }
+        //leave end
+    
+    }
+
     /**
      * @post Add Employee Personal Info
      * @param EmployeePersonalInfoRequest $request
@@ -997,6 +1086,7 @@ class EmployeeController extends Controller
 
             $request->offsetSet('updated_by',$this->auth->id);
             $user = User::find($request->userId);
+            $oldEmpTypeId = $user->employee_type_id;
             $user->update($request->all());
 
             $address = EmployeeAddress::findUser($request->userId);
@@ -1007,7 +1097,7 @@ class EmployeeController extends Controller
             }
 
             //Insert Data Into Leave & Permission
-            $this->insertLeavePermission($user, $request->designation_id, $request->employee_type_id);
+            $this->insertLeavePermissionEdit($user, $request->designation_id, $request->employee_type_id, $oldEmpTypeId);
 
             if($request->employee_type_id == 2 || $request->employee_type_id == 4){
                 if($request->type_status == '1'){

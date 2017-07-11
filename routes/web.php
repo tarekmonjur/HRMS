@@ -264,6 +264,7 @@ Route::group(['prefix' => 'workshift', 'namespace' => 'Attendance'],function (){
 Route::group(['prefix' => 'shiftassign', 'namespace' => 'Attendance'],function (){
     Route::get('/index/{work_shift_id?}','WorkShiftAssignController@index');
     Route::post('/assign','WorkShiftAssignController@assignWorkShift');
+    Route::get('/delete/{id}','WorkShiftAssignController@delete');
 });
 
 /******* .......Attendance Timesheet Routes........ ******/

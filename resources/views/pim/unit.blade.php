@@ -246,7 +246,7 @@
                         <div class="col-md-9">
                             <select class="form-control input-sm" name="edit_unit_parent_id" v-model="edit_unit_parent_id" v-validate:edit_unit_parent_id.initial="'required'" :class="{'input': true, 'is-danger': errors.has('edit_unit_parent_id') }" data-vv-as="unit parent">
                                 <option value="">Select Unit's Parent</option>
-                                <option v-for="unit in activeUnits" v-bind:value="unit.id"> @{{unit.unit_name}} </option>
+                                <option v-for="unit in activeUnits" v-if="unit.id != hdn_id" v-bind:value="unit.id"> @{{unit.unit_name}} </option>
                             </select>
                             <div v-show="errors.has('edit_unit_parent_id')" class="help text-danger">
                                 <i v-show="errors.has('edit_unit_parent_id')" class="fa fa-warning"></i> 
