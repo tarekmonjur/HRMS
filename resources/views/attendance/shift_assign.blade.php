@@ -114,7 +114,7 @@
                     <tr v-for="(work_shift,indexs) in employeeShift.work_shift">
                      <input type="hidden" :name="'work_shift['+indexs+'][id]'" :value="work_shift.id">
                       <td>
-                          <select :name="'work_shift['+indexs+'][work_shift_id]'" class="form-control input-sm" v-model="work_shift.work_shift_id">
+                          <select :name="'work_shift['+indexs+'][work_shift_id]'" class="form-control input-sm" v-model="work_shift.work_shift_id" required="">
                             <option v-for="(ws,index) in workshifts" :value="ws.id" v-text="ws.shift_name"></option>
                           </select>
                       </td>
@@ -143,13 +143,13 @@
                           </label>
                       </td>
                       <td>
-                        <input type="text" :name="'work_shift['+indexs+'][start_date]'" v-on:mouseover="myDatePicker" class="myDatePicker form-control input-sm" v-model="work_shift.start_date" v-on:focusout="work_shift.start_date = $event.target.value">
+                        <input type="text" :name="'work_shift['+indexs+'][start_date]'" v-on:mouseover="myDatePicker" class="myDatePicker form-control input-sm" v-model="work_shift.start_date" v-on:focusout="work_shift.start_date = $event.target.value" required="">
                       </td>
                       <td>
-                        <input type="text" :name="'work_shift['+indexs+'][end_date]'" v-on:mouseover="myDatePicker" class="myDatePicker form-control input-sm" v-model="work_shift.end_date" v-on:focusout="work_shift.end_date = $event.target.value">
+                        <input type="text" :name="'work_shift['+indexs+'][end_date]'" v-on:mouseover="myDatePicker" class="myDatePicker form-control input-sm" v-model="work_shift.end_date" v-on:focusout="work_shift.end_date = $event.target.value" required="">
                       </td>
                       <td>
-                        <button v-on:click.prevent="deleteWorkShift(indexs)"><span class="text-danger glyphicons glyphicons-bin"></span></button>
+                        <button v-on:click.prevent="deleteWorkShift(indexs, work_shift.id)"><span class="text-danger glyphicons glyphicons-bin"></span></button>
                       </td>
                     </tr>
                   </tbody>

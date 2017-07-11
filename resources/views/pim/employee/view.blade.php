@@ -443,7 +443,10 @@ table.tc-med-2 tbody td:first-child{
                 @endif
               </div>
               <div class="col-md-2">
-                <img src="@if($nominees->nominee_photo){{url('files/'.$user->id.'/'.$nominees->nominee_photo)}}@else{{url('img/placeholder.png')}}@endif" class="img-responsive">
+                <?php 
+                  $configId = session('config_id');
+                ?>
+                <img src="@if($nominees->nominee_photo){{url('files/'.$configId.'/'.$user->id.'/'.$nominees->nominee_photo)}}@else{{url('img/placeholder.png')}}@endif" class="img-responsive">
               </div>
               </div>
               @empty

@@ -160,16 +160,27 @@ class WorkShiftAssignController extends Controller
 		    	}
 	    	}
 
-	    	if($request->ajax()){
-                $data['status'] = 'success';
-                $data['statusType'] = 'OK';
-                $data['code'] = 200;
-                $data['title'] = 'Success!';
-                $data['message'] = 'Work shift successfully assign!';
-                return response()->json($data,200);
+            if(count($saveData) > 0){
+                if($request->ajax()){
+                    $data['status'] = 'success';
+                    $data['statusType'] = 'OK';
+                    $data['code'] = 200;
+                    $data['title'] = 'Success!';
+                    $data['message'] = 'Work shift successfully assign!';
+                    return response()->json($data,200);
+                }
             }
+            else{
+                $data['status'] = 'danger';
+                $data['statusType'] = 'NotOk';
+                $data['code'] = 500;
+                $data['title'] = 'Error!';
+                $data['message'] = 'Invalid input. Work shift not assign.';
+                return response()->json($data,500);
+            }
+    	    	
 
-            $request->session()->flash('success','Work shift successfully assign!');
+            // $request->session()->flash('success','Work shift successfully assign!');
             return redirect()->back();
 
     	}catch(\Exception $e){
@@ -186,6 +197,22 @@ class WorkShiftAssignController extends Controller
             return redirect()->back()->withInput();
     	}
 
+    }
+
+    public function delete($id){
+
+        try{
+            WorkShiftEmployeeMap::find($id)->delete();
+            $data['title'] = 'success';
+            $data['message'] = 'data successfully removed!';
+
+        }catch(\Exception $e){
+            
+            $data['title'] = 'error';
+            $data['message'] = 'data not removed!';
+        }
+
+        return $data;
     }
 
 
