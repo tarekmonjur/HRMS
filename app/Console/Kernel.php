@@ -37,10 +37,9 @@ class Kernel extends ConsoleKernel
         //          ->timezone('Asia/Dhaka')
         //          ->everyMinute();
         
-        // \Config::set('database.connections.mysql_hrms.strict',false);
-        // \Artisan::call("db:connect", ['database' => '1489485338_afc_health']);
-        // $schedule->command('attendance:timesheet')->cron('* * * * * *');
-        // $schedule->command('attendance:archive')->everyMinute();
+
+        $schedule->command('attendance:timesheet',['dbname' => '1489485338_afc_health'])->cron('* * * * * *');
+        $schedule->command('attendance:archive', ['dbname' => '1489485338_afc_health'])->everyMinute();
     }
 
     /**
