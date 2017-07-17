@@ -7,7 +7,7 @@ return [
 	'hrms_cache_time' => 5,
 
 	// every day calculate last month data and update attendance timesheet
-	'attendance_calculate_month' => 1, 
+	'attendance_calculate_month' => 2, 
 
 	// archive before last six month data attendance timesheet to attendance timesheet archive
 	'attendance_archive_month' => 6,

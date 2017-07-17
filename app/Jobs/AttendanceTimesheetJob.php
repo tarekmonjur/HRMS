@@ -35,6 +35,7 @@ class AttendanceTimesheetJob implements ShouldQueue
     {
         $this->calculateMonth = \Config::get('hrms.attendance_calculate_month');
         $this->job_call = $job_call;
+        // dd($this->job_call);
     }
 
     /**
