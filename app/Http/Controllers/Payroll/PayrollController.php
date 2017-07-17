@@ -187,7 +187,7 @@ class PayrollController extends Controller
     	$salary_month = $request->salary_month;
     	$salary_day = $request->salary_day;
 
-    	$user_ids = $this->getUserIds($branch_id, $department_id, $unit_id, $user_id);
+    	$user_ids = $this->getUserIds($branch_id, $department_id, $unit_id, $user_id, $salary_month);
     	$userInfos = $this->getUserInformations($user_ids, $salary_type, $salary_month, $salary_day);
 
         $days = $userInfos['days'];
@@ -360,16 +360,16 @@ class PayrollController extends Controller
     }
 
 
-    protected function getUserIds($branch_id, $department_id, $unit_id, $user_id)
+    protected function getUserIds($branch_id, $department_id, $unit_id, $user_id, $salary_month)
     {
     	if($user_id !=0){
     		$user_ids = [$user_id];
     	}elseif($branch_id !=0 || $department_id !=0 || $unit_id !=0){
     		$users = $this->getEmployeeByDepartmentUnitBranch($branch_id, $department_id, $unit_id);
-    		$user_ids = $users->pluck('id');
+    		$user_ids = $users->where('effective_date','<=',Carbon::parse($salary_month)->format('Y-m-t'))->pluck('id');
     	}else{
     		$users = User::where('status',1)->get();
-    		$user_ids = $users->pluck('id');
+    		$user_ids = $users->where('effective_date','<=',Carbon::parse($salary_month)->format('Y-m-t'))->pluck('id');
     	}
     	return $user_ids;
     }

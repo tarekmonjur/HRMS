@@ -102,7 +102,7 @@ class LoanRequest extends FormRequest
     protected function checkProvidentFund()
     {
         $providentFund = ProvidentFund::with('details')->where('user_id',$this->user_id)->first();
-        if($providentFund){
+        if(count($providentFund)>0){
             $debit = $providentFund->details->sum('pf_debit');
             $credit = $providentFund->details->sum('pf_credit');
             // $amount = ($credit > $debit)? $credit - $debit : $debit - $credit;
