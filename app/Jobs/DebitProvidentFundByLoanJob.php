@@ -35,7 +35,7 @@ class DebitProvidentFundByLoanJob implements ShouldQueue
      */
     public function handle()
     {
-        if($this->loan->loan_aganist == 'salary'){
+        if($this->loan->loan_aganist == 'pf'){
             $providentFund = ProvidentFund::where('user_id',$this->loan->user_id)->first();
             PfCalculation::create([
                 'provident_fund_id' => $providentFund->id,
