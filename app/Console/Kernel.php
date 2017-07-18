@@ -6,7 +6,10 @@ use App\Console\Commands\ServiceCommand;
 use App\Console\Commands\SalaryIncrementCommand;
 use App\Console\Commands\AttendanceTimesheetCommand;
 use App\Console\Commands\ArchiveAttendanceTimesheetCommand;
+use App\Console\Commands\CalculateEarnLeave;
+use App\Console\Commands\MakeWeekendActive;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,7 +22,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ServiceCommand::class,
-        Commands\CalculateEarnLeave::class,
+        CalculateEarnLeave::class,
+        MakeWeekendActive::class,
         SalaryIncrementCommand::class,
         AttendanceTimesheetCommand::class,
         ArchiveAttendanceTimesheetCommand::class
@@ -33,6 +37,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('active:weekend')
+                 ->timezone('Asia/Dhaka')
+                 ->everyMinute();
+
         // $schedule->command('calculate:earnLeave')
         //          ->timezone('Asia/Dhaka')
         //          ->everyMinute();
@@ -40,6 +48,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('attendance:timesheet',['dbname' => '1489485338_afc_health'])->cron('* * * * * *');
         $schedule->command('attendance:archive', ['dbname' => '1489485338_afc_health'])->everyMinute();
+
     }
 
     /**

@@ -28,7 +28,7 @@ class SetupMenuSeeder extends Seeder
 // (11, 9, 2, 'Edit', 'holiday/edit', 'Holiday', 'fa fa-level-up', 1, NULL, NULL),
 // (12, 0, 2, 'View', 'weekend/index', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
 // (13, 12, 2, 'Add', 'weekend/add', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
-// (14, 12, 2, 'Edit', 'weekend/edit', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
+// (14, 12, 2, 'Delete', 'weekend/delete', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
 // (15, 0, 2, 'View', 'leaveType/index', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
 // (16, 15, 2, 'Add', 'leaveType/add', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
 // (17, 15, 2, 'Edit', 'leaveType/edit', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
