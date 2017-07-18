@@ -37,18 +37,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // \Config::set('database.connections.mysql_hrms.strict',false);
-        // \Artisan::call("db:connect", ['database' => '1497516153_ALl_new_menu']);
-        // $schedule->command('attendance:timesheet')->cron('* * * * * *');
-        // $schedule->command('attendance:archive')->everyMinute();
+        $schedule->command('active:weekend')
+                 ->timezone('Asia/Dhaka')
+                 ->everyMinute();
 
         // $schedule->command('calculate:earnLeave')
         //          ->timezone('Asia/Dhaka')
         //          ->everyMinute();
+        
 
-        $schedule->command('active:weekend')
-                 ->timezone('Asia/Dhaka')
-                 ->everyMinute();
+        $schedule->command('attendance:timesheet',['dbname' => '1489485338_afc_health'])->cron('* * * * * *');
+        $schedule->command('attendance:archive', ['dbname' => '1489485338_afc_health'])->everyMinute();
+
     }
 
     /**

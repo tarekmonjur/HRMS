@@ -24,14 +24,18 @@ class AttendanceTimesheetJob implements ShouldQueue
 
     protected $calculateMonth;
 
+    protected $job_call;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($job_call = null)
     {
         $this->calculateMonth = \Config::get('hrms.attendance_calculate_month');
+        $this->job_call = $job_call;
+        // dd($this->job_call);
     }
 
     /**
@@ -89,8 +93,10 @@ class AttendanceTimesheetJob implements ShouldQueue
         // dd($today_attendance);
 
         /* endable for reset previous attendance data */
-        AttendanceTimesheet::whereIn('date', $AttendanceTimesheet)->delete();
-        $prev_attendance_data = $prev_attendance->toArray();
+        if($this->job_call == 'csv'){
+            AttendanceTimesheet::whereIn('date', $AttendanceTimesheet)->delete();
+            $prev_attendance_data = $prev_attendance->toArray();
+        }
        
 
         if(count($userIds) > 0)

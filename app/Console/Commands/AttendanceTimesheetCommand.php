@@ -12,7 +12,7 @@ class AttendanceTimesheetCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'attendance:timesheet';
+    protected $signature = 'attendance:timesheet {dbname}?';
 
     /**
      * The console command description.
@@ -38,7 +38,8 @@ class AttendanceTimesheetCommand extends Command
      */
     public function handle()
     {
-        
+        \Config::set('database.connections.mysql_hrms.strict',false);
+        \Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
         dispatch(new AttendanceTimesheetJob());
     }
 }

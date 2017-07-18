@@ -430,12 +430,10 @@ class AttendanceController extends Controller
             Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
             // AttendanceTimesheet::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
             //dd(Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->get());
-
-
             // dd($csvContent);
 
             Attendance::insert($csvContent);
-            //dispatch(new AttendanceTimesheetJob());
+            dispatch(new AttendanceTimesheetJob($job_call = 'csv'));
             $request->session()->flash('success','Attendance successfully uploaded!');
         }
 
