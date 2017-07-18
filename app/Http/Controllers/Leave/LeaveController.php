@@ -149,6 +149,8 @@ class LeaveController extends Controller
 
         // ****************** Weekend from SHIFT ***********************
         
+        $weekendNormalInShift = [];
+
         if(count($weekendFromShift) > 0){
             $holidayAry = [];
 
@@ -446,6 +448,12 @@ class LeaveController extends Controller
                 if($emp_leave_type == $info['id']){
                     $chk = $info['days'] - $diff_days;
 
+                    if(empty($info['days']) || $info['days'] < 0){
+                        //days are undefined
+                        //that means no limit
+                        $chk = 1;
+                    }
+
                     if($chk >= 0){
                         
                         $supervisor_id = User::find($emp_name)->supervisor_id;
@@ -584,11 +592,12 @@ class LeaveController extends Controller
             if(in_array($info['id'], $leave_type_id_ary)){
                 $locId = array_search($info['id'], $leave_type_id_ary);
                 $leave_amount_taken_combination[$sl]['taken_days'] = $taken_leave_ary[$locId]['days'];
-                $leave_amount_taken_combination[$sl]['balance'] = $info['days'] - $taken_leave_ary[$locId]['days'];
+                $balanceLeave = $info['days'] - $taken_leave_ary[$locId]['days'];
+                $leave_amount_taken_combination[$sl]['balance'] = $balanceLeave<0 ? 0 : $balanceLeave;
             }
             else{
                 $leave_amount_taken_combination[$sl]['taken_days'] = 0;
-                $leave_amount_taken_combination[$sl]['balance'] = $info['days'];
+                $leave_amount_taken_combination[$sl]['balance'] = $info['days']<0 ? 0 : $info['days'];
             }
 
             $sl++;
@@ -743,6 +752,12 @@ class LeaveController extends Controller
             foreach($leave_type_ary as $info){
                 if($emp_leave_type == $info['id']){
                     $chk = $info['days'] - $diff_days;
+
+                    if(empty($info['days']) || $info['days'] < 0){
+                        //days are undefined
+                        //that means no limit
+                        $chk = 1;
+                    }
 
                     if($chk >= 0){
 

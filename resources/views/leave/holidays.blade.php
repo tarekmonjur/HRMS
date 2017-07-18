@@ -13,15 +13,16 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <span class="panel-title">Holidays</span>
-                        
-                        <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" style="margin-top: 12px;">Add New Holidays</button>
+                        <?php 
+                          $chkUrl = \Request::segment(1);
+                        ?>
+                        @if(in_array($chkUrl."/add", session('userMenuShare')))
+                            <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" style="margin-top: 12px;">Add New Holidays</button>
+                        @endif
                    
                     </div>
                     <div class="panel-body">
                         <div id="showData">
-                            <?php 
-                              $chkUrl = \Request::segment(1);
-                            ?>
                             <table class="table table-hover" id="datatable">
                                 <thead>
                                     <tr class="success">

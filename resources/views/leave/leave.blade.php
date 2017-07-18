@@ -28,8 +28,13 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <span class="panel-title">Leave Application</span>
-                        
-                        <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" style="margin-top: 12px;">Leave Application</button>
+
+                        <?php 
+                          $chkUrl = \Request::segment(1);
+                        ?>
+                        @if(in_array($chkUrl."/add", session('userMenuShare')))
+                            <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" style="margin-top: 12px;">Leave Application</button>
+                        @endif
                     
                     </div>
                     <div class="panel-body">
@@ -100,10 +105,7 @@
                                                         <span class="caret"></span>
                                                         <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
-                                                        <?php 
-                                                          $chkUrl = "leave/index";
-                                                        ?>
-                                                        @if(in_array($chkUrl, session('userMenuShare')))
+                                                        @if(in_array($chkUrl."/edit", session('userMenuShare')))
                                                         <ul class="dropdown-menu toggle-cls" role="menu">
                                                             <li>
                                                               <a @click="changeStatus({{$info->id}}, 1)" v-show="{{$info->employee_leave_status}} != 1 && {{$info->employee_leave_status}} != 2 && {{$info->employee_leave_status}} != 3">Pending</a>
@@ -122,11 +124,12 @@
                                                 <td>
                                                     {{-- <button type="button" class="btn btn-info btn-xs"><a target="_blank" href="{{url("leave/view/$info->id")}}" class="btn-custom">View</a></button> --}}
                                                     <button type="button" class="btn btn-info btn-xs"><a target="_blank" href="{{url("leaveView/$info->id")}}" class="btn-custom">View</a></button>
-
-                                                    @if($info->employee_leave_status != 3 && $info->employee_leave_status != 4)
-                                                        <button type="button" class="btn btn-system btn-xs edit-btn-Cls" data-toggle="modal" data-target=".dataEdit" @click="editData({{$info->id}})">Edit</button>
-                                                    @else
-                                                        <button type="button" disabled="disabled" class="btn btn-system btn-xs">Edit</button>
+                                                    @if(in_array($chkUrl."/edit", session('userMenuShare')))
+                                                        @if($info->employee_leave_status != 3 && $info->employee_leave_status != 4)
+                                                            <button type="button" class="btn btn-system btn-xs edit-btn-Cls" data-toggle="modal" data-target=".dataEdit" @click="editData({{$info->id}})">Edit</button>
+                                                        @else
+                                                            <button type="button" disabled="disabled" class="btn btn-system btn-xs">Edit</button>
+                                                        @endif
                                                     @endif
                                                 </td>
                                             </tr>
