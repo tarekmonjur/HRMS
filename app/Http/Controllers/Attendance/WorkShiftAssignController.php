@@ -160,7 +160,7 @@ class WorkShiftAssignController extends Controller
 		    	}
 	    	}
 
-            if(count($saveData) > 0){
+            // if(count($saveData) > 0){
                 if($request->ajax()){
                     $data['status'] = 'success';
                     $data['statusType'] = 'OK';
@@ -169,18 +169,17 @@ class WorkShiftAssignController extends Controller
                     $data['message'] = 'Work shift successfully assign!';
                     return response()->json($data,200);
                 }
-            }
-            else{
-                $data['status'] = 'danger';
-                $data['statusType'] = 'NotOk';
-                $data['code'] = 500;
-                $data['title'] = 'Error!';
-                $data['message'] = 'Invalid input. Work shift not assign.';
-                return response()->json($data,500);
-            }
+            // }
+            // else{
+            //     $data['status'] = 'danger';
+            //     $data['statusType'] = 'NotOk';
+            //     $data['code'] = 500;
+            //     $data['title'] = 'Error!';
+            //     $data['message'] = 'Invalid input. Work shift not assign.';
+            //     return response()->json($data,500);
+            // }
     	    	
 
-            // $request->session()->flash('success','Work shift successfully assign!');
             return redirect()->back();
 
     	}catch(\Exception $e){

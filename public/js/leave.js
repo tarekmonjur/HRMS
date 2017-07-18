@@ -114,6 +114,7 @@ new Vue({
       return date.getFullYear();
     },
     date_diff_cal: function(){
+
       var emp_leave_type_js = this.emp_leave_type;
       
       if(this.emp_leave_type > 0){

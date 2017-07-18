@@ -112,15 +112,12 @@ class LeaveController extends Controller
 
         $weekendCounter = 0;
         $holidayCounter = 0;
+        
+        //Inser days into array
         $forNormalWeekend = array_diff($initialApplyAry, $shiftDaysAry['days']); 
         $weekendFromShift = array_intersect($initialApplyAry, $shiftDaysAry['days']);
 
         //common codes ====
-
-        $weekendsData  = Weekend::where('status', 1)->first();
-        $weekends_ary = explode(',', $weekendsData->weekend); 
-        $weekends_ary = array_map('trim', $weekends_ary); // triming
-
         $holidays_info = Holiday::whereBetween('holiday_from', ["$fromDateAry[0]-1-1", "$fromDateAry[0]-12-31"])->where('holiday_status', 1)->get();
 
         $allHolidayAry = [];
@@ -143,11 +140,15 @@ class LeaveController extends Controller
             }
         }
 
+        //find common days b2in all holiday with shift
         $holidayWithShift = array_intersect($allHolidayAry, $weekendFromShift);
+        //find common days b2in holiday with days not in assign shift
         $holidayWithNormalWeekend = array_intersect($allHolidayAry, $forNormalWeekend);
 
         //=================
 
+        // ****************** Weekend from SHIFT ***********************
+        
         if(count($weekendFromShift) > 0){
             $holidayAry = [];
 
@@ -173,88 +174,102 @@ class LeaveController extends Controller
             }
 
             if(count($forNormalWeekend) > 0){
-                foreach($forNormalWeekend as $info){
-                    //check weekend
-                    $nonShiftWeekendDays = date("l", strtotime($info));
 
-                    if(in_array($nonShiftWeekendDays, $weekends_ary)){
-                        $weekendCounter++;
-                    }
+                $fetchAllWeekends = Weekend::whereBetween('weekend_from', ["$fromDateAry[0]-1-1", "$fromDateAry[0]-12-31"])->get();
 
-                    //check Holiday with out Weekend
-                    if(in_array($info, $holidayWithNormalWeekend)){
-                        if(!in_array($nonShiftWeekendDays, $weekends_ary)){
-                            $holidayCounter++;
+                $normalWithDaysAry = [];
+
+                foreach($forNormalWeekend as $normalInfo){
+                    foreach($fetchAllWeekends as $info){
+                        if(!empty($info->weekend_to)){
+                            if(strtotime($normalInfo) >= strtotime($info->weekend_from) && strtotime($normalInfo) <= strtotime($info->weekend_to))
+                            {
+                                $normalWithDaysAry[$normalInfo]['weekends'] = $info->weekend;
+                            }
+                        }
+                        else{
+                            if(strtotime($normalInfo) >= strtotime($info->weekend_from)){
+                                $normalWithDaysAry[$normalInfo]['weekends'] = $info->weekend;
+                            }
                         }
                     }
                 }
+
+                foreach($normalWithDaysAry as $key => $info){
+
+                    // echo $key."---".$info['weekends']."<br>";
+                    $dayName2 = date("l", strtotime($key));
+                    $daysArray2 = array_map('trim', explode(",", $info['weekends']));
+                    
+                    if(!in_array($dayName2, $daysArray2)){
+                        
+                        $normalInShift[] = $key;
+                    }else{
+                        //responsible to return weeked number
+                        $weekendNormalInShift[] = $key;
+                    }
+                }
+
+                //find common days between weeked and holysays
+                $conflictDays = array_intersect($weekendNormalInShift, $holidayWithNormalWeekend);
+
+                $weekendCounter = $weekendCounter + count($weekendNormalInShift);
+                $holidayCounter = $holidayCounter + (count($holidayWithNormalWeekend) - count($conflictDays));
             }
 
             $data['holidays'] = $holidayCounter;
             $data['weekend'] = $weekendCounter;
         }
         else{
-            //WEEKEND Calculation WITHOUT shift
-            $holidayAry = [];
+            //***************** WEEKEND Calculation WITHOUT shift ******************
 
-            foreach($holidays_info as $info){
-                if($info->holiday_from == $info->holiday_to){
-                    $holiDays = date("l", strtotime($info->holiday_from));
+            $begin = new \DateTime( $fromDate );
+            $end   = new \DateTime( $toDate );
+
+            $sql = "SELECT ";
+            $ii =0;
+            for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                $dateCurrent = $i->format('Y-m-d');
+              
+                  if($ii > 0){
+                        $sql .= ",";
+                  }
+                  $sql .= "(SELECT `weekend` FROM `weekends` WHERE ('".$dateCurrent."' BETWEEN `weekend_from` AND `weekend_to`)) '".$dateCurrent."'";
+                  $ii++;
+            }
+             
+            $testArray = json_decode(json_encode(DB::select( DB::raw($sql))), true);
+
+            $filteredArrayOfficeDay = array();
+            $filteredArrayWeekend = array();
+            $normalInShift = [];
+            $weekendNormalInShift = [];
+            $holidayExistInRange = [];
+
+            foreach ($testArray[0] as $date => $days) {
+                $dayName = date("l", strtotime($date));
+                $daysArray = array_map('trim', explode(",", $days));
+                
+                if(!in_array($dayName, $daysArray)){
                     
-                    if(!in_array($holiDays, $weekends_ary)){
-                        $holidayAry[] = $info->holiday_from;
-                    }
-                }
-                else{
-                    $day = 86400; 
-                    $format = 'Y-m-d'; 
-                    $sTime = strtotime($info->holiday_from);
-                    $eTime = strtotime($info->holiday_to); 
-                    $numDays = round(($eTime - $sTime) / $day) + 1;  
-                    $days = array();  
-
-                    for ($d = 0; $d < $numDays; $d++) {  
-                        $days_value = date($format, ($sTime + ($d * $day)));
-                        $holiDays = date("l", strtotime($days_value));
-                        
-                        if(!in_array($holiDays, $weekends_ary)){
-                            $holidayAry[] = $days_value;
-                        } 
-                    } 
+                    $filteredArrayOfficeDay[] = $date;
+                }else{
+                    //array for count weekend
+                    $filteredArrayWeekend[] = $date;
                 }
             }
 
-            $applyAry = [];
-            $count_weekend = 0;
-
-            if($fromDate == $toDate){
-                $applyAry[] = $fromDate;
-            }
-            else{
-                $day = 86400;  
-                $format = 'Y-m-d';  
-                $sTime = strtotime($fromDate); 
-                $eTime = strtotime($toDate); 
-                $numDays = round(($eTime - $sTime) / $day) + 1;  
-                $days = array();  
-
-                for ($d = 0; $d < $numDays; $d++) {  
-                    $apply_days_value = date($format, ($sTime + ($d * $day)));
-                    $apply_holiDays = date("l", strtotime($apply_days_value));
-                    $applyAry[] = date($format, ($sTime + ($d * $day)));  
-                    
-                    if(in_array($apply_holiDays, $weekends_ary)){
-                        $count_weekend++;
-                    }
-                } 
+            foreach($allHolidayAry as $info){
+                if(strtotime($info) >= strtotime($fromDate) && strtotime($info) <= strtotime($toDate)){
+                    $holidayExistInRange[] = $info;
+                }
             }
 
-            $compare_apply_n_holiday = array_intersect($holidayAry, $applyAry);
-            
-            //holiday calculation finished
+            //find common days between weeked and holysays
+            $conflictDays = array_intersect($filteredArrayWeekend, $holidayExistInRange);
 
-            $data['holidays'] = count($compare_apply_n_holiday);
-            $data['weekend'] = $count_weekend;
+            $data['weekend'] = count($filteredArrayWeekend);
+            $data['holidays'] = count($holidayExistInRange) - count($conflictDays);
         }
 
         return $data;        
@@ -434,6 +449,7 @@ class LeaveController extends Controller
                     if($chk >= 0){
                         
                         $supervisor_id = User::find($emp_name)->supervisor_id;
+                        
 
                         $file_name = '';
                         if(request()->hasFile('file')){
@@ -450,22 +466,22 @@ class LeaveController extends Controller
                         }
                         
                         try{
-                            EmployeeLeave::create([
-                                'user_id' => $emp_name,
-                                'leave_type_id' => $emp_leave_type, 
-                                'employee_leave_from' => $from_date, 
-                                'employee_leave_to' => $to_date,
-                                'employee_leave_total_days' => $diff_days,
-                                'employee_leave_user_remarks' => $leave_reason,
-                                'employee_leave_half_or_full' => $leave_half_or_full,
-                                'employee_leave_contact_address' => $leave_contact_address,
-                                'employee_leave_contact_number' => $leave_contact_number,
-                                'employee_leave_passport_no' => $passport_no,
-                                'employee_leave_responsible_person' => $responsible_emp,
-                                'employee_leave_attachment' => $file_name,
-                                'employee_leave_supervisor' => $supervisor_id,
-                                'employee_leave_status' => 1,
-                            ]);
+                            $sav = new EmployeeLeave;
+                            $sav->user_id = $emp_name;
+                            $sav->leave_type_id = $emp_leave_type; 
+                            $sav->employee_leave_from = $from_date; 
+                            $sav->employee_leave_to = $to_date;
+                            $sav->employee_leave_total_days = $diff_days;
+                            $sav->employee_leave_user_remarks = $leave_reason;
+                            $sav->employee_leave_half_or_full = $leave_half_or_full;
+                            $sav->employee_leave_contact_address = $leave_contact_address;
+                            $sav->employee_leave_contact_number = $leave_contact_number;
+                            $sav->employee_leave_passport_no = $passport_no;
+                            $sav->employee_leave_responsible_person = $responsible_emp;
+                            $sav->employee_leave_attachment = $file_name;
+                            $sav->employee_leave_supervisor = $supervisor_id;
+                            $sav->employee_leave_status = 1;
+                            $sav->save();
                         
                             $data['title'] = 'success';
                             $data['message'] = 'data successfully added!';
@@ -626,7 +642,6 @@ class LeaveController extends Controller
         session()->put('global_leave_type_ary', $leave_type_ary);
 
         return $data;
-        // return response()->json($data);
     }
 
     public function details($emp_no=null){
