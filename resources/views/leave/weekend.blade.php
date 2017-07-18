@@ -13,9 +13,12 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <span class="panel-title">Weekends</span>
-                        
-                        <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" style="margin-top: 12px;">Add New Weekend</button>
-                   
+                        <?php 
+                          $chkUrl = \Request::segment(1);
+                        ?>
+                        @if(in_array($chkUrl."/add", session('userMenuShare')))
+                            <button type="button" class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target=".dataAdd" style="margin-top: 12px;">Add New Weekend</button>
+                        @endif
                     </div>
                     <div class="panel-body">
                         <span class="text-danger">
@@ -46,9 +49,11 @@
                                             {{-- <button type="button" @click="editData(info.id, index)" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target=".dataEdit">
                                                 <i class="fa fa-edit"></i>
                                             </button> --}}
-                                            <button type="button" v-if="info.status==0" @click="deleteData(info.id, index)" class="btn btn-sm btn-danger">
-                                                <i class="fa fa-trash-o"></i>
-                                            </button>
+                                            @if(in_array($chkUrl."/delete", session('userMenuShare')))
+                                                <button type="button" v-if="info.status==0" @click="deleteData(info.id, index)" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tbody>

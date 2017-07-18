@@ -167,8 +167,11 @@ new Vue({
                 $.each( this.userLeaveType, function( key, value ) {
                     if(emp_leave_type_js == value.id){
                       var chk_day = value.days - date_diff_js;
-                    
-                      if(chk_day < 0 && value.days != null){
+                      
+                      //value.days for undefined days
+                      //wher balance minus value.days >= 0
+
+                      if(chk_day < 0 && value.days != null && value.days >= 0){
                         $('#show_date_diff_msg').html("* You can only apply for "+value.days+" days or below "+value.days+" days leave.");
                       }
                       else{
@@ -240,8 +243,11 @@ new Vue({
                 $.each( this.userLeaveType, function( key, value ) {
                     if(emp_leave_type_js == value.id){
                       var chk_day = value.days - date_diff_js;
-                    
-                      if(chk_day < 0 && value.days != null){
+                      
+                      //value.days for undefined days
+                      //wher balance minus value.days >= 0
+
+                      if(chk_day < 0 && value.days != null && value.days >= 0){
                         $('#edit_show_date_diff_msg').html("* You can only apply for "+value.days+" days or below "+value.days+" days leave.");
                       }
                       else{
