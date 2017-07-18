@@ -6,7 +6,10 @@ use App\Console\Commands\ServiceCommand;
 use App\Console\Commands\SalaryIncrementCommand;
 use App\Console\Commands\AttendanceTimesheetCommand;
 use App\Console\Commands\ArchiveAttendanceTimesheetCommand;
+use App\Console\Commands\CalculateEarnLeave;
+use App\Console\Commands\MakeWeekendActive;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,7 +22,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ServiceCommand::class,
-        Commands\CalculateEarnLeave::class,
+        CalculateEarnLeave::class,
+        MakeWeekendActive::class,
         SalaryIncrementCommand::class,
         AttendanceTimesheetCommand::class,
         ArchiveAttendanceTimesheetCommand::class
@@ -33,14 +37,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // \Config::set('database.connections.mysql_hrms.strict',false);
+        // \Artisan::call("db:connect", ['database' => '1497516153_ALl_new_menu']);
+        // $schedule->command('attendance:timesheet')->cron('* * * * * *');
+        // $schedule->command('attendance:archive')->everyMinute();
+
         // $schedule->command('calculate:earnLeave')
         //          ->timezone('Asia/Dhaka')
         //          ->everyMinute();
-        
-        // \Config::set('database.connections.mysql_hrms.strict',false);
-        // \Artisan::call("db:connect", ['database' => '1489485338_afc_health']);
-        // $schedule->command('attendance:timesheet')->cron('* * * * * *');
-        // $schedule->command('attendance:archive')->everyMinute();
+
+        $schedule->command('active:weekend')
+                 ->timezone('Asia/Dhaka')
+                 ->everyMinute();
     }
 
     /**

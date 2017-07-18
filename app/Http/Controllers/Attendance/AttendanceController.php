@@ -489,15 +489,4 @@ class AttendanceController extends Controller
 
         return $report;
     }
-
-
-
-
-
-
-
-
-
-
-
 }
