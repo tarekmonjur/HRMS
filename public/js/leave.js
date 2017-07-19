@@ -43,6 +43,7 @@ new Vue({
     leave_contact_address: '',
     leave_contact_number: '',
     responsible_emp: '',
+    employee_leave_noc_required: '',
     passport_no: '',
     leave_half_or_full: 1,
     options: [],
@@ -69,6 +70,7 @@ new Vue({
     edit_leave_contact_address: '',
     edit_leave_contact_number: '',
     edit_responsible_emp: null,
+    edit_employee_leave_noc_required: '',
     edit_passport_no: '',
     edit_leave_half_or_full: '',
     demo_type: [],
@@ -432,6 +434,7 @@ new Vue({
           this.edit_leave_half_or_full =response.data.employee_leave_half_or_full;
           this.edit_leave_contact_address =response.data.employee_leave_contact_address;
           this.edit_leave_contact_number =response.data.employee_leave_contact_number;
+          this.edit_employee_leave_noc_required =response.data.employee_leave_noc_required;
           this.edit_passport_no =response.data.employee_leave_passport_no;
           this.edit_responsible_emp =response.data.employee_leave_responsible_person;
           this.emp_supervisor = response.data.employee_leave_supervisor;

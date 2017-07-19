@@ -35,9 +35,9 @@ class SetupMenuSeeder extends Seeder
 // (18, 0, 2, 'View', 'leave/index', 'Leave', 'fa fa-level-up', 1, NULL, NULL),
 // (19, 18, 2, 'Add', 'leave/add', 'Leave', 'fa fa-level-up', 1, NULL, NULL),
 // (20, 18, 2, 'Edit', 'leave/edit', 'Leave', 'fa fa-level-up', 1, NULL, NULL),
-// (21, 0, 2, 'View', 'myLeave/details', 'Personal Leave', 'fa fa-level-up', 1, NULL, NULL),
-// (22, 21, 2, 'Add', 'myLeave/add', 'Personal Leave', 'fa fa-level-up', 1, NULL, NULL),
-// (23, 21, 2, 'Edit', 'myLeave/edit', 'Personal Leave', 'fa fa-level-up', 1, NULL, NULL),
+// (21, 0, 2, 'View', 'myLeave/details', 'My Leave', 'fa fa-level-up', 1, NULL, NULL),
+// (22, 21, 2, 'Add', 'myLeave/add', 'My Leave', 'fa fa-level-up', 1, NULL, NULL),
+// (23, 21, 2, 'Edit', 'myLeave/edit', 'My Leave', 'fa fa-level-up', 1, NULL, NULL),
 
 // (24, 0, 3, 'Index', 'workshift/index', 'Work Shift', 'fa fa-level-up', 1, NULL, NULL),
 // (25, 24, 3, 'Add', 'workshift/add', 'Work Shift', 'fa fa-level-up', 1, NULL, NULL),
@@ -125,7 +125,9 @@ class SetupMenuSeeder extends Seeder
 // (104, 0, 6, 'View', 'settings/index', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 // (105, 104, 6, 'Add', 'settings/add', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 // (106, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
-// (107, 104, 6, 'Delete', 'settings/delete', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL);
+// (107, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
+
+// (108, 0, 4, 'View', 'payroll/salaries', 'Salaries', 'fa fa-level-up', 1, NULL, NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
