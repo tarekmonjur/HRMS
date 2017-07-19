@@ -7,6 +7,7 @@ new Vue({
     valid_after: '',
     //for edit
     hdn_id: '',
+    leave_type_with_out_pay: '',
     is_earn: '',
     sellable: '',
     max_sell_limit: '',
@@ -113,6 +114,7 @@ new Vue({
         }
 
         this.type_details = response.data.leave_type_details;
+        this.leave_type_with_out_pay = response.data.leave_type_with_out_pay;
         this.carry_to_next_year = response.data.leave_type_is_remain;
         this.include_holiday = response.data.leave_type_include_holiday;
         this.from_year = response.data.leave_type_active_from_year;
