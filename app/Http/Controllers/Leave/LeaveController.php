@@ -391,14 +391,12 @@ class LeaveController extends Controller
             'from_date' => 'required',
             'to_date' => 'required',
             'leave_reason' => 'required',
-            'leave_contact_address' => 'required',
             'leave_half_or_full' => 'required',
         ],[
             'emp_name.required' => 'Employee name is required.',
             'emp_leave_type.required' => 'Leave type is required.',
             'from_date.required' => 'Select date(from date) is required.',
             'to_date.required' => 'Select date(to date) is required.',
-            'leave_contact_address.required' => 'Contract address is required.',
             'leave_half_or_full.required' => 'Leave status required.',
         ]);
 
@@ -409,6 +407,7 @@ class LeaveController extends Controller
         $leave_reason = $request->leave_reason;
         $leave_contact_address = $request->leave_contact_address;
         $leave_contact_number = $request->leave_contact_number;
+        $employee_leave_noc_required = $request->employee_leave_noc_required;
         $passport_no = $request->passport_no;
         $responsible_emp = $request->responsible_emp;
         $leave_half_or_full = $request->leave_half_or_full;
@@ -443,74 +442,83 @@ class LeaveController extends Controller
 
         //half day full day end
 
-        if($date2Timestamp >= $date1Timestamp){
-            foreach($leave_type_ary as $info){
-                if($emp_leave_type == $info['id']){
-                    $chk = $info['days'] - $diff_days;
+        $chkPending = EmployeeLeave::where('user_id', $emp_name)->whereIn('employee_leave_status', [1, 2])->get();
 
-                    if(empty($info['days']) || $info['days'] < 0){
-                        //days are undefined
-                        //that means no limit
-                        $chk = 1;
-                    }
+        if(count($chkPending) > 0){
+            $data['title'] = 'error';
+            $data['message'] = "* Already one leave application is pending/forward.";
+        }
+        else{
+            if($date2Timestamp >= $date1Timestamp){
+                foreach($leave_type_ary as $info){
+                    if($emp_leave_type == $info['id']){
+                        $chk = $info['days'] - $diff_days;
 
-                    if($chk >= 0){
-                        
-                        $supervisor_id = User::find($emp_name)->supervisor_id;
-                        
-
-                        $file_name = '';
-                        if(request()->hasFile('file')){
-            
-                            $file = request()->file('file');
-                            $exten = $file->extension();
-                            $temp_name = date("Ymd_His");
-                            $folder = "/leave_doc/$emp_name";
-
-                            //storage/app/public
-                            $file_name = $temp_name.".".$exten;
-
-                            request()->file('file')->storeAs($folder, $file_name);
+                        if(empty($info['days']) || $info['days'] < 0){
+                            //days are undefined
+                            //that means no limit
+                            $chk = 1;
                         }
-                        
-                        try{
-                            $sav = new EmployeeLeave;
-                            $sav->user_id = $emp_name;
-                            $sav->leave_type_id = $emp_leave_type; 
-                            $sav->employee_leave_from = $from_date; 
-                            $sav->employee_leave_to = $to_date;
-                            $sav->employee_leave_total_days = $diff_days;
-                            $sav->employee_leave_user_remarks = $leave_reason;
-                            $sav->employee_leave_half_or_full = $leave_half_or_full;
-                            $sav->employee_leave_contact_address = $leave_contact_address;
-                            $sav->employee_leave_contact_number = $leave_contact_number;
-                            $sav->employee_leave_passport_no = $passport_no;
-                            $sav->employee_leave_responsible_person = $responsible_emp;
-                            $sav->employee_leave_attachment = $file_name;
-                            $sav->employee_leave_supervisor = $supervisor_id;
-                            $sav->employee_leave_status = 1;
-                            $sav->save();
-                        
-                            $data['title'] = 'success';
-                            $data['message'] = 'data successfully added!';
 
-                        }catch (\Exception $e) {
+                        if($chk >= 0){
                             
-                           $data['title'] = 'error';
-                           $data['message'] = 'data not added!';
+                            $supervisor_id = User::find($emp_name)->supervisor_id;
+                            
+                            $file_name = '';
+                            if(request()->hasFile('file')){
+                
+                                $file = request()->file('file');
+                                $exten = $file->extension();
+                                $temp_name = date("Ymd_His");
+                                $folder = "/leave_doc/$emp_name";
+
+                                //storage/app/public
+                                $file_name = $temp_name.".".$exten;
+
+                                request()->file('file')->storeAs($folder, $file_name);
+                            }
+                            
+                            try{
+                                $sav = new EmployeeLeave;
+                                $sav->user_id = $emp_name;
+                                $sav->leave_type_id = $emp_leave_type; 
+                                $sav->employee_leave_from = $from_date; 
+                                $sav->employee_leave_to = $to_date;
+                                $sav->employee_leave_total_days = $diff_days;
+                                $sav->employee_leave_user_remarks = $leave_reason;
+                                $sav->employee_leave_half_or_full = $leave_half_or_full;
+                                $sav->employee_leave_contact_address = $leave_contact_address;
+                                $sav->employee_leave_contact_number = $leave_contact_number;
+                                $sav->employee_leave_noc_required = $employee_leave_noc_required;
+                                $sav->employee_leave_passport_no = $passport_no;
+                                $sav->employee_leave_responsible_person = $responsible_emp;
+                                $sav->employee_leave_attachment = $file_name;
+                                $sav->employee_leave_supervisor = $supervisor_id;
+                                $sav->employee_leave_status = 1;
+                                $sav->save();
+                            
+                                $data['title'] = 'success';
+                                $data['message'] = 'data successfully added!';
+
+                            }catch (\Exception $e) {
+                                
+                               $data['title'] = 'error';
+                               $data['message'] = 'data not added!';
+                            }
                         }
-                    }
-                    else{
-                        $data['title'] = 'error';
-                        $data['message'] = "* You can only apply for ".$info['days']." days or below ".$info['days']." days leave.";
+                        else{
+                            $data['title'] = 'error';
+                            $data['message'] = "* You can only apply for ".$info['days']." days or below ".$info['days']." days leave.";
+                        }
                     }
                 }
             }
+            else{
+                $data['title'] = 'error';
+                $data['message'] = "* Invalid date entry.";
+            }
         }
-        else{
-            $data['title'] = 'error';
-            $data['message'] = "* Invalid date entry.";
-        }
+            
 
         return $data;
     }
@@ -528,6 +536,7 @@ class LeaveController extends Controller
         $data['employee_leave_half_or_full'] = $value->employee_leave_half_or_full;
         $data['employee_leave_contact_address'] = $value->employee_leave_contact_address;
         $data['employee_leave_contact_number'] = $value->employee_leave_contact_number;
+        $data['employee_leave_noc_required'] = $value->employee_leave_noc_required;
         $data['employee_leave_passport_no'] = $value->employee_leave_passport_no;
         $data['employee_leave_responsible_person'] = $value->employee_leave_responsible_person;
         $data['employee_leave_attachment'] = $value->employee_leave_attachment;
@@ -684,7 +693,6 @@ class LeaveController extends Controller
             'edit_from_date' => 'required',
             'edit_to_date' => 'required',
             'edit_leave_reason' => 'required',
-            'edit_leave_contact_address' => 'required',
             'want_to_forward' => 'nullable',
             'edit_forward_to' => 'required_if:want_to_forward,1',
             'edit_leave_half_or_full' => 'required',
@@ -693,7 +701,6 @@ class LeaveController extends Controller
             'edit_from_date.required' => 'Select date(from date) is required.',
             'edit_to_date.required' => 'Select date(to date) is required.',
             'edit_leave_reason.required' => 'Leave reason field is required.',
-            'edit_leave_contact_address.required' => 'Contract address is required.',
             'edit_leave_half_or_full.required' => 'Leave status required.',
             'edit_forward_to.required_if' => 'Select employee for forward.',
         ]);
@@ -706,6 +713,7 @@ class LeaveController extends Controller
         $leave_reason = $request->edit_leave_reason;
         $leave_contact_address = $request->edit_leave_contact_address;
         $leave_contact_number = $request->edit_leave_contact_number;
+        $employee_leave_noc_required = $request->edit_employee_leave_noc_required;
         $passport_no = $request->edit_passport_no;
         $responsible_emp = $request->edit_responsible_emp;
         $leave_half_or_full = $request->edit_leave_half_or_full;
@@ -794,6 +802,7 @@ class LeaveController extends Controller
                                 'employee_leave_half_or_full' => $leave_half_or_full,
                                 'employee_leave_contact_address' => $leave_contact_address,
                                 'employee_leave_contact_number' => $leave_contact_number,
+                                'employee_leave_noc_required' => $employee_leave_noc_required,
                                 'employee_leave_passport_no' => $passport_no,
                                 'employee_leave_responsible_person' => $responsible_emp,
                                 'employee_leave_attachment' => $file_name,

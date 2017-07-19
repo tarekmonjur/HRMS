@@ -20,6 +20,7 @@ class CreateLeaveTypesTable extends Migration
             $table->string('leave_type_effective_for')->nullable()->comment='employee type ids serialized';
             $table->tinyInteger('leave_type_valid_after_months')->nullable();
             $table->text('leave_type_details')->nullable();
+            $table->tinyInteger('leave_type_with_out_pay')->default(0)->comment='without pay=1 .. normal/with pay = 0';
             $table->boolean('leave_type_is_earn_leave')->default(0)->comment='earn leave=1 .. not earn leave = 0';
             $table->boolean('leave_type_is_sellable')->default(0)->comment='earn sellable=1 .. not sellable = 0';
             $table->integer('leave_type_max_sell_limit')->nullable();

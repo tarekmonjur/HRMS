@@ -63,8 +63,11 @@
                                                         $emp_no = $info->userName->employee_no;
                                                     ?>
                                                     <a target="__blank" href="{{url("leave/details/$emp_no")}}">
-                                                    {{$info->userName->first_name." ".$info->userName->last_name." - ".$info->userName->designation->designation_name}}
+                                                    {{$info->userName->first_name." ".$info->userName->last_name." (".$info->userName->employee_no.") - ".$info->userName->designation->designation_name}}
                                                     </a>
+                                                    @if($info->employee_leave_noc_required == 1)
+                                                        <span class="text-warning"> (NOC required)</span>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     {{$info->leaveType->leave_type_name}}
@@ -177,7 +180,7 @@
                                     <option value="">Select Employee Name For Leave</option>
                                     <option v-for="(info,index) in users" 
                                         :value="info.id" 
-                                        v-text="info.first_name+' '+info.last_name+' - '+info.designation.designation_name"
+                                        v-text="info.first_name+' '+info.last_name+' ('+info.employee_no+') - '+info.designation.designation_name"
                                     ></option>
                                 </select2>
                             </div>
@@ -248,7 +251,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="" class="col-md-3 control-label">Contact Address <span class="text-danger">*</span></label>
+                            <label for="" class="col-md-3 control-label">Contact Address </label>
                             <div class="col-md-9">
                                 <textarea name="leave_contact_address" v-model="leave_contact_address" class="form-control input-sm" placeholder="Leave time contact address."></textarea>
                             </div>
@@ -258,6 +261,12 @@
                             <label for="" class="col-md-3 control-label">Contact Number</label>
                             <div class="col-md-9">
                                 <input name="leave_contact_number" v-model="leave_contact_number" class="form-control input-sm" type="text" placeholder="Leave contract number.">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                <input type="checkbox" name="employee_leave_noc_required" v-model="employee_leave_noc_required" value="1">  NOC required.
                             </div>
                         </div>
 
@@ -284,7 +293,7 @@
                                     <option value="">Select Responsible Employee</option>
                                     <option v-for="(info,index) in options" 
                                         :value="info.id" 
-                                        v-text="info.first_name+' '+info.last_name+' - '+info.designation.designation_name"
+                                        v-text="info.first_name+' '+info.last_name+' ('+info.employee_no+') - '+info.designation.designation_name"
                                     ></option>
                                 </select2>
                             </div>
@@ -474,7 +483,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="" class="col-md-3 control-label">Contact Address <span class="text-danger">*</span></label>
+                            <label for="" class="col-md-3 control-label">Contact Address </label>
                             <div class="col-md-9">
                                 <textarea name="edit_leave_contact_address" v-model="edit_leave_contact_address" class="form-control input-sm" placeholder="Leave time contact address."></textarea>
                             </div>
@@ -484,6 +493,12 @@
                             <label for="" class="col-md-3 control-label">Contact Number</label>
                             <div class="col-md-9">
                                 <input name="edit_leave_contact_number" v-model="edit_leave_contact_number" class="form-control input-sm" type="text" placeholder="Leave contract number.">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                <input type="checkbox" name="edit_employee_leave_noc_required" v-model="edit_employee_leave_noc_required" value="1">  NOC required.
                             </div>
                         </div>
 
@@ -501,7 +516,7 @@
                                     <option value="">Select Responsible Employee</option>
                                     <option v-for="(info,index) in options" v-if="edit_emp_name != info.id" 
                                         :value="info.id"
-                                        v-text="info.first_name+' '+info.last_name+' - '+info.designation.designation_name"
+                                        v-text="info.first_name+' '+info.last_name+' ('+info.employee_no+') - '+info.designation.designation_name"
                                     ></option>
                                 </select>
                             </div>
@@ -522,7 +537,7 @@
                                     <option value="">Select Forward to Employee</option>
                                     <option v-for="(info,index) in options" v-if="edit_emp_name != info.id" 
                                         :value="info.id"
-                                        v-text="info.first_name+' '+info.last_name+' - '+info.designation.designation_name"
+                                        v-text="info.first_name+' '+info.last_name+' ('+info.employee_no+') - '+info.designation.designation_name"
                                     ></option>
                                 </select>
                             </div>
