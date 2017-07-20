@@ -157,7 +157,7 @@
 
                         <div class="col-md-12" v-if="bonus_amount_type == 'percent'">
                           <div class="form-group" :class="{'has-error': errors.bonus_type_amount}">
-                              <label class="control-label">Amount Calculate Percentage of Basic Salary : <span class="text-danger">*</span></label>
+                              <label class="control-label">Amount Calculate Percentage of Gross Salary : <span class="text-danger">*</span></label>
                               <input type="text" name="bonus_type_amount" class="form-control input-sm" placeholder="Enter Percentage">
                               <span v-if="errors.bonus_type_amount" class="help-block" v-text="errors.bonus_type_amount[0]"></span>
                           </div>
@@ -253,7 +253,7 @@
 
                         <div class="col-md-12" v-if="bonus_amount_type == 'percent'">
                           <div class="form-group" :class="{'has-error': errors.bonus_type_amount}">
-                              <label class="control-label">Amount Calculate Percentage of Basic Salary : <span class="text-danger">*</span></label>
+                              <label class="control-label">Amount Calculate Percentage of Gross Salary : <span class="text-danger">*</span></label>
                               <input type="text" name="bonus_type_amount" class="form-control input-sm" v-model="bonus_type_amount = bonus.bonus_type_amount" placeholder="Enter Percentage">
                               <span v-if="errors.bonus_type_amount" class="help-block" v-text="errors.bonus_type_amount[0]"></span>
                           </div>

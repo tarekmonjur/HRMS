@@ -20,10 +20,12 @@ class CreateLoansTable extends Migration
             $table->enum('loan_aganist',['PF','salary']);
             $table->date('loan_start_date');
             $table->date('loan_end_date');
-            $table->decimal('loan_duration',5,2);
+            $table->integer('loan_duration')->default(0)->comment='duration is months';
+            $table->integer('loan_complete_duration')->default(0)->comment='total completed months.';
             $table->decimal('loan_amount',16,2);
             $table->decimal('loan_deduct_amount');
             $table->boolean('loan_status')->default(0);
+            $table->text('loan_deduction_month')->nullable();
             $table->text('loan_remarks')->nullable();
             $table->integer('approved_by')->default(0);
             $table->integer('created_by')->default(0);

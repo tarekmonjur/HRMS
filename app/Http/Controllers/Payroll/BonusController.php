@@ -7,6 +7,8 @@ use App\MOdels\User;
 
 use App\Http\Requests\BonusRequest;
 
+use App\Services\CommonService;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,8 @@ use App\Http\Controllers\Controller;
 
 class BonusController extends Controller
 {
+    use CommonService;
+
     protected $auth;
 
     public function __construct(Auth $auth){
@@ -55,7 +59,9 @@ class BonusController extends Controller
             $saveData = [];
             if($request->bonus_amount_type == 'percent'){
                 foreach($users as $info){
-                    $bonus_amount = ($info->basic_salary * $request->bonus_type_amount)/100;
+                    $gross_salary = $this->calculateGrossSalary($info->id, $request->bonus_effective_date);
+                    // dd($gross_salary);
+                    $bonus_amount = ($gross_salary * $request->bonus_type_amount)/100;
                     $saveData[] = [
                         'user_id' => $info->id,
                         'bonus_type_id' => $request->bonus_type_id,
@@ -170,7 +176,9 @@ class BonusController extends Controller
                 $request->offsetSet('updated_by',$this->auth->id);
                 if($request->bonus_amount_type == 'percent'){
                     $user = User::find($request->user_id);
-                    $bonus_amount = ($user->basic_salary * $request->bonus_type_amount)/100;
+                    $gross_salary = $this->calculateGrossSalary($user->id, $request->bonus_effective_date);
+                    // dd($gross_salary);
+                    $bonus_amount = ($gross_salary * $request->bonus_type_amount)/100;
                     $request->offsetSet('bonus_amount', $bonus_amount);
                 }elseif($request->bonus_amount_type == 'fixed'){
                     $request->offsetSet('bonus_type_amount',Null);
