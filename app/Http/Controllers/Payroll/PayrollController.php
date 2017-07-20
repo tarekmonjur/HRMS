@@ -8,6 +8,8 @@ use App\Models\EmployeeSalary;
 use App\Models\AttendanceTimesheet;
 
 use App\Services\CommonService;
+use App\Jobs\DebitProvidentFundToSalaryGenerate;
+use App\Jobs\LoanInstallmentUpdateToSalaryGenerate;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -55,21 +57,28 @@ class PayrollController extends Controller
     public function addSalary(Request $request)
     {
     	try{
-
 	    	$salaries = [
 		    	'user_id' => $request->user_id,
 		    	'basic_salary' => floatval(str_replace(',','',$request->basic_salary)),
 		    	'salary_in_cash' => floatval(str_replace(',','',$request->salary_in_cash)),
 		    	'salary_month' => $request->salary_month,
 		    	'salary_days' => $request->payment_days,
-		    	'salary_pay_type' => $request->salary_pay_type,
-		    	'overtime_hour' => 0,
-		    	'overtime_amount' => 0.00,
-		    	'attendance_info' => serialize($request->attendances),
+                'salary_pay_type' => $request->salary_pay_type,
+		    	'work_hour' => $request->work_hour,
+		    	'overtime_hour' => $request->overtime_hour,
+		    	'overtime_amount' => $request->overtime_amount,
+                'attendance_info' => serialize($request->attendances),
+                'allowance_info' => serialize($request->allowances),
+		    	'deduction_info' => serialize($request->deductions),
 		    	'total_allowance' => floatval(str_replace(',','',$request->total_allowance)),
 		    	'total_deduction' => floatval(str_replace(',','',$request->total_deduction)),
-		    	'total_salary' => floatval(str_replace(',','',$request->total_salary)),
-		    	'gross_salary' => floatval(str_replace(',','',$request->gross_salary)),
+                'perhour_salary' => floatval(str_replace(',','',$request->perhour_salary)),
+                'perday_salary' => floatval(str_replace(',','',$request->perday_salary)),
+                'salary' => floatval(str_replace(',','',$request->salary)),
+                'gross_salary' => floatval(str_replace(',','',$request->gross_salary)),
+		    	'net_salary' => floatval(str_replace(',','',$request->net_salary)),
+                'total_salary' => floatval(str_replace(',','',$request->total_salary)),
+                'remarks' => $request->remarks
 	    	];
 
     		// dd($salaries);
@@ -110,6 +119,9 @@ class PayrollController extends Controller
 			    		->where('salary_pay_type', $request->salary_pay_type)
 			    		->update($salaries);
 	    		}
+
+                dispatch(new DebitProvidentFundToSalaryGenerate($salaries));
+                dispatch(new LoanInstallmentUpdateToSalaryGenerate($salaries));
 	    	}
 	    	elseif($request->salary_pay_type == 'partial')
 	    	{
@@ -154,6 +166,7 @@ class PayrollController extends Controller
 	    	}
 
 	    	DB::commit();
+
             $data['status'] = 'success';
             $data['statusType'] = 'OK';
             $data['code'] = 200;
@@ -296,6 +309,61 @@ class PayrollController extends Controller
     					];
     				}
     			}
+
+                // add bonus to allownace
+                if(count($user->bonus) > 0)
+                {
+                    foreach($user->bonus as $bonus)
+                    {
+                        $bonus_amount = $bonus->bonus_amount;
+                        $total_allowance = $total_allowance + $bonus_amount;
+
+                        $allowances[] = [
+                            'name' => $bonus->bonusType->bonus_type_name,
+                            'amount_type' => $bonus->bonus_amount_type,
+                            'percent' => $bonus->bonus_type_amount,
+                            'amount' => $bonus_amount,
+                            'effective_date' => $bonus->bonus_effective_date,
+                        ];
+                    }
+                    // dd($user->bonus);
+                }
+
+                // add provident fund to deduction
+                if(count($user->providentFund) > 0)
+                {
+                    foreach($user->providentFund as $providentFund)
+                    {
+                        $provident_fund_amount = (($basic_salary + $salary_in_cash) * $providentFund->pf_percent_amount)/100;
+                        $total_deduction = $total_deduction + $provident_fund_amount;
+
+                        $deductions[] = [
+                            'name' => 'Provident Fund',
+                            'amount_type' => 'percent',
+                            'percent' => $providentFund->pf_percent_amount,
+                            'amount' => $provident_fund_amount,
+                            'effective_date' => $providentFund->pf_effective_date,
+                        ];
+                    }
+                    // dd($user->providentFund);
+                }
+
+                // add loan to deduction
+                if(count($user->loan) > 0)
+                {
+                    foreach($user->loan as $loan)
+                    {
+                        $total_deduction = $total_deduction + $loan->loan_deduct_amount;
+                        $deductions[] = [
+                            'name' => 'loan',
+                            'amount_type' => 'fixed',
+                            'percent' => 0.00,
+                            'amount' => $loan->loan_deduct_amount,
+                            'effective_date' => '',
+                        ];
+                    }
+                }
+                    // dd($user->loan);
     		}
     		elseif($salary_type == 'day')
     		{
@@ -313,8 +381,9 @@ class PayrollController extends Controller
 
 			$salary = $perday_salary * $payment_days;
 
-			$total_salary = ($salary+$total_allowance) - $total_deduction;
-			$gross_salary = $total_salary;
+			$gross_salary = $salary + $total_allowance;
+            $net_salary = $salary - $total_deduction;
+            $total_salary = ($salary+$total_allowance) - $total_deduction;
     		
     		$salary_reports[] = (object)[
     			'user_id'=> $user->id,
@@ -329,6 +398,8 @@ class PayrollController extends Controller
     			'days' => $days,
     			'salary_pay_type' => $salary_pay_type,
     			'payment_days' => $payment_days,
+                'overtime_hour' => 0,
+                'overtime_amount' => 0.00,
     			'attendances' => $attendances,
     			'allowances'=> $allowances,
     			'total_allowance' => $total_allowance,
@@ -336,11 +407,14 @@ class PayrollController extends Controller
     			'total_deduction' => $total_deduction,
     			'work_hour' => $work_hour,
     			'total_work_hour' => $total_work_hour,
-    			'perhour_salary' => number_format($per_hour_salary, 2),
-    			'perday_salary' => number_format($perday_salary, 2),
-    			'salary' => number_format($salary, 2),
-    			'total_salary' => number_format($total_salary, 2),
-    			'gross_salary' => number_format($gross_salary, 2)
+                // 'perhour_salary' => number_format($per_hour_salary, 2),
+    			'perhour_salary' => round($per_hour_salary),
+    			'perday_salary' => round($perday_salary),
+    			'salary' => round($salary),
+                'gross_salary' => round($gross_salary),
+    			'net_salary' => round($net_salary),
+                'total_salary' => round($total_salary),
+                'remarks' => ''
     		];
     	}
     	// dd($salary_reports);
@@ -384,33 +458,31 @@ class PayrollController extends Controller
     	if($salary_type == 'month'){
     		$days = $month_days;
 
-			$userInfo = User::with(['employeeType','attendanceTimesheet'=>function($q)use($start_date, $end_date){
+			$userInfo = User::with(['employeeType',
+                'attendanceTimesheet'=>function($q)use($start_date, $end_date){
 					$q->whereBetween('date', [$start_date, $end_date]);
-				},'providentFund'=>function($q)use($start_date, $end_date){
+				},
+                'bonus'=>function($q)use($start_date,$end_date){
+                    $q->where('approved_by','!=',0)
+                        ->whereBetween('bonus_effective_date',[$start_date,$end_date]);
+                },'bonus.bonusType',
+                'providentFund'=>function($q)use($start_date, $end_date){
 					$q->where('pf_status',1)->where('approved_by','!=',0)
 						->whereBetween('pf_effective_date',[$start_date,$end_date]);
-				},'loan'=>function($q)use($start_date, $end_date){
+				},
+                'loan'=>function($q)use($start_date, $end_date){
 					$q->where('loan_status',1)
 						->where('approved_by','!=',0)
-						->where('loan_start_date','<=',$start_date)
-						->where('loan_end_date','=>',$end_date);
+                        ->where('loan_duration','>=','loan_complete_duration');
+						// ->where('loan_start_date','<=',$end_date)
+						// ->where('loan_end_date','=>',$end_date);
 				}])
 				->whereIn('id', $user_ids)->get();
     	}
     	elseif($salary_type == 'day')
     	{
     		$days = $salary_day;
-
-			$userInfo = User::with(['providentFund'=>function($q)use($start_date, $end_date){
-					$q->where('pf_status',1)->where('approved_by','!=',0)
-						->whereBetween('pf_effective_date',[$start_date,$end_date]);
-				},'loan'=>function($q)use($start_date, $end_date){
-					$q->where('loan_status',1)
-						->where('approved_by','!=',0)
-						->where('loan_start_date','<=',$start_date)
-						->where('loan_end_date','=>',$end_date);
-				}])
-				->whereIn('id', $user_ids)->get();
+			$userInfo = User::whereIn('id', $user_ids)->get();
     	}
 
     	$allowance_and_deduction =  EmployeeSalary::with('basicSalaryInfo')

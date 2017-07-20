@@ -79,29 +79,9 @@
                   <span v-if="errors.salary_month" class="help-block" v-text="errors.salary_month[0]"></span>
                 </div>
               </div>
-
-              <div class="col-md-2">
-                <div class="form-group" :class="{'has-error':errors.salary_type}">
-                  <label class="control-label">Salary Type : <span class="text-danger">*</span></label>
-                  <select class="form-control select-sm input-sm" name="salary_type" v-model="salary_type">
-                    <option value="month">Month Wise</option>
-                    <option value="day">Day Wise</option>
-                  </select>
-                  <span v-if="errors.salary_type" class="help-block" v-text="errors.salary_type[0]"></span>
-                </div>
-              </div>
-
-              <div class="col-md-2" v-if="salary_type == 'day'">
-                <div class="form-group" :class="{'has-error':errors.salary_day}">
-                  <label class="control-label">Salary Day : <span class="text-danger">*</span></label>
-                  <input type="text" name="salary_day" class="form-control input-sm" placeholder="Days..">
-                  <span v-if="errors.salary_day" class="help-block" v-text="errors.salary_day[0]"></span>
-                </div>
-              </div>
-
               <div class="col-md-2" style="padding-top:22px!important">
                 <div class="form-group">
-                  <button type="submit" class="form-control input-sm btn btn-sm btn-gradient btn-dark">Generate Salary</button>
+                  <button type="submit" class="form-control input-sm btn btn-sm btn-gradient btn-dark">Show Salaries</button>
                 </div>
               </div>
             </div>
@@ -117,7 +97,7 @@
       <div class="panel">
         <div class="panel-heading">
           <span class="panel-title"><i class="fa fa-money"></i></span>
-          <strong>Generate Salary Sheet </strong>
+          <strong>Salary Sheet </strong>
         </div>
 
         <div class="panel-body pn">
@@ -144,8 +124,6 @@
                     <span v-text="payroll.full_name"></span><br>
                     <span v-text="payroll.employee_no"></span>
                   </a>
-                  <br>
-                  <span v-text="payroll.employee_type"></span>
                 </td>
 
                 <td v-if="payroll.attendances !=''" >
@@ -157,12 +135,7 @@
                   late : <span class="text-warning" v-text="payroll.attendances.attendance_late"></span> days<br>
                 </td>
                 <td v-else class="text-center">-----</td>
-
-                <td>
-                  <span v-text="payroll.salary_month"></span><br>
-                  Days : <span v-text="payroll.days"></span><br>
-                  Salary Pay : <span v-text="payroll.payment_days"></span> days
-                </td>
+                <td v-text="payroll.salary_month"></td>
 
                 <td v-if="payroll.allowances !=''">
                   <table class="table table-bordered text-center" style="font-size: 10px!important;">
@@ -223,7 +196,7 @@
                   Salary in Cash : <span v-text="payroll.salary_in_cash"></span><br>
                   Per day Salary : <span v-text="payroll.perday_salary"></span><br>
                   Per hour Salary : <span v-text="payroll.perday_salary+' / '+payroll.work_hour"></span> = <span v-text="payroll.perhour_salary"></span><br>
-                  Salary : <span v-text="payroll.perday_salary+' x '+payroll.payment_days"></span> = <span v-text="payroll.salary"></span><br>
+                  Salary : <span v-text="payroll.perday_salary+' x '+payroll.salary_days"></span> = <span v-text="payroll.salary"></span><br>
                   Gross Salary : <span v-text="payroll.gross_salary"></span><br>
                   Net Salary : <span v-text="payroll.net_salary"></span><br>
                   Over Time Hour : <span v-text="payroll.overtime_hour"></span><br>
@@ -251,123 +224,12 @@
     </div>
   </div>
 
-  <div id="payroll_modal" class="popup-basic mfp-with-anim mfp-hide">
-    <div class="panel">
-        <div class="panel-heading" v-if="payRoll">
-            <span class="panel-title">
-                <i class="fa fa-rocket"></i>Edit Salary
-            </span>
-            <a :href="'/employee/view/'+payRoll.employee_no" target="_blank">
-              <span v-text="payRoll.full_name"></span> 
-              ( <span v-text="payRoll.employee_no"></span> )
-            </a>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-
-                  <form class="form-horizontal" v-if="payRoll" id="payroll_modal_form" method="post" v-on:submit.prevent="updateSalary">
-
-                      <div class="form-group">
-                        <label class="control-label col-md-4">Par Day Salary:</label>
-                        <div class="col-md-8">
-                          <input type="text" v-model="payRoll.perday_salary" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-4">Salary Pay Days:</label>
-                        <div class="col-md-8">
-                          <input type="text" v-model="payRoll.payment_days" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-4">Work Hour:</label>
-                        <div class="col-md-8">
-                          <input type="text" v-model="payRoll.work_hour" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-4">Par Hour Salary:</label>
-                        <div class="col-md-8">
-                          <input type="text" v-model="payRoll.perhour_salary" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                          <label class="control-label col-md-4">Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.salary" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                          <label class="control-label col-md-4">Gross Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.gross_salary" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                          <label class="control-label col-md-4">Net Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.net_salary" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                          <label class="control-label col-md-4">Over Time Hour:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.overtime_hour" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                          <label class="control-label col-md-4">Over Time Amount:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.overtime_amount" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                          <label class="control-label col-md-4">Total Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.total_salary" v-on:keyup="updateSalary" class="form-control input-sm">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                          <label class="control-label col-md-4">Salary Remarks:</label>
-                          <div class="col-md-8">
-                            <textarea type="text" class="form-control input-sm" v-model="payRoll.remarks" placeholder="Remarks"></textarea>
-                        </div>
-                      </div>
-
-                      <hr class="short alt">
-
-<!--                       <div class="section row mbn">
-                          <div class="col-sm-6 pull-right">
-                              <p class="text-left">
-                                  <button type="submit" name="edit_salary" class="btn btn-dark btn-gradient dark btn-block"><span class="glyphicons glyphicons-ok_2"></span> &nbsp; Update Salary
-                                  </button>
-                              </p>
-                          </div>
-                      </div> -->
-                  </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 </section>
 
 
 @section('script')
 
-<script type="text/javascript" src="{{asset('js/payroll.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/payroll_report.js')}}"></script>
 
 @endsection
 

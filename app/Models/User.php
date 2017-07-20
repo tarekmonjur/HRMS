@@ -246,6 +246,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\ProvidentFund');
     }
 
+
+    public function bonus(){
+        return $this->hasMany('App\Models\Bonus');
+    }
+
     /************* end relations ************/
 
 
