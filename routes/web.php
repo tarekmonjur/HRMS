@@ -349,6 +349,8 @@ Route::group(['prefix' => 'payroll', 'namespace' => 'Payroll'],function (){
     Route::get('/index/{id1?}/{id2?}/{id3?}','PayrollController@index');
     Route::post('/index','PayrollController@index');
     Route::post('/add','PayrollController@addSalary');
+    Route::get('/salaries','ReportController@index');
+    Route::post('/salaries','ReportController@salaries');
 });
 
 /******************** .......End HRMS PayRoll Module Routes........ **************/

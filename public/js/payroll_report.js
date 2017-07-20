@@ -182,7 +182,7 @@ var work = new Vue({
         this.loadinShow('#payroll');
         let formData = new FormData(e.target);
 
-        axios.post('/payroll/index', formData).then(response => {
+        axios.post('/payroll/salaries', formData).then(response => {
           // console.log(response.data);
           this.payRolls = response.data;
           this.errors = [];
@@ -199,50 +199,6 @@ var work = new Vue({
           }
         });
       },
-
-
-      editSalary(user_id, index, model_id){
-        this.loadinShow(model_id);
-        this.index = index;
-        this.payRoll = this.payRolls[index];
-        // console.log(this.payRoll.full_name);
-        this.modal_open(model_id);
-        this.loadinHide(model_id);
-      },
-
-
-      updateSalary(){
-        this.payRoll.salary = Math.round(this.payRoll.perday_salary * this.payRoll.payment_days);
-        this.payRoll.perhour_salary = Math.round(this.payRoll.perday_salary / this.payRoll.work_hour);
-        this.payRoll.gross_salary = Math.round(this.payRoll.salary + this.payRoll.total_allowance);
-        this.payRoll.net_salary = Math.round(this.payRoll.salary - this.payRoll.total_deduction);
-        this.payRoll.overtime_amount = Math.round(this.payRoll.perhour_salary * this.payRoll.overtime_hour);
-        this.payRoll.total_salary = Math.round((this.payRoll.salary + this.payRoll.overtime_amount + this.payRoll.total_allowance) - this.payRoll.total_deduction);
-      },
-
-
-      comfirmSalary(user_id, index){
-        this.loadinShow('#payroll');
-        let formData = this.payRolls[index];
-
-        axios.post('/payroll/add', formData).then(response => {
-          // console.log(response.data);
-          // this.payRolls = response.data;
-          this.errors = [];
-          this.loadinHide('#payroll');
-          this.showMessage(response.data);
-
-        }).catch(error => {
-          // console.log(error);
-          this.loadinHide('#payroll');
-          if(error.response.status == 500 || error.response.data.status == 'danger'){
-              var error = error.response.data;
-              this.showMessage(error);
-          }else if(error.response.status == 422){
-              this.errors = error.response.data;
-          }
-        });
-      }
 
 
     }

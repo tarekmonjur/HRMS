@@ -35,7 +35,7 @@
                 <th>Loan Type</th>
                 <th>Loan Aganist</th>
                 <th>Start/End Date</th>
-                <th>Duration</th>
+                <th>Installment Info</th>
                 <th>Deduct Amount</th>
                 <th>Loan Amount</th>
                 <th>Status</th>
@@ -52,7 +52,7 @@
                 <th>Loan Type</th>
                 <th>Loan Aganist</th>
                 <th>Start/End Date</th>
-                <th>Duration</th>
+                <th>Installment Info</th>
                 <th>Deduct Amount</th>
                 <th>Loan Amount</th>
                 <th>Status</th>
@@ -72,7 +72,10 @@
                      <span v-text="loan.loan_start_date"></span><br>
                      <span v-text="loan.loan_end_date"></span>
                    </td>
-                   <td v-text="loan.loan_duration"></td>
+                   <td>
+                     Installment : <span v-text="loan.loan_duration"></span> months<br>
+                     Remaning : <span v-text="loan.loan_duration - loan.loan_complete_duration"></span> months
+                   </td>
                    <td v-text="loan.loan_deduct_amount"></td>
                    <td v-text="loan.loan_amount"></td>
                    <td>

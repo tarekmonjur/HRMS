@@ -457,6 +457,48 @@ trait CommonService
     }
 
 
+    public function calculateGrossSalary($user_id, $effective_date)
+    {
+        $user = User::with(['salaries'=>function($q)use($user_id, $effective_date){
+            $q->where('user_id', $user_id)
+                ->where('salary_effective_date','<=',$effective_date);
+            },'salaries.basicSalaryInfo'])
+            ->find($user_id);
+
+        if(count($user) <= 0){
+            return 0.00;
+        }elseif(count($user->salaries) <= 0){
+            $gross_salary = $user->basic_salary + $user->salary_in_cache;
+            return $gross_salary;
+        }
+
+        $allowance_deduction = $user->salaries;
+        $basic_salary = $user->basic_salary;
+        $salary_in_cash = $user->salary_in_cache;
+        $total_allowance = 0;
+
+        foreach($allowance_deduction as $info)
+        {
+            $percent = 0;
+            $salary_amount = $info->salary_amount;
+
+            if($info->basicSalaryInfo->salary_info_type == 'allowance')
+            {
+                if($info->salary_amount_type == 'fixed'){
+                    $total_allowance = $total_allowance + $salary_amount;
+                }elseif($info->salary_amount_type == 'percent'){
+                    $percent = $salary_amount;
+                    $salary_amount = (($basic_salary + $salary_in_cash) * $salary_amount)/100;
+                    $total_allowance = $total_allowance + $salary_amount;
+                }
+            }
+        }
+
+        $gross_salary = $user->basic_salary + $user->salary_in_cache + $total_allowance;
+        return $gross_salary;
+    }
+
+
 
 
 }

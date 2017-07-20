@@ -22,7 +22,8 @@ class CreatePfCalculationsTable extends Migration
             $table->decimal('pf_interest_amount',12,2);
             $table->decimal('pf_debit',12,2)->default(0)->comment="(-) subtract to provident fund";
             $table->decimal('pf_credit',12,2)->default(0)->comment="(+) added to provident fund";
-            $table->date('pf_date');
+            $table->string('pf_date',10);
+            $table->tinyInteger('pf_observation')->default(0)->comment="0=other ,1=salary deduct";
             $table->text('pf_remarks');
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);

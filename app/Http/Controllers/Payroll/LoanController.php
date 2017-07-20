@@ -124,9 +124,6 @@ class LoanController extends Controller
                 $request->offsetSet('approved_by', $this->auth->id);
                 $loan = Loan::find($id);
                 $loan->update($request->all());
-
-                $job = (new DebitProvidentFundByLoanJob($loan))->delay(Carbon::now()->addMinutes(2));
-                dispatch($job);
             }else{
                 $id = $request->id;
                 $duration = Loan::cal_loan_duration($request->loan_start_date, $request->loan_end_date);
