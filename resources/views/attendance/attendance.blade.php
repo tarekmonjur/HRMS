@@ -62,7 +62,7 @@
               <div class="col-md-2">
                 <div class="form-group">
                   <br>
-                  <button type="submit" class="form-control input-sm btn btn-sm btn-dark">Submit</button>
+                  <button type="submit" class="form-control input-sm btn btn-sm btn-dark">Show Attendance</button>
                 </div>
               </div>
 
@@ -97,7 +97,7 @@
                   <a style="color: #fff;" target="_blank" :href="'view/'+user.employee_no+'?from_date='+from_date+'&to_date='+to_date" v-text="user.first_name+' '+user.last_name+' ('+user.employee_no+')'"></a>
                 </td>
 
-                <td v-for="(attendance,aIndex) in user.attendanceTimesheets" class="text-center show_name">
+                <td v-for="(attendance,aIndex) in user.attendanceTimesheets" class="text-center show_name" v-on:click.prevent="addAttendance(uIndex,aIndex,user.id, attendance.id, attendance.date, user.first_name+' '+user.last_name+' ('+user.employee_no+')','#attendance_modal')">
 
                   <div style="position: relative!important;"></div>
                   <div class="name_show">
@@ -165,8 +165,8 @@
                     </div>
                   </div>
 
-                  <div v-else-if="attendance.observation == 0">@{{attendance.timesheet_observation}}
-                    <a class="btn btn-sm btn-rounded" v-on:click.prevent="addAttendance(uIndex,aIndex,user.id, attendance.id, attendance.date, user.first_name+' '+user.last_name+' ('+user.employee_no+')','#attendance_modal')"><i class="fa fa-font text-danger"></i></a>
+                  <div v-else-if="attendance.observation == 0">
+                    <i class="fa fa-font fa-2x text-danger"></i>
                   </div>
 
                 </td>
@@ -264,7 +264,7 @@
                               </label>
                             </label>
                             <span class="input-footer">
-                              <strong>File format must be : </strong> employee no, date (Y-m-d), in time, out time
+                              <strong>File format must be : </strong> employee no, date (Y-m-d), in time, out time. <a href="{{url('/attendance/demo')}}">Download Demo</a>
                             </span>
                               <span v-if="errors.date" class="text-danger" v-text="errors.date[0]"></span>
                           </div>

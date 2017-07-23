@@ -24210,3 +24210,8 @@ body.timeline-page .panel-clone {
     min-width: 0 !important;
   }
 }
+
+.no-print, .no-print *{
+    display: none !important;
+}
+

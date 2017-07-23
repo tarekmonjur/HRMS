@@ -84,7 +84,7 @@
                   <tr v-for="(attendance,index) in attendances" class="text-center">
                     <td v-text="index+1"></td>
                     <td v-text="attendance.date"></td>
-                    <td>
+                    <td v-on:click.prevent="addAttendance(index,attendance.user_id, attendance.id, attendance.date, userName,'#attendance_modal')">
 
                       <!-- attendance -->
                       <div v-if="attendance.observation == 1">
@@ -164,8 +164,8 @@
                         </div>
                       </div>
 
-                      <div v-else-if="attendance.observation == 0">@{{attendance.timesheet_observation}}
-                        <a class="btn btn-sm btn-rounded" v-on:click.prevent="addAttendance(index,attendance.user_id, attendance.id, attendance.date, userName,'#attendance_modal')"><i class="fa fa-font text-danger"></i></a>
+                      <div v-else-if="attendance.observation == 0">
+                        <i class="fa fa-font fa-2x text-danger"></i>
                       </div>
                     </td>
                   </tr>
@@ -193,10 +193,7 @@
                     <td class="text-info">Leave</td>
                     <td v-text="report.leave"></td>
                   </tr>
-                  <tr class="text-center">
-                    <td class="text-warning">Late</td>
-                    <td v-text="report.late"></td>
-                  </tr>
+          
                   <tr class="text-center">
                     <td class="text-danger">Holiday</td>
                     <td v-text="report.holiday"></td>
@@ -208,6 +205,10 @@
                   <tr class="text-center">
                     <td><strong>Total Days</strong></td>
                     <td style="font-weight: bold" v-text="report.total"></td>
+                  </tr>
+                  <tr class="text-center">
+                    <td class="text-warning">Late</td>
+                    <td v-text="report.late"></td>
                   </tr>
                 </tbody>
               </table>
@@ -221,7 +222,7 @@
     <div class="panel">
         <div class="panel-heading">
             <span class="panel-title">
-                <i class="fa fa-rocket"></i>Add Attendance <span class="text-info" v-text="attend.user_fullname"></span>
+                <i class="fa fa-rocket"></i>Add Attendance <span class="text-info"></span>
             </span>
         </div>
         <div class="panel-body">

@@ -26,11 +26,13 @@ class AttendanceController extends Controller
 
     protected $attendanceTimesheet;
 
+    protected $WorkShiftEmployeeMap;
+
     /**
      * AttendanceController constructor.
      * @param Auth $auth
      */
-    public function __construct(Auth $auth, User $user, AttendanceTimesheet $attendanceTimesheet)
+    public function __construct(Auth $auth, User $user, AttendanceTimesheet $attendanceTimesheet, WorkShiftEmployeeMap $WorkShiftEmployeeMap)
     {
         $this->middleware('auth:hrms');
 
@@ -42,6 +44,7 @@ class AttendanceController extends Controller
 
         $this->user = $user;
         $this->attendanceTimesheet = $attendanceTimesheet;
+        $this->WorkShiftEmployeeMap = $WorkShiftEmployeeMap;
     }
 
 
@@ -263,9 +266,10 @@ class AttendanceController extends Controller
     	for($i=0; $i<=$day; $i++){
             $day_name = Carbon::parse($from_date)->format('l');
             if(in_array($day_name, $weekends)){
-                $dates[] = '<span style="color:red">'.Carbon::parse($from_date)->format('M d Y')."</span>";
+                // $dates[] = '<span style="color:red">'.Carbon::parse($from_date)->format('M d Y')."</span>";
+                $dates[] = Carbon::parse($from_date)->format('M d Y (D)');
             }else{
-        		$dates[] = Carbon::parse($from_date)->format('M d Y');
+        		$dates[] = Carbon::parse($from_date)->format('M d Y (D)');
             }
     		$dateList[] = Carbon::parse($from_date)->format('Y-m-d');
     		$from_date = Carbon::parse($from_date)->addDay(1);
@@ -383,9 +387,7 @@ class AttendanceController extends Controller
                     $dates[] = $date;
                     $userIds[] = $user_id;
 
-
-                    $workShiftMap = new WorkShiftEmployeeMap;
-                    $emp_work_shift = $workShiftMap->get_work_shift_by_user_id_and_date($user_id,$date);
+                    $emp_work_shift = $this->WorkShiftEmployeeMap->get_work_shift_by_user_id_and_date($user_id,$date);
 
                     if($emp_work_shift){
                         $late_count_time =  $emp_work_shift->late_count_time;
@@ -428,9 +430,6 @@ class AttendanceController extends Controller
 
             fclose($file);
             Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
-            // AttendanceTimesheet::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
-            //dd(Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->get());
-            // dd($csvContent);
 
             Attendance::insert($csvContent);
             dispatch(new AttendanceTimesheetJob($job_call = 'csv'));
@@ -490,8 +489,10 @@ class AttendanceController extends Controller
 
 
 
-
-
+    public function downloadDemo(){
+        $pathToFile = public_path('attendance_format_demo.csv');
+        return response()->download($pathToFile, 'attendance_format.csv');
+    }
 
 
 

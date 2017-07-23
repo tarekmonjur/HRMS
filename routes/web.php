@@ -264,7 +264,6 @@ Route::group(['prefix' => 'workshift', 'namespace' => 'Attendance'],function (){
 Route::group(['prefix' => 'shiftassign', 'namespace' => 'Attendance'],function (){
     Route::get('/index/{work_shift_id?}','WorkShiftAssignController@index');
     Route::post('/assign','WorkShiftAssignController@assignWorkShift');
-    Route::get('/delete/{id}','WorkShiftAssignController@delete');
 });
 
 /******* .......Attendance Timesheet Routes........ ******/
@@ -274,9 +273,10 @@ Route::group(['prefix' => 'attendance', 'namespace' => 'Attendance'],function ()
 
     //MY Attendance URL
     Route::get('/view/{employee_no?}','AttendanceController@viewAttendance');
-    
+
     Route::post('/add','AttendanceController@addAttendance');
     Route::post('/manual','AttendanceController@manualAttendance');
+    Route::get('/demo','AttendanceController@downloadDemo');
 });
 
 /******************** .......Start HRMS PayRoll Module Routes........ **************/

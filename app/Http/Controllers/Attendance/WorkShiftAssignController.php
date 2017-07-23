@@ -123,8 +123,12 @@ class WorkShiftAssignController extends Controller
 	    	$work_shift = $request->work_shift;
 	    	$saveData = [];
 
+            if($request->has('histories')){
+                WorkShiftEmployeeMap::whereIn('id',$request->histories)->update(['status' => 0]);
+            }
+
             if($request->has('deleted')){
-                WorkShiftEmployeeMap::whereIn('id',$request->deleted)->update(['status' => 0]);
+                WorkShiftEmployeeMap::whereIn('id',$request->deleted)->delete();
             }
 
 	    	if(is_array($work_shift)){
@@ -160,27 +164,17 @@ class WorkShiftAssignController extends Controller
 		    	}
 	    	}
 
-            if(count($saveData) > 0){
-                if($request->ajax()){
-                    $data['status'] = 'success';
-                    $data['statusType'] = 'OK';
-                    $data['code'] = 200;
-                    $data['title'] = 'Success!';
-                    $data['message'] = 'Work shift successfully assign!';
-                    return response()->json($data,200);
-                }
+            if($request->ajax()){
+                $data['status'] = 'success';
+                $data['statusType'] = 'OK';
+                $data['code'] = 200;
+                $data['title'] = 'Success!';
+                $data['message'] = 'Work shift successfully assign!';
+                return response()->json($data,200);
             }
-            else{
-                $data['status'] = 'danger';
-                $data['statusType'] = 'NotOk';
-                $data['code'] = 500;
-                $data['title'] = 'Error!';
-                $data['message'] = 'Invalid input. Work shift not assign.';
-                return response()->json($data,500);
-            }
-    	    	
+            
 
-            // $request->session()->flash('success','Work shift successfully assign!');
+            $request->session()->flash('success','Work shift successfully assign!');
             return redirect()->back();
 
     	}catch(\Exception $e){
@@ -199,21 +193,33 @@ class WorkShiftAssignController extends Controller
 
     }
 
-    public function delete($id){
+    // public function delete(Request $request){
 
-        try{
-            WorkShiftEmployeeMap::find($id)->delete();
-            $data['title'] = 'success';
-            $data['message'] = 'data successfully removed!';
+    //     try{
+    //         WorkShiftEmployeeMap::find($request->id)->update(['status' => 0]);
+    //         $data['title'] = 'success';
+    //         $data['message'] = 'data successfully removed!';
 
-        }catch(\Exception $e){
-            
-            $data['title'] = 'error';
-            $data['message'] = 'data not removed!';
-        }
+    //         if($request->ajax()){
+    //             $data['status'] = 'success';
+    //             $data['statusType'] = 'OK';
+    //             $data['code'] = 200;
+    //             $data['title'] = 'Success!';
+    //             $data['message'] = 'Work shift successfully moved to history!';
+    //             return response()->json($data,200);
+    //         }
 
-        return $data;
-    }
+    //     }catch(\Exception $e){
+    //         if($request->ajax()){
+    //             $data['status'] = 'danger';
+    //             $data['statusType'] = 'NotOk';
+    //             $data['code'] = 500;
+    //             $data['title'] = 'Error!';
+    //             $data['message'] = 'Work shift not move to history.';
+    //             return response()->json($data,500);
+    //         }
+    //     }
+    // }
 
 
 
