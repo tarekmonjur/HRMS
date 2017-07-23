@@ -81,7 +81,12 @@
 						{{$info->approvedByUser->first_name." ".$info->approvedByUser->last_name}} - ({{$info->approvedByUser->designation->designation_name}}) - ({{$info->approvedByUser->designation->department->department_name}})
 						@endif
 						<br>
-						<b>Approval/Cancel Date:</b>  {{date("d M, Y", strtotime($info->employee_leaves_approval_date))}}<br>
+						<b>Approval/Cancel Date:</b>  
+							@if(!empty($info->employee_leaves_approval_date))
+								{{date("d M, Y", strtotime($info->employee_leaves_approval_date))}}<br>
+							@else
+								{{"..."}}
+							@endif
                     </div>
                 </div>
             </div>

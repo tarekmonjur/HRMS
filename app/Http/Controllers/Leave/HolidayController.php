@@ -36,10 +36,12 @@ class HolidayController extends Controller
 
     public function create(Request $request){
 
+        $prevDate = date('Y-m-d', strtotime($request->from_date .' -1 day'));
+
 		$this->validate($request, [
             'holiday_name' => 'required',
             'from_date' => 'required',
-            'to_date' => 'required',
+            'to_date' => 'required|after:'.$prevDate,
             'holiday_status' => 'required',
         ]);
 
@@ -124,10 +126,12 @@ class HolidayController extends Controller
 
     public function update(Request $request){
         
+        $prevDate = date('Y-m-d', strtotime($request->edit_from_date .' -1 day'));
+        
         $this->validate($request, [
             'edit_holiday_name' => 'required',
             'edit_from_date' => 'required',
-            'edit_to_date' => 'required',
+            'edit_to_date' => 'required|after:'.$prevDate,
             'edit_holiday_status' => 'required',
         ]);
 
@@ -158,7 +162,7 @@ class HolidayController extends Controller
                         if($info->employee_leave_status != 4 && $info->leave_type_include_holiday == 0){
                             
                             $counterUpdate++;
-                            echo $info->empId."**stat**".$info->employee_leave_status."**".$info->employee_leave_from."**".$info->employee_leave_to."**".$info->leave_type_name."**".$info->leave_type_include_holiday."<br/>";
+                            // echo $info->empId."**stat**".$info->employee_leave_status."**".$info->employee_leave_from."**".$info->employee_leave_to."**".$info->leave_type_name."**".$info->leave_type_include_holiday."<br/>";
                             $upd = EmployeeLeave::find($info->empId);
                             $upd->employee_leave_status = 4;
                             $upd->employee_leave_approved_by = Auth::user()->id; 
