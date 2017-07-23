@@ -163,9 +163,19 @@
                           <span v-text="attendance.total_work_hour"></span>
                         </div>
                       </div>
-
-                      <div v-else-if="attendance.observation == 0">@{{attendance.timesheet_observation}}
-                        <a class="btn btn-sm btn-rounded" v-on:click.prevent="addAttendance(index,attendance.user_id, attendance.id, attendance.date, userName,'#attendance_modal')"><i class="fa fa-font text-danger"></i></a>
+        
+                      <?php 
+                          $chkUrl = \Request::segment(1);
+                      ?>
+                      <div v-else-if="attendance.observation == 0">
+                        @{{attendance.timesheet_observation}}
+                        @if(in_array($chkUrl."/index", session('userMenuShare')))
+                            <a class="btn btn-sm btn-rounded" v-on:click.prevent="addAttendance(index,attendance.user_id, attendance.id, attendance.date, userName,'#attendance_modal')">
+                            <i class="fa fa-font text-danger"></i></a>
+                        @else
+                            <a class="btn btn-sm btn-rounded">
+                            <i class="fa fa-font text-danger"></i></a>
+                        @endif
                       </div>
                     </td>
                   </tr>

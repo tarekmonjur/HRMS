@@ -144,7 +144,7 @@ new Vue({
         var year1 = this.returnOnlyYear(date1);
         var year2 = this.returnOnlyYear(date2);
 
-        if(year1 == year2){
+        if(year1 == year2 && date2.getTime() >= date1.getTime()){
           var date_diff_js = this.date_diff;
           
           axios.get('/leave/getWeekendHolidays/'+dateUrl1+'/'+dateUrl2+'/'+this.emp_name).then(response => {
@@ -185,7 +185,7 @@ new Vue({
           });
         }
         else{
-          swal("Invalid Date!", "From date and to date must have same year...", "error");
+          swal("Invalid Date!", "Invalid date or From and to date not are in same year...", "error");
         }
       }
       else{
@@ -220,7 +220,7 @@ new Vue({
         var year1 = this.returnOnlyYear(date1);
         var year2 = this.returnOnlyYear(date2);
 
-        if(year1 == year2){
+        if(year1 == year2 && date2.getTime() >= date1.getTime()){
           
           axios.get('/leave/getWeekendHolidays/'+dateUrl1+'/'+dateUrl2+'/'+this.edit_emp_name).then(response => {
 
@@ -456,7 +456,8 @@ new Vue({
           this.show_history = response.data.show_history;
           
           var imgg = response.data.employee_leave_attachment;
-          if(imgg != null){
+
+          if(imgg.length > 0){
             this.edit_file_info = "File already available";
           }
           else{

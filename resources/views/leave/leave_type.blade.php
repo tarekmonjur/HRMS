@@ -29,7 +29,7 @@
                                         <th>sl</th>
                                         <th>Name</th>
                                         <th>EL</th>
-                                        <th>With out Pay</th>
+                                        <th>Without Pay</th>
                                         <th>Encashable</th>
                                         <th>Encashable Limit</th>
                                         <th>Number of Days</th>
@@ -48,7 +48,7 @@
                                         <td v-text="index+1"></td>
                                         <td v-text="info.leave_type_name"></td>
                                         <td v-text="info.leave_type_is_earn_leave==1?'EL':''"></td>
-                                        <td v-text="info.leave_type_with_out_pay == 1?'No':'Paid Leave'"></td>
+                                        <td v-text="info.leave_type_with_out_pay == 1?'Yes':'No'"></td>
                                         <td v-text="info.leave_type_is_sellable==1?'Yes':''"></td>
                                         <td v-text="info.leave_type_max_sell_limit"></td>
                                         <td v-text="info.leave_type_number_of_days == null?'Undefined':info.leave_type_number_of_days"></td>

@@ -412,16 +412,24 @@ class LeaveController extends Controller
         $responsible_emp = $request->responsible_emp;
         $leave_half_or_full = $request->leave_half_or_full;
 
+        $date1Timestamp = strtotime($from_date);
+        $date2Timestamp = strtotime($to_date);
+        $difference = $date2Timestamp - $date1Timestamp;
+        $diff_days = floor($difference / (60*60*24) )+1;
+
+        if($date2Timestamp < $date1Timestamp){
+            //Error return if To date grater the from date
+            
+            $data['title'] = 'error';
+            $data['message'] = "* Invalid date entry.";
+            return $data;
+        }
+
         $weekend_holiday_info = $this->getWeekendHolidays($from_date, $to_date, $emp_name);
         $leave_type_info = LeaveType::find($emp_leave_type);
         $chk_include_holiday = $leave_type_info->leave_type_include_holiday;
 
         $leave_type_ary = session()->get('global_leave_type_ary');
-
-        $date1Timestamp = strtotime($from_date);
-        $date2Timestamp = strtotime($to_date);
-        $difference = $date2Timestamp - $date1Timestamp;
-        $diff_days = floor($difference / (60*60*24) )+1;
 
         if($chk_include_holiday != 1){
             $diff_days = $diff_days - ($weekend_holiday_info['holidays'] + $weekend_holiday_info['weekend']);
@@ -449,77 +457,70 @@ class LeaveController extends Controller
             $data['message'] = "* Already one leave application is pending/forward.";
         }
         else{
-            if($date2Timestamp >= $date1Timestamp){
-                foreach($leave_type_ary as $info){
-                    if($emp_leave_type == $info['id']){
-                        $chk = $info['days'] - $diff_days;
+            foreach($leave_type_ary as $info){
+                if($emp_leave_type == $info['id']){
+                    $chk = $info['days'] - $diff_days;
 
-                        if(empty($info['days']) || $info['days'] < 0){
-                            //days are undefined
-                            //that means no limit
-                            $chk = 1;
+                    if(empty($info['days']) || $info['days'] < 0){
+                        //days are undefined
+                        //that means no limit
+                        $chk = 1;
+                    }
+
+                    if($chk >= 0){
+                        
+                        $supervisor_id = User::find($emp_name)->supervisor_id;
+                        
+                        $file_name = '';
+                        if(request()->hasFile('file')){
+            
+                            $file = request()->file('file');
+                            $exten = $file->extension();
+                            $temp_name = date("Ymd_His");
+                            $folder = "/leave_doc/$emp_name";
+
+                            //storage/app/public
+                            $file_name = $temp_name.".".$exten;
+
+                            request()->file('file')->storeAs($folder, $file_name);
                         }
+                        
+                        try{
+                            $sav = new EmployeeLeave;
+                            $sav->user_id = $emp_name;
+                            $sav->leave_type_id = $emp_leave_type; 
+                            $sav->employee_leave_from = $from_date; 
+                            $sav->employee_leave_to = $to_date;
+                            $sav->employee_leave_total_days = $diff_days;
+                            $sav->employee_leave_user_remarks = $leave_reason;
+                            $sav->employee_leave_half_or_full = $leave_half_or_full;
+                            $sav->employee_leave_contact_address = $leave_contact_address;
+                            $sav->employee_leave_contact_number = $leave_contact_number;
+                            $sav->employee_leave_noc_required = $employee_leave_noc_required;
+                            $sav->employee_leave_passport_no = $passport_no;
+                            $sav->employee_leave_responsible_person = $responsible_emp;
+                            $sav->employee_leave_attachment = $file_name;
+                            $sav->employee_leave_supervisor = $supervisor_id;
+                            $sav->employee_leave_status = 1;
+                            $sav->save();
+                        
+                            $data['title'] = 'success';
+                            $data['message'] = 'data successfully added!';
 
-                        if($chk >= 0){
+                        }catch (\Exception $e) {
                             
-                            $supervisor_id = User::find($emp_name)->supervisor_id;
-                            
-                            $file_name = '';
-                            if(request()->hasFile('file')){
-                
-                                $file = request()->file('file');
-                                $exten = $file->extension();
-                                $temp_name = date("Ymd_His");
-                                $folder = "/leave_doc/$emp_name";
-
-                                //storage/app/public
-                                $file_name = $temp_name.".".$exten;
-
-                                request()->file('file')->storeAs($folder, $file_name);
-                            }
-                            
-                            try{
-                                $sav = new EmployeeLeave;
-                                $sav->user_id = $emp_name;
-                                $sav->leave_type_id = $emp_leave_type; 
-                                $sav->employee_leave_from = $from_date; 
-                                $sav->employee_leave_to = $to_date;
-                                $sav->employee_leave_total_days = $diff_days;
-                                $sav->employee_leave_user_remarks = $leave_reason;
-                                $sav->employee_leave_half_or_full = $leave_half_or_full;
-                                $sav->employee_leave_contact_address = $leave_contact_address;
-                                $sav->employee_leave_contact_number = $leave_contact_number;
-                                $sav->employee_leave_noc_required = $employee_leave_noc_required;
-                                $sav->employee_leave_passport_no = $passport_no;
-                                $sav->employee_leave_responsible_person = $responsible_emp;
-                                $sav->employee_leave_attachment = $file_name;
-                                $sav->employee_leave_supervisor = $supervisor_id;
-                                $sav->employee_leave_status = 1;
-                                $sav->save();
-                            
-                                $data['title'] = 'success';
-                                $data['message'] = 'data successfully added!';
-
-                            }catch (\Exception $e) {
-                                
-                               $data['title'] = 'error';
-                               $data['message'] = 'data not added!';
-                            }
+                           $data['title'] = 'error';
+                           $data['message'] = 'data not added!';
                         }
-                        else{
-                            $data['title'] = 'error';
-                            $data['message'] = "* You can only apply for ".$info['days']." days or below ".$info['days']." days leave.";
-                        }
+                    }
+                    else{
+                        $data['title'] = 'error';
+                        $data['message'] = "* You can only apply for ".$info['days']." days or below ".$info['days']." days leave.";
                     }
                 }
             }
-            else{
-                $data['title'] = 'error';
-                $data['message'] = "* Invalid date entry.";
-            }
         }
             
-
         return $data;
     }
 
