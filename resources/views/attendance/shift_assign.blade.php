@@ -150,9 +150,9 @@
                         <input type="text" :name="'work_shift['+indexs+'][end_date]'" v-on:mouseover="myDatePicker" class="myDatePicker form-control input-sm" v-model="work_shift.end_date" v-on:focusout="work_shift.end_date = $event.target.value" required="">
                       </td>
                       <td>
-                        <a title="Delete" class="btn" v-on:click.prevent="deleteWorkShift(indexs, work_shift.id)"><span class="text-danger glyphicons glyphicons-bin"></span></a>
+                        <a title="Delete" class="btn" v-on:click.prevent="deleteWorkShift(indexs, work_shift.id)"><i class="text-danger glyphicons glyphicons-bin"></i></a>
                         
-                        <a title="History" class="btn" v-on:click.prevent="historyWorkShift(indexs, work_shift.id)"><span class="text-danger fa fa-hdd-o"></span></a>
+                        <a title="History" class="btn" v-on:click.prevent="historyWorkShift(indexs, work_shift.id)"><i class="text-success glyphicons glyphicons-hdd"></i></a>
                       </td>
                     </tr>
                   </tbody>
@@ -172,7 +172,7 @@
                 <div class="section row mbn">
                     <div class="col-sm-4 pull-right">
                         <p class="text-left">
-                            <button type="submit" :disabled="employeeShift.work_shift == ''" name="assign_shift" class="btn btn-dark btn-gradient dark btn-block"><span class="glyphicons glyphicons-ok_2"></span> &nbsp; Assign Shift
+                            <button type="submit" :disabled="buttonDisable" name="assign_shift" class="btn btn-dark btn-gradient dark btn-block"><span class="glyphicons glyphicons-ok_2"></span> &nbsp; Assign Shift
                             </button>
                         </p>
                     </div>
