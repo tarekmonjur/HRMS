@@ -400,11 +400,11 @@
                                                         </td>
                                                         <td>
                                                             @if($info->employee_leave_responsible_person_status == 0)
-                                                                <div class="btn btn-warning btn-xs edit-btn-Cls">Pending</div>
+                                                                <div class="btn btn-warning btn-xs">Pending</div>
                                                             @elseif($info->employee_leave_responsible_person_status == 1)
-                                                                <div class="btn btn-success btn-xs edit-btn-Cls">Accept</div>
+                                                                <div class="btn btn-success btn-xs">Accept</div>
                                                             @elseif($info->employee_leave_responsible_person_status == 2)
-                                                                <div class="btn btn-danger btn-xs edit-btn-Cls">Cancel</div>
+                                                                <div class="btn btn-danger btn-xs">Cancel</div>
                                                             @else
                                                                 {{"INVALID"}}
                                                             @endif

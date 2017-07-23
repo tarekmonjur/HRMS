@@ -54,7 +54,8 @@ class LeaveTypeController extends Controller
 		$is_remain = $request->carry_to_next_year > 0?1:0;
         $include_holiday = $request->include_holiday > 0?1:0;
         $is_earn = $request->is_earn > 0?1:0;
-		$is_sellable = $request->sellable > 0?1:0;
+        $is_sellable = $request->sellable > 0?1:0;
+		$leave_type_with_out_pay = $request->leave_type_with_out_pay > 0?1:0;
 
         try{
             $sav = new LeaveType;
@@ -63,6 +64,7 @@ class LeaveTypeController extends Controller
             $sav->leave_type_effective_for = $srt_emp_type; 
             $sav->leave_type_valid_after_months = $request->valid_after;
             $sav->leave_type_details = $request->type_details;
+            $sav->leave_type_with_out_pay = $leave_type_with_out_pay;
             $sav->leave_type_is_earn_leave = $is_earn;
             $sav->leave_type_is_sellable = $is_sellable;
             $sav->leave_type_max_sell_limit = $request->max_sell_limit;
@@ -99,6 +101,7 @@ class LeaveTypeController extends Controller
         $data['leave_type_number_of_days'] = $value->leave_type_number_of_days; 
         $data['leave_type_effective_for'] = $value->leave_type_effective_for; 
         $data['leave_type_details'] = $value->leave_type_details;
+        $data['leave_type_with_out_pay'] = $value->leave_type_with_out_pay;
         $data['leave_type_is_remain'] = $value->leave_type_is_remain;
         $data['leave_type_include_holiday'] = $value->leave_type_include_holiday;
         $data['leave_type_active_from_year'] = $value->leave_type_active_from_year;
@@ -127,6 +130,7 @@ class LeaveTypeController extends Controller
 		$include_holiday = $request->include_holiday > 0?1:0;
         $is_earn = $request->is_earn > 0?1:0;
         $is_sellable = $request->sellable > 0?1:0;
+        $leave_type_with_out_pay = $request->leave_type_with_out_pay > 0?1:0;
 
         DB::beginTransaction();
 
@@ -136,6 +140,7 @@ class LeaveTypeController extends Controller
                 'leave_type_number_of_days' => $request->duration, 
                 'leave_type_effective_for' => $srt_emp_type, 
                 'leave_type_details' => $request->type_details,
+                'leave_type_with_out_pay' => $leave_type_with_out_pay,
                 'leave_type_is_earn_leave' => $is_earn,
                 'leave_type_is_sellable' => $is_sellable,
                 'leave_type_max_sell_limit' => $request->max_sell_limit,

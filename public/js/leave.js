@@ -43,6 +43,7 @@ new Vue({
     leave_contact_address: '',
     leave_contact_number: '',
     responsible_emp: '',
+    employee_leave_noc_required: '',
     passport_no: '',
     leave_half_or_full: 1,
     options: [],
@@ -69,6 +70,7 @@ new Vue({
     edit_leave_contact_address: '',
     edit_leave_contact_number: '',
     edit_responsible_emp: null,
+    edit_employee_leave_noc_required: '',
     edit_passport_no: '',
     edit_leave_half_or_full: '',
     demo_type: [],
@@ -114,6 +116,7 @@ new Vue({
       return date.getFullYear();
     },
     date_diff_cal: function(){
+
       var emp_leave_type_js = this.emp_leave_type;
       
       if(this.emp_leave_type > 0){
@@ -141,7 +144,7 @@ new Vue({
         var year1 = this.returnOnlyYear(date1);
         var year2 = this.returnOnlyYear(date2);
 
-        if(year1 == year2){
+        if(year1 == year2 && date2.getTime() >= date1.getTime()){
           var date_diff_js = this.date_diff;
           
           axios.get('/leave/getWeekendHolidays/'+dateUrl1+'/'+dateUrl2+'/'+this.emp_name).then(response => {
@@ -166,8 +169,11 @@ new Vue({
                 $.each( this.userLeaveType, function( key, value ) {
                     if(emp_leave_type_js == value.id){
                       var chk_day = value.days - date_diff_js;
-                    
-                      if(chk_day < 0 && value.days != null){
+                      
+                      //value.days for undefined days
+                      //wher balance minus value.days >= 0
+
+                      if(chk_day < 0 && value.days != null && value.days >= 0){
                         $('#show_date_diff_msg').html("* You can only apply for "+value.days+" days or below "+value.days+" days leave.");
                       }
                       else{
@@ -179,7 +185,7 @@ new Vue({
           });
         }
         else{
-          swal("Invalid Date!", "From date and to date must have same year...", "error");
+          swal("Invalid Date!", "Invalid date or From and to date not are in same year...", "error");
         }
       }
       else{
@@ -214,7 +220,7 @@ new Vue({
         var year1 = this.returnOnlyYear(date1);
         var year2 = this.returnOnlyYear(date2);
 
-        if(year1 == year2){
+        if(year1 == year2 && date2.getTime() >= date1.getTime()){
           
           axios.get('/leave/getWeekendHolidays/'+dateUrl1+'/'+dateUrl2+'/'+this.edit_emp_name).then(response => {
 
@@ -239,8 +245,11 @@ new Vue({
                 $.each( this.userLeaveType, function( key, value ) {
                     if(emp_leave_type_js == value.id){
                       var chk_day = value.days - date_diff_js;
-                    
-                      if(chk_day < 0 && value.days != null){
+                      
+                      //value.days for undefined days
+                      //wher balance minus value.days >= 0
+
+                      if(chk_day < 0 && value.days != null && value.days >= 0){
                         $('#edit_show_date_diff_msg').html("* You can only apply for "+value.days+" days or below "+value.days+" days leave.");
                       }
                       else{
@@ -425,6 +434,7 @@ new Vue({
           this.edit_leave_half_or_full =response.data.employee_leave_half_or_full;
           this.edit_leave_contact_address =response.data.employee_leave_contact_address;
           this.edit_leave_contact_number =response.data.employee_leave_contact_number;
+          this.edit_employee_leave_noc_required =response.data.employee_leave_noc_required;
           this.edit_passport_no =response.data.employee_leave_passport_no;
           this.edit_responsible_emp =response.data.employee_leave_responsible_person;
           this.emp_supervisor = response.data.employee_leave_supervisor;
@@ -446,7 +456,8 @@ new Vue({
           this.show_history = response.data.show_history;
           
           var imgg = response.data.employee_leave_attachment;
-          if(imgg != null){
+
+          if(imgg.length > 0){
             this.edit_file_info = "File already available";
           }
           else{

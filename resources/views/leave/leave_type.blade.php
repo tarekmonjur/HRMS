@@ -29,12 +29,13 @@
                                         <th>sl</th>
                                         <th>Name</th>
                                         <th>EL</th>
-                                        <th>Sellable</th>
-                                        <th>Sell Limit</th>
+                                        <th>Without Pay</th>
+                                        <th>Encashable</th>
+                                        <th>Encashable Limit</th>
                                         <th>Number of Days</th>
                                         <th>Effective For</th>
-                                        <th>Carry To The Next Year</th>
-                                        <th>Max Carray Limit</th>
+                                        <th>Carry Forward</th>
+                                        <th>Max Carry Limit</th>
                                         <th>Including Holiday</th>
                                         <th>Effective Year</th>
                                         <th>Details</th>
@@ -47,11 +48,12 @@
                                         <td v-text="index+1"></td>
                                         <td v-text="info.leave_type_name"></td>
                                         <td v-text="info.leave_type_is_earn_leave==1?'EL':''"></td>
-                                        <td v-text="info.leave_type_is_sellable==1?'Sellable':''"></td>
+                                        <td v-text="info.leave_type_with_out_pay == 1?'Yes':'No'"></td>
+                                        <td v-text="info.leave_type_is_sellable==1?'Yes':''"></td>
                                         <td v-text="info.leave_type_max_sell_limit"></td>
                                         <td v-text="info.leave_type_number_of_days == null?'Undefined':info.leave_type_number_of_days"></td>
                                         <td v-text="returnEffectedEmpType(info.leave_type_effective_for)"></td>
-                                        <td v-text="info.leave_type_is_remain == 1?'Yes':'No'"></td>
+                                        <td v-text="info.leave_type_is_remain == 1?'CF':'No'"></td>
                                         <td v-text="info.leave_type_max_remain_limit"></td>
                                         <td v-text="info.leave_type_include_holiday == 1?'Yes':'No'"></td>
                                         <td v-text="info.leave_type_active_from_year+' - '+info.leave_type_active_to_year"></td>
@@ -134,18 +136,24 @@
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
+                                <input type="checkbox" name="leave_type_with_out_pay" v-model="leave_type_with_out_pay" value="1"> Leave with out pay.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
                                 <input type="checkbox" name="is_earn" value="1"> Is earn leave.
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="sellable" value="1"> Leave type is sellable.
+                                <input type="checkbox" name="sellable" value="1"> Leave type is encashable.
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="max_sell_limit" class="col-md-3 control-label">Max sell limit</label>
+                            <label for="max_sell_limit" class="col-md-3 control-label">Max encashable limit</label>
                             <div class="col-md-9">
                                 <input name="max_sell_limit" class="form-control input-sm" type="number" placeholder="Max sell limit.">
                             </div>
@@ -153,12 +161,12 @@
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="carry_to_next_year" value="1"> Leave carray to the next year.
+                                <input type="checkbox" name="carry_to_next_year" value="1"> Leave type is carry forward.
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="max_remain_limit" class="col-md-3 control-label">Max remain limit</label>
+                            <label for="max_remain_limit" class="col-md-3 control-label">Max carry forward limit</label>
                             <div class="col-md-9">
                                 <input name="max_remain_limit" class="form-control input-sm" type="number" placeholder="Max remain limit.">
                             </div>
@@ -262,18 +270,24 @@
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
+                                <input type="checkbox" name="leave_type_with_out_pay" v-model="leave_type_with_out_pay" value="1"> Leave with out pay.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
                                 <input type="checkbox" name="is_earn" v-model="is_earn" value="1"> Is earn leave.
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="sellable" v-model="sellable" value="1"> Leave type is sellable.
+                                <input type="checkbox" name="sellable" v-model="sellable" value="1"> Leave type is encashable.
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="max_sell_limit" class="col-md-3 control-label">Max sell limit</label>
+                            <label for="max_sell_limit" class="col-md-3 control-label">Max encashable limit</label>
                             <div class="col-md-9">
                                 <input name="max_sell_limit" v-model="max_sell_limit" class="form-control input-sm" type="number" placeholder="Max sell limit.">
                             </div>
@@ -281,12 +295,12 @@
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="carry_to_next_year" v-model="carry_to_next_year" value="1999"> Leave carray to the next year.
+                                <input type="checkbox" name="carry_to_next_year" v-model="carry_to_next_year" value="1999"> Leave type is carry forward.
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="max_remain_limit" class="col-md-3 control-label">Max remain limit</label>
+                            <label for="max_remain_limit" class="col-md-3 control-label">Max carry forward limit</label>
                             <div class="col-md-9">
                                 <input name="max_remain_limit" v-model="max_remain_limit" class="form-control input-sm" type="number" placeholder="Max remain limit.">
                             </div>

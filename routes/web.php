@@ -361,8 +361,9 @@ Route::group(['prefix' => '/weekend', 'namespace' => 'Leave'],function (){
     Route::get('/index','WeekendController@index');
     Route::get('/getAllData','WeekendController@getAllData');
     Route::post('/add','WeekendController@create');
-    Route::get('/edit/{id}','WeekendController@edit');
-    Route::post('/edit','WeekendController@update');
+    // Route::get('/edit/{id}','WeekendController@edit');
+    // Route::post('/edit','WeekendController@update');
+    Route::get('/delete/{id}','WeekendController@delete');
 });
 
 /*********...HRMS Leave Management - Holiday...***********/

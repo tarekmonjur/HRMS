@@ -23,21 +23,22 @@ class SetupMenuSeeder extends Seeder
 // (7, 2, 1, 'Edit', 'employee/edit', 'Employee', 'fa fa-level-up', 1, NULL, NULL),
 // (8, 2, 1, 'Delete', 'employee/delete', 'Employee', 'fa fa-level-up', 1, NULL, NULL),
 
-// (9, 0, 2, 'View', 'holiday/index', 'Holiday', 'fa fa-level-up', 1, NULL, NULL),
-// (10, 9, 2, 'Add', 'holiday/add', 'Holiday', 'fa fa-level-up', 1, NULL, NULL),
-// (11, 9, 2, 'Edit', 'holiday/edit', 'Holiday', 'fa fa-level-up', 1, NULL, NULL),
-// (12, 0, 2, 'View', 'weekend/index', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
-// (13, 12, 2, 'Add', 'weekend/add', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
-// (14, 12, 2, 'Edit', 'weekend/edit', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
-// (15, 0, 2, 'View', 'leaveType/index', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
-// (16, 15, 2, 'Add', 'leaveType/add', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
-// (17, 15, 2, 'Edit', 'leaveType/edit', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
+// (9, 0, 5, 'View', 'holiday/index', 'Holiday', 'fa fa-level-up', 1, NULL, NULL),
+// (10, 9, 5, 'Add', 'holiday/add', 'Holiday', 'fa fa-level-up', 1, NULL, NULL),
+// (11, 9, 5, 'Edit', 'holiday/edit', 'Holiday', 'fa fa-level-up', 1, NULL, NULL),
+// (12, 0, 5, 'View', 'weekend/index', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
+// (13, 12, 5, 'Add', 'weekend/add', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
+// (14, 12, 5, 'Delete', 'weekend/delete', 'Weekend', 'fa fa-level-up', 1, NULL, NULL),
+// (15, 0, 5, 'View', 'leaveType/index', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
+// (16, 15, 5, 'Add', 'leaveType/add', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
+// (17, 15, 5, 'Edit', 'leaveType/edit', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL),
+
 // (18, 0, 2, 'View', 'leave/index', 'Leave', 'fa fa-level-up', 1, NULL, NULL),
 // (19, 18, 2, 'Add', 'leave/add', 'Leave', 'fa fa-level-up', 1, NULL, NULL),
 // (20, 18, 2, 'Edit', 'leave/edit', 'Leave', 'fa fa-level-up', 1, NULL, NULL),
-// (21, 0, 2, 'View', 'myLeave/details', 'Personal Leave', 'fa fa-level-up', 1, NULL, NULL),
-// (22, 21, 2, 'Add', 'myLeave/add', 'Personal Leave', 'fa fa-level-up', 1, NULL, NULL),
-// (23, 21, 2, 'Edit', 'myLeave/edit', 'Personal Leave', 'fa fa-level-up', 1, NULL, NULL),
+// (21, 0, 2, 'View', 'myLeave/details', 'My Leave', 'fa fa-level-up', 1, NULL, NULL),
+// (22, 21, 2, 'Add', 'myLeave/add', 'My Leave', 'fa fa-level-up', 1, NULL, NULL),
+// (23, 21, 2, 'Edit', 'myLeave/edit', 'My Leave', 'fa fa-level-up', 1, NULL, NULL),
 
 // (24, 0, 3, 'Index', 'workshift/index', 'Work Shift', 'fa fa-level-up', 1, NULL, NULL),
 // (25, 24, 3, 'Add', 'workshift/add', 'Work Shift', 'fa fa-level-up', 1, NULL, NULL),
@@ -125,7 +126,9 @@ class SetupMenuSeeder extends Seeder
 // (104, 0, 6, 'View', 'settings/index', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 // (105, 104, 6, 'Add', 'settings/add', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 // (106, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
-// (107, 104, 6, 'Delete', 'settings/delete', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL);
+// (107, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
+
+// (108, 0, 4, 'View', 'payroll/salaries', 'Salaries', 'fa fa-level-up', 1, NULL, NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

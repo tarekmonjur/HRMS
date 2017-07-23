@@ -16,9 +16,11 @@ class CreateWeekendsTable extends Migration
         Schema::create('weekends', function (Blueprint $table) {
             $table->increments('id');
             $table->string('weekend', 200);
+            $table->date('weekend_from')->comment='effective date';
+            $table->date('weekend_to')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
-            $table->boolean('status')->default(1)->comment='0=inactive, 1=active';
+            $table->tinyInteger('status')->default(1)->comment='0=inactive, 1=active, 2=history';
             $table->timestamps();
         });
     }

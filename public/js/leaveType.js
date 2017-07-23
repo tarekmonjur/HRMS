@@ -10308,6 +10308,7 @@ return jQuery;
         valid_after: '',
         //for edit
         hdn_id: '',
+        leave_type_with_out_pay: '',
         is_earn: '',
         sellable: '',
         max_sell_limit: '',
@@ -10416,6 +10417,7 @@ return jQuery;
                 }
 
                 _this2.type_details = response.data.leave_type_details;
+                _this2.leave_type_with_out_pay = response.data.leave_type_with_out_pay;
                 _this2.carry_to_next_year = response.data.leave_type_is_remain;
                 _this2.include_holiday = response.data.leave_type_include_holiday;
                 _this2.from_year = response.data.leave_type_active_from_year;
