@@ -6,6 +6,7 @@ $(document).on('ready',function(){
     data:{
       index:null,
       isActive:0,
+      buttonDisable:false,
       workshifts:[],
       // workshift:[],
       employeeShifts:[],
@@ -103,6 +104,9 @@ $(document).on('ready',function(){
       getWorkAssign(modal_id,index){
         this.index = index;
         this.employeeShift = $.extend(true,{},this.employeeShifts[index]);
+        if(this.employeeShift.work_shift.length <= 0){
+          this.buttonDisable = true;
+        }
         this.modal_open(modal_id);
       },
 
@@ -114,6 +118,9 @@ $(document).on('ready',function(){
           'start_date':'',
           'end_date':'',
         });
+        if(this.employeeShift.work_shift.length > 0){
+          this.buttonDisable = false;
+        }
       },
 
 
