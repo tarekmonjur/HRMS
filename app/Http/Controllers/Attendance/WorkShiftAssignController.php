@@ -164,18 +164,17 @@ class WorkShiftAssignController extends Controller
 		    	}
 	    	}
 
-            if($request->ajax()){
-                $data['status'] = 'success';
-                $data['statusType'] = 'OK';
-                $data['code'] = 200;
-                $data['title'] = 'Success!';
-                $data['message'] = 'Work shift successfully assign!';
-                return response()->json($data,200);
-            }
+        if($request->ajax()){
+            $data['status'] = 'success';
+            $data['statusType'] = 'OK';
+            $data['code'] = 200;
+            $data['title'] = 'Success!';
+            $data['message'] = 'Work shift successfully assign!';
+            return response()->json($data,200);
+        }
             
-
-            $request->session()->flash('success','Work shift successfully assign!');
-            return redirect()->back();
+        $request->session()->flash('success','Work shift successfully assign!');
+        return redirect()->back();
 
     	}catch(\Exception $e){
     		if($request->ajax()){

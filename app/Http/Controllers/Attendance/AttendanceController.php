@@ -488,11 +488,11 @@ class AttendanceController extends Controller
     }
 
 
-
     public function downloadDemo(){
         $pathToFile = public_path('attendance_format_demo.csv');
         return response()->download($pathToFile, 'attendance_format.csv');
     }
+
 
 
 

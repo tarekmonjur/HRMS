@@ -48,6 +48,7 @@ new Vue({
                 axios.get('/get-units').then(response => this.activeUnits = response.data);
 
                 $('#create-form-errors').html('');
+                location.href=location.href;
                 document.getElementById("modal-close-btn").click();
 
                 new PNotify({
