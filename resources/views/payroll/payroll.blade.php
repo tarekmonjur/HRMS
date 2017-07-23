@@ -297,70 +297,61 @@
                       </div>
 
                       <div class="form-group">
-                          <label class="control-label col-md-4">Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                        <label class="control-label col-md-4">Salary:</label>
+                        <div class="col-md-8">
+                          <input type="text" v-model="payRoll.salary" v-on:keyup="updateSalary" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
-                          <label class="control-label col-md-4">Gross Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.gross_salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                        <label class="control-label col-md-4">Over Time Hour:</label>
+                        <div class="col-md-8">
+                          <input type="text" v-model="payRoll.overtime_hour" v-on:keyup="updateSalary" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
-                          <label class="control-label col-md-4">Net Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.net_salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                        <label class="control-label col-md-4">Over Time Amount:</label>
+                        <div class="col-md-8">
+                          <input type="text" v-model="payRoll.overtime_amount" v-on:keyup="updateSalary" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
-                          <label class="control-label col-md-4">Over Time Hour:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.overtime_hour" v-on:keyup="updateSalary" class="form-control input-sm">
+                        <label class="control-label col-md-4">Gross Salary:</label>
+                        <div class="col-md-8">
+                          <input type="text" v-model="payRoll.gross_salary" v-on:keyup="updateSalary" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
-                          <label class="control-label col-md-4">Over Time Amount:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.overtime_amount" v-on:keyup="updateSalary" class="form-control input-sm">
+                        <label class="control-label col-md-4">Net Salary:</label>
+                        <div class="col-md-8">
+                          <input type="text" v-model="payRoll.net_salary" v-on:keyup="updateSalary" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
-                          <label class="control-label col-md-4">Total Salary:</label>
-                          <div class="col-md-8">
-                            <input type="text" v-model="payRoll.total_salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                        <label class="control-label col-md-4">Total Salary:</label>
+                        <div class="col-md-8">
+                          <input type="text" v-model="payRoll.total_salary" v-on:keyup="updateSalary" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
-                          <label class="control-label col-md-4">Salary Remarks:</label>
-                          <div class="col-md-8">
-                            <textarea type="text" class="form-control input-sm" v-model="payRoll.remarks" placeholder="Remarks"></textarea>
+                        <label class="control-label col-md-4">Salary Remarks:</label>
+                        <div class="col-md-8">
+                          <textarea type="text" class="form-control input-sm" v-model="payRoll.remarks" placeholder="Remarks"></textarea>
                         </div>
                       </div>
 
                       <hr class="short alt">
-
-<!--                       <div class="section row mbn">
-                          <div class="col-sm-6 pull-right">
-                              <p class="text-left">
-                                  <button type="submit" name="edit_salary" class="btn btn-dark btn-gradient dark btn-block"><span class="glyphicons glyphicons-ok_2"></span> &nbsp; Update Salary
-                                  </button>
-                              </p>
-                          </div>
-                      </div> -->
                   </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+  </div>
 
 </section>
 

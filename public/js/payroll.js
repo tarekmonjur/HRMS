@@ -214,9 +214,9 @@ var work = new Vue({
       updateSalary(){
         this.payRoll.salary = Math.round(this.payRoll.perday_salary * this.payRoll.payment_days);
         this.payRoll.perhour_salary = Math.round(this.payRoll.perday_salary / this.payRoll.work_hour);
-        this.payRoll.gross_salary = Math.round(this.payRoll.salary + this.payRoll.total_allowance);
-        this.payRoll.net_salary = Math.round(this.payRoll.salary - this.payRoll.total_deduction);
         this.payRoll.overtime_amount = Math.round(this.payRoll.perhour_salary * this.payRoll.overtime_hour);
+        this.payRoll.gross_salary = Math.round(this.payRoll.salary + this.payRoll.total_allowance + this.payRoll.overtime_amount);
+        this.payRoll.net_salary = Math.round(this.payRoll.salary - this.payRoll.total_deduction);
         this.payRoll.total_salary = Math.round((this.payRoll.salary + this.payRoll.overtime_amount + this.payRoll.total_allowance) - this.payRoll.total_deduction);
       },
 
