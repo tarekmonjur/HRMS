@@ -20,7 +20,7 @@ class CreateWorkShiftEmployeeMapsTable extends Migration
             $table->string('work_days')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->boolean('status')->default(1)->comment='0=delete, 1=active';
+            $table->boolean('status')->default(1)->comment='0=history, 1=active';
             $table->integer('created_by')->default(0);    
             $table->integer('updated_by')->default(0);
             $table->timestamps();

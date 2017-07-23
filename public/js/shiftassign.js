@@ -4,11 +4,13 @@ $(document).on('ready',function(){
   var work = new Vue({
     el: '#shiftassign',
     data:{
+      index:null,
       isActive:0,
       workshifts:[],
       // workshift:[],
       employeeShifts:[],
       employeeShift:[],
+      histories:[],
       deleted:[],
       errors:[]
     },
@@ -99,6 +101,7 @@ $(document).on('ready',function(){
 
 
       getWorkAssign(modal_id,index){
+        this.index = index;
         this.employeeShift = $.extend(true,{},this.employeeShifts[index]);
         this.modal_open(modal_id);
       },
@@ -115,39 +118,8 @@ $(document).on('ready',function(){
 
 
       deleteWorkShift(index, id){
-
-        var _this = this;
-
-        swal({
-          title: "Are you sure?",
-          text: "You will not be able to recover this imaginary file!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Yes, delete it!",
-          cancelButtonText: "No, cancel please!",
-          closeOnConfirm: false,
-          closeOnCancel: false
-        },
-        function(isConfirm){
-          if (isConfirm){
-            axios.get('/shiftassign/delete/'+id).then((response) => {
-
-            }).catch((error)=>{
-            
-            });
-
-            _this.deleted.push(_this.employeeShift.work_shift[index].id);
-            _this.employeeShift.work_shift.splice(index,1);
-            swal("Deleted!", "Your imaginary file has been deleted.", "success");
-
-            setTimeout(function(){
-               window.location.reload(1);
-            }, 1000);
-          } else {
-              swal("Cancelled", "Your imaginary file is safe :)", "error");
-          }
-        });
+        this.deleted.push(this.employeeShift.work_shift[index].id);
+        this.employeeShift.work_shift.splice(index,1);
       },
 
 
@@ -185,7 +157,49 @@ $(document).on('ready',function(){
               this.errors = error.response.data;
           }
         });
-      }
+      },
+
+
+      historyWorkShift(index, id){
+        this.histories.push(this.employeeShift.work_shift[index].id);
+        // this.employeeShifts[this.index].work_shift.splice(index,1);
+        this.employeeShift.work_shift.splice(index,1);
+
+        // var _this = this;
+        // _this.employeeShifts[this.index].work_shift.splice(index,1);
+        // _this.employeeShift.work_shift.splice(index,1);
+        // swal({
+        //   title: "Are you sure?",
+        //   text: "History data not show here!",
+        //   type: "warning",
+        //   showCancelButton: true,
+        //   confirmButtonColor: "#DD6B55",
+        //   confirmButtonText: "Yes, history it!",
+        //   cancelButtonText: "No, cancel please!",
+        //   closeOnConfirm: false,
+        //   closeOnCancel: false
+        // },
+        // function(isConfirm){
+        //   if (isConfirm){
+        //     axios.get('/shiftassign/delete/'+id).then((response) => {
+        //       _this.employeeShift.work_shift.splice(index,1);
+        //       alert(index);
+        //       swal(response.data.message, "success");
+        //       // _this.showMessage(response.data);
+        //     }).catch((error)=>{
+        //       if(error.response.status == 500 || error.response.data.status == 'danger'){
+        //           var error = error.response.data;
+        //           // _this.showMessage(error);
+        //           swal("Cancelled", error.response.data.message, "error");
+        //       }else if(error.response.status == 422){
+        //           _this.errors = error.response.data;
+        //       }
+        //     });
+        //   }else{
+        //       swal("Cancelled", "Data cancel move to history", "error");
+        //   }
+        // });
+      },
 
 
     }

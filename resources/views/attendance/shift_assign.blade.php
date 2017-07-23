@@ -96,6 +96,7 @@
                   <div class="form-group">
                       <input type="hidden" name="user_id" :value="employeeShift.user_id">
                       <input type="hidden" name="deleted[]" v-for="de in deleted" :value="de">
+                      <input type="hidden" name="histories[]" v-for="hi in histories" :value="hi">
                   </div>
               </div>
 
@@ -149,7 +150,9 @@
                         <input type="text" :name="'work_shift['+indexs+'][end_date]'" v-on:mouseover="myDatePicker" class="myDatePicker form-control input-sm" v-model="work_shift.end_date" v-on:focusout="work_shift.end_date = $event.target.value" required="">
                       </td>
                       <td>
-                        <button v-on:click.prevent="deleteWorkShift(indexs, work_shift.id)"><span class="text-danger glyphicons glyphicons-bin"></span></button>
+                        <a title="Delete" class="btn" v-on:click.prevent="deleteWorkShift(indexs, work_shift.id)"><span class="text-danger glyphicons glyphicons-bin"></span></a>
+                        
+                        <a title="History" class="btn" v-on:click.prevent="historyWorkShift(indexs, work_shift.id)"><span class="text-danger fa fa-hdd-o"></span></a>
                       </td>
                     </tr>
                   </tbody>

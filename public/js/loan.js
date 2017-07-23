@@ -66,11 +66,11 @@ var work = new Vue({
       dataTableGenerate(){
         vueThis = this;
         if(this.dataTable){
-            setTimeout(function(){vueThis.dataTableCall();}, 1);
+            setTimeout(function(){vueThis.dataTableCall();}, 5);
           this.dataTable = false;
         }else{
              this.dataTableDestroy();
-             setTimeout(function(){vueThis.dataTableCall();}, 1);
+             setTimeout(function(){vueThis.dataTableCall();}, 5);
         }
       },
 
@@ -179,11 +179,12 @@ var work = new Vue({
         this.loadinShow('#loan_modal');
 
         axios.post('/loan/add',formData).then((response) => {
-          this.loan.unshift(response.data.data);
-          this.dataTableGenerate();
+          this.loans.unshift(response.data.data);
+          // console.log(response.data.data);
           jQuery(".mfp-close").trigger("click");
           this.showMessage(response.data);
           this.loadinHide('#loan_modal');
+          this.dataTableGenerate();
 
         }).catch((error)=>{
           this.loadinHide('#loan_modal');
