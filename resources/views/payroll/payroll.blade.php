@@ -292,14 +292,14 @@
                       <div class="form-group">
                         <label class="control-label col-md-4">Par Hour Salary:</label>
                         <div class="col-md-8">
-                          <input type="text" v-model="payRoll.perhour_salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                          <input type="text" v-model="payRoll.perhour_salary" readonly="readonly" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
                         <label class="control-label col-md-4">Salary:</label>
                         <div class="col-md-8">
-                          <input type="text" v-model="payRoll.salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                          <input type="text" v-model="payRoll.salary" readonly="readonly" class="form-control input-sm">
                         </div>
                       </div>
 
@@ -313,28 +313,28 @@
                       <div class="form-group">
                         <label class="control-label col-md-4">Over Time Amount:</label>
                         <div class="col-md-8">
-                          <input type="text" v-model="payRoll.overtime_amount" v-on:keyup="updateSalary" class="form-control input-sm">
+                          <input type="text" v-model="payRoll.overtime_amount" readonly="readonly" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
                         <label class="control-label col-md-4">Gross Salary:</label>
                         <div class="col-md-8">
-                          <input type="text" v-model="payRoll.gross_salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                          <input type="text" v-model="payRoll.gross_salary" readonly="readonly" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
                         <label class="control-label col-md-4">Net Salary:</label>
                         <div class="col-md-8">
-                          <input type="text" v-model="payRoll.net_salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                          <input type="text" v-model="payRoll.net_salary" readonly="readonly" class="form-control input-sm">
                         </div>
                       </div>
 
                       <div class="form-group">
                         <label class="control-label col-md-4">Total Salary:</label>
                         <div class="col-md-8">
-                          <input type="text" v-model="payRoll.total_salary" v-on:keyup="updateSalary" class="form-control input-sm">
+                          <input type="text" v-model="payRoll.total_salary" readonly="readonly" class="form-control input-sm">
                         </div>
                       </div>
 
