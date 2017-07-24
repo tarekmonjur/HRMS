@@ -211,7 +211,7 @@ class PayrollController extends Controller
     	// dd($allowance_and_deduction);
     	if(Carbon::parse($salary_month)->format('m') == Carbon::now()->format('m'))
     	{
-	    	$maybe_present = Carbon::parse(Carbon::parse($salary_month)->format('Y-m-t'))->diff(Carbon::now())->days;
+	    	$maybe_present =  $days - Carbon::now()->format('d');
     	}else{
     		$maybe_present = 0;
     	}
@@ -246,13 +246,13 @@ class PayrollController extends Controller
 	    		$attendance_present = $all_attendance->whereIn('observation',[1,5,6])->count();
 	    		$attendance_leave = $all_attendance->where('observation',2)->count();
 	    		$attendance_holiday = $all_attendance->where('observation',3)->count();
-	    		$attendance_weekend = $all_attendance->where('observation',4)->count();
+	    		$attendance_weekend = $all_attendance->whereIn('observation',[4,6])->count();
 	    		$attendance_late = $all_attendance->where('late_hour','!=',null)->count();
 
 	    		$attendance_present = $attendance_present + $maybe_present;
 
 	    		$total_attendance = $attendance_absent + $attendance_present + $attendance_leave + $attendance_holiday + $attendance_weekend;
-	    		$attendance_absent = $attendance_absent + ($days - $total_attendance);
+	    		// $attendance_absent = $attendance_absent + ($days - $total_attendance);
 	    		$payment_days = $days - $attendance_absent;
 
 	    		$attendances = [
