@@ -202,10 +202,10 @@
                     <td class="text-danger">Weekend</td>
                     <td v-text="report.weekend"></td>
                   </tr>
-                  <tr class="text-center">
+   <!--                <tr class="text-center">
                     <td><strong>Total Days</strong></td>
                     <td style="font-weight: bold" v-text="report.total"></td>
-                  </tr>
+                  </tr> -->
                   <tr class="text-center">
                     <td class="text-warning">Late</td>
                     <td v-text="report.late"></td>
