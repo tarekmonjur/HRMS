@@ -79,8 +79,6 @@ class LeaveTypeController extends Controller
             $sav->leave_type_created_by = Auth::user()->id;
             $sav->leave_type_status = 1;
             $sav->save();
-
-            //test start
             
             $effectedUsers = User::whereIn('employee_type_id', $request->emp_type)->where('status',1)->get();
 
@@ -95,7 +93,6 @@ class LeaveTypeController extends Controller
                 $savUser->save();
             }
 
-            //test end
             DB::commit();
             $data['title'] = 'success';
             $data['message'] = 'data successfully added!';

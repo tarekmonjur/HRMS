@@ -248,14 +248,14 @@
                         <div class="form-group">
                             <label for="duration" class="col-md-3 control-label">Number of Days</label>
                             <div class="col-md-9">
-                                <input name="duration" v-model="duration" class="form-control input-sm" type="number" placeholder="Number of days.">
+                                <input name="duration" disabled="" v-model="duration" class="form-control input-sm" type="number" placeholder="Number of days.">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="valid_after" class="col-md-3 control-label">Valid after(months)</label>
                             <div class="col-md-9">
-                                <input name="valid_after" class="form-control input-sm" v-model="valid_after" type="number" placeholder="Leave valid after how many months.">
+                                <input name="valid_after" disabled="" class="form-control input-sm" v-model="valid_after" type="number" placeholder="Leave valid after how many months.">
                             </div>
                         </div>
 
@@ -275,51 +275,51 @@
                         <div class="form-group">
                             <label for="" class="col-md-3 control-label">Type Details</label>
                             <div class="col-md-9">
-                                <textarea name="type_details" v-model="type_details" class="form-control input-sm" placeholder="Type Description"></textarea>
+                                <textarea name="type_details" disabled="" v-model="type_details" class="form-control input-sm" placeholder="Type Description"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="leave_type_with_out_pay" v-model="leave_type_with_out_pay" value="1"> Leave with out pay.
+                                <input type="checkbox" disabled="" name="leave_type_with_out_pay" v-model="leave_type_with_out_pay" value="1"> Leave with out pay.
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="is_earn" v-model="is_earn" value="1"> Is earn leave.
+                                <input type="checkbox" disabled="" name="is_earn" v-model="is_earn" value="1"> Is earn leave.
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="sellable" v-model="sellable" value="1"> Leave type is encashable.
+                                <input type="checkbox" disabled="" name="sellable" v-model="sellable" value="1"> Leave type is encashable.
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="max_sell_limit" class="col-md-3 control-label">Max encashable limit</label>
                             <div class="col-md-9">
-                                <input name="max_sell_limit" v-model="max_sell_limit" class="form-control input-sm" type="number" placeholder="Max sell limit.">
+                                <input name="max_sell_limit" disabled="" v-model="max_sell_limit" class="form-control input-sm" type="number" placeholder="Max sell limit.">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="carry_to_next_year" v-model="carry_to_next_year" value="1999"> Leave type is carry forward.
+                                <input type="checkbox" disabled="" name="carry_to_next_year" v-model="carry_to_next_year" value="1999"> Leave type is carry forward.
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="max_remain_limit" class="col-md-3 control-label">Max carry forward limit</label>
                             <div class="col-md-9">
-                                <input name="max_remain_limit" v-model="max_remain_limit" class="form-control input-sm" type="number" placeholder="Max remain limit.">
+                                <input name="max_remain_limit" disabled="" v-model="max_remain_limit" class="form-control input-sm" type="number" placeholder="Max remain limit.">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <input type="checkbox" name="include_holiday" v-model="include_holiday" value="1"> Leave calculate including holiday.
+                                <input type="checkbox" disabled="" name="include_holiday" v-model="include_holiday" value="1"> Leave calculate including holiday.
                             </div>
                         </div>
                         
