@@ -24,7 +24,7 @@ class CreateLeaveTypesTable extends Migration
             $table->boolean('leave_type_is_earn_leave')->default(0)->comment='earn leave=1 .. not earn leave = 0';
             $table->boolean('leave_type_is_sellable')->default(0)->comment='earn sellable=1 .. not sellable = 0';
             $table->integer('leave_type_max_sell_limit')->nullable();
-            $table->boolean('leave_type_is_remain')->default(0)->comment='carry to the next year or not=0';
+            $table->boolean('leave_type_is_remain')->default(0)->comment='carry to the next year CF=1 or not=0';
             $table->integer('leave_type_max_remain_limit')->nullable();
             $table->boolean('leave_type_include_holiday')->comment='calculate with weekend and holiday=1 .. or not=0';
             $table->string('leave_type_active_from_year');

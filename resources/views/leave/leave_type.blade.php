@@ -13,7 +13,6 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <span class="panel-title"> Leave Type</span>
-
                         <?php 
                           $chkUrl = \Request::segment(1);
                         ?>
@@ -22,6 +21,9 @@
                         @endif
                     </div>
                     <div class="panel-body">
+                    <span class="text-danger">
+                            <b>** If any one apply for leave using this type then u can not delete existing leave type.</b>
+                        </span>
                         <div id="showData">
                             <table class="table table-hover" id="datatable">
                                 <thead>
@@ -65,6 +67,9 @@
                                                 <i class="fa fa-edit"></i>
                                             </button>
                                         @endif
+                                            <button type="button" @click="wantToDelete(info.id)" class="btn btn-sm btn-danger">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -84,6 +89,9 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add Leave Type</h4>
+                    <span class="text-danger">
+                        <b>** Be careful ! After add data can't be edited.</b>
+                    </span>
                 </div>
                 <form class="form-horizontal" @submit.prevent="saveData('addFormData')" id="addFormData">
                     <div class="modal-body">
@@ -215,6 +223,9 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Edit Leave Type</h4>
+                    <span class="text-danger">
+                        <b>** Only Activation 'To Year' and 'Status' is editable.</b>
+                    </span>
                 </div>
                 
                 <form class="form-horizontal" @submit.prevent="updateData('updateFormData')" id="updateFormData">
@@ -230,7 +241,7 @@
                         <div class="form-group">
                             <label for="type_name" class="col-md-3 control-label">Type Name <span class="text-danger">*</span></label>
                             <div class="col-md-9">
-                                <input name="type_name" v-model="type_name" class="form-control input-sm" type="text" placeholder="Type name">
+                                <input name="type_name" disabled="" v-model="type_name" class="form-control input-sm" type="text" placeholder="Type name">
                             </div>
                         </div>
 
@@ -254,7 +265,7 @@
                                 @if(count($emp_types) > 0)
                                     @foreach($emp_types as $type)
                                         <div class="col-md-4">
-                                            <input type="checkbox" name="emp_type[]"  value="{{$type->id}}"> {{$type->type_name}}
+                                            <input type="checkbox" disabled="" name="emp_type[]"  value="{{$type->id}}"> {{$type->type_name}}
                                         </div>
                                     @endforeach
                                 @endif
@@ -311,17 +322,18 @@
                                 <input type="checkbox" name="include_holiday" v-model="include_holiday" value="1"> Leave calculate including holiday.
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="" class="col-md-3 control-label">Select Activation<span class="text-danger">*</span></label>
                             <div class="col-md-4">
-                                <select name="from_year" v-model="from_year" class="form-control input-sm" id="">
+                                <select name="from_year" disabled="" v-model="from_year" class="form-control input-sm" id="">
                                     <option value="">From Year</option>
                                     @for($i=2017; $i<=2030; $i++)
                                         <option value="{{$i}}">{{$i}}</option>
                                     @endfor
                                 </select>
                             </div>
+
                             <div class="col-md-4">
                                 <select name="to_year" v-model="to_year" class="form-control input-sm" id="">
                                     <option value="">To Year</option>

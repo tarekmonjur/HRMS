@@ -6,9 +6,15 @@
     <div class="panel-heading">
         <div class="panel-title">
             <span class="glyphicon glyphicon-tasks"></span>Loan Type
-            <span class="pull-right">
-              <a v-on:click="modal_open('#loan_type_modal'),loanType = []" onclick="document.getElementById('loan_type_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Loan Type</a>
-            </span>
+
+            <?php 
+              $chkUrl = \Request::segment(1);
+            ?>
+            @if(in_array($chkUrl."/add", session('userMenuShare')))
+              <span class="pull-right">
+                <a v-on:click="modal_open('#loan_type_modal'),loanType = []" onclick="document.getElementById('loan_type_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Loan Type</a>
+              </span>
+            @endif
         </div>
     </div>
     <div class="panel-body pn">
@@ -45,24 +51,30 @@
                    <td v-text="loanType.loan_type_name"></td>
                    <td v-text="loanType.loan_type_remarks"></td>
                    <td>
-                     <div class="btn-group pt5">
+                      @if(in_array($chkUrl."/edit", session('userMenuShare')))
+                      <div class="btn-group pt5">
                          <a class="btn btn-sm" :class="(loanType.loan_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,loanType.id)" :status="loanType.loan_type_status" v-text="(loanType.loan_type_status == 0)?'Active':'Inactive'"></a>
-                       </div>
+                      </div>
+                      @endif
                    </td>
                    <td v-html="getFullName(loanType.created_by)"></td>
                    <td v-html="getFullName(loanType.updated_by)"></td>
                    <td v-text="loanType.created_at"></td>
                    <td v-text="loanType.updated_at"></td>
                    <td>
-                      <div class="btn-group">
+                      @if(in_array($chkUrl."/edit", session('userMenuShare')))
+                        <div class="btn-group">
                            <a v-on:click="editLoanType(loanType.id, index, '#loan_type_modal'),loanType=[]" class="btn btn-sm btn-primary"><i class="glyphicons glyphicons-pencil"></i>
                            </a>
-                       </div>
-                       <div class="btn-group">
+                        </div>
+                      @endif
+                      @if(in_array($chkUrl."/delete", session('userMenuShare')))
+                        <div class="btn-group">
                            <a v-on:click="deleteLoanType(loanType.id,index)" class="btn btn-sm btn-danger">
                                <i class="glyphicons glyphicons-bin"></i>
                            </a>
-                       </div>
+                        </div>
+                      @endif
                    </td>
                 </tr>
             </tbody>

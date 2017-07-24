@@ -383,9 +383,9 @@ Route::group(['prefix' => '/leaveType', 'namespace' => 'Leave'],function (){
     Route::post('/add','LeaveTypeController@create');
     Route::get('/edit/{id}','LeaveTypeController@edit');
     Route::post('/edit','LeaveTypeController@update');
-    // Route::get('/delete/{id}','LeaveTypeController@delete');
+    Route::get('/delete/{id}','LeaveTypeController@delete');
 
-    Route::get('/calculateEarnLeave','LeaveTypeController@calculateEarnLeave');
+    // Route::get('/calculateEarnLeave','LeaveTypeController@calculateEarnLeave');
 });
 
 /*********...HRMS Leave Management - Leave...***********/
