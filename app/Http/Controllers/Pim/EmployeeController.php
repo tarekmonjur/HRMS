@@ -470,9 +470,7 @@ class EmployeeController extends Controller
     public function addPersonalInfo(EmployeePersonalInfoRequest $request){
        try {
             $request->offsetSet('created_by',$this->auth->id);
-            if($request->employee_type_id == 1 || $request->employee_type_id == 3){
-                $request->offsetSet('confirm_date', $request->joining_date);
-            }
+
             if(EmployeeDetail::create($request->all())){
                 $data['data'] = User::with('details.bloodGroup')->find($request->userId);
             }
