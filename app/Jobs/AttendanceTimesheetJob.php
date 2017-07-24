@@ -130,11 +130,12 @@ class AttendanceTimesheetJob implements ShouldQueue
             'leaves.leaveType',
             'leaves' => function($q){$q->where('employee_leave_status',1);},
             'workShifts' => function($q)use($start_date, $end_date){
-                $q->where(function($qu)use($start_date, $end_date){
-                    $qu->whereBetween('start_date',[$start_date, $end_date]);
-                })->orWhere(function($qu)use($start_date, $end_date){
-                    $qu->whereBetween('end_date',[$start_date, $end_date]);
-                })->where('status',1);
+                // $q->where(function($qu)use($start_date, $end_date){
+                //     $qu->whereBetween('start_date',[$start_date, $end_date]);
+                // })->orWhere(function($qu)use($start_date, $end_date){
+                //     $qu->whereBetween('end_date',[$start_date, $end_date]);
+                // })->where('status',1);
+                $q->where('status',1);
             }])->get();
 
         $get_holidays = DB::table('holidays')->where('holiday_status',1)->get();
