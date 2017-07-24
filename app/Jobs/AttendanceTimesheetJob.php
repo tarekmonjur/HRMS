@@ -128,7 +128,7 @@ class AttendanceTimesheetJob implements ShouldQueue
         $users = User::with([
             'attendance' => function($q)use($start_date, $end_date){$q->whereBetween('date',[$start_date, $end_date]);},
             'leaves.leaveType',
-            'leaves' => function($q){$q->where('employee_leave_status',1);},
+            'leaves' => function($q){$q->where('employee_leave_status',3);},
             'workShifts' => function($q)use($start_date, $end_date){
                 // $q->where(function($qu)use($start_date, $end_date){
                 //     $qu->whereBetween('start_date',[$start_date, $end_date]);
