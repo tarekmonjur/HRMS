@@ -6,12 +6,15 @@
     <div class="panel-heading">
         <div class="panel-title">
             <span class="glyphicon glyphicon-tasks"></span>Bonus Type
-            <span class="pull-right">
-              <a v-on:click="modal_open('#bonus_type_modal'),bonusType = []" onclick="document.getElementById('bonus_type_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Bonus Type</a>
-            </span>
+
             <?php 
               $chkUrl = \Request::segment(1);
             ?>
+            @if(in_array($chkUrl."/add", session('userMenuShare')))
+              <span class="pull-right">
+                <a v-on:click="modal_open('#bonus_type_modal'),bonusType = []" onclick="document.getElementById('bonus_type_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Bonus Type</a>
+              </span>
+            @endif
         </div>
     </div>
     <div class="panel-body pn">
@@ -48,9 +51,11 @@
                    <td v-text="bonusType. bonus_type_name"></td>
                    <td v-text="bonusType.bonus_type_remarks"></td>
                    <td>
+                      @if(in_array($chkUrl."/edit", session('userMenuShare')))
                       <div class="btn-group pt5">
                          <a class="btn btn-sm" :class="(bonusType.bonus_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,bonusType.id)" :status="bonusType.bonus_type_status" v-text="(bonusType.bonus_type_status == 0)?'Active':'Inactive'"></a>
                       </div>
+                      @endif
                    </td>
                    <td v-html="getFullName(bonusType.created_by)"></td>
                    <td v-html="getFullName(bonusType.updated_by)"></td>

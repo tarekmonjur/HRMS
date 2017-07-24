@@ -6,9 +6,15 @@
     <div class="panel-heading">
         <div class="panel-title">
             <span class="glyphicon glyphicon-tasks"></span>Increment Type
-            <span class="pull-right">
-              <a v-on:click="modal_open('#increment_type_modal'),incrementType = []" onclick="document.getElementById('increment_type_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Increment Type</a>
-            </span>
+
+            <?php 
+              $chkUrl = \Request::segment(1);
+            ?>
+            @if(in_array($chkUrl."/add", session('userMenuShare')))
+              <span class="pull-right">
+                <a v-on:click="modal_open('#increment_type_modal'),incrementType = []" onclick="document.getElementById('increment_type_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Increment Type</a>
+              </span>
+            @endif
         </div>
     </div>
     <div class="panel-body pn">
@@ -45,24 +51,30 @@
                    <td v-text="incrementType.increment_type_name"></td>
                    <td v-text="incrementType.increment_type_remarks"></td>
                    <td>
+                    @if(in_array($chkUrl."/edit", session('userMenuShare')))
                      <div class="btn-group pt5">
                          <a class="btn btn-sm" :class="(incrementType.increment_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,incrementType.id)" :status="incrementType.increment_type_status" v-text="(incrementType.increment_type_status == 0)?'Active':'Inactive'"></a>
                        </div>
+                    @endif
                    </td>
                    <td v-html="getFullName(incrementType.created_by)"></td>
                    <td v-html="getFullName(incrementType.updated_by)"></td>
                    <td v-text="incrementType.created_at"></td>
                    <td v-text="incrementType.updated_at"></td>
                    <td>
+                      @if(in_array($chkUrl."/edit", session('userMenuShare')))
                       <div class="btn-group">
                            <a v-on:click="editIncrementType(incrementType.id, index, '#increment_type_modal'),incrementType=[]" class="btn btn-sm btn-primary"><i class="glyphicons glyphicons-pencil"></i>
                            </a>
                        </div>
+                       @endif
+                       @if(in_array($chkUrl."/delete", session('userMenuShare')))
                        <div class="btn-group">
                            <a v-on:click="deleteIncrementType(incrementType.id,index)" class="btn btn-sm btn-danger">
                                <i class="glyphicons glyphicons-bin"></i>
                            </a>
                        </div>
+                       @endif
                    </td>
                 </tr>
             </tbody>
