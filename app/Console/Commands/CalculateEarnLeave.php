@@ -17,8 +17,8 @@ class CalculateEarnLeave extends Command
      *
      * @var string
      */
-    // protected $signature = 'calculate:earnLeave';
-    protected $signature = 'calculate:earnLeave {dbname}';
+    protected $signature = 'calculate:earnLeave';
+    // protected $signature = 'calculate:earnLeave {dbname}';
 
     /**
      * The console command description.
@@ -44,9 +44,9 @@ class CalculateEarnLeave extends Command
      */
     public function handle()
     {
-        // \Artisan::call("db:connect", ['database' => '1497516153_ALl_new_menu']);
+        \Artisan::call("db:connect", ['database' => '1500875307_Iddl_Test']);
 
-        \Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
+        // \Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
 
         $currentYear = date('Y');
         $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
