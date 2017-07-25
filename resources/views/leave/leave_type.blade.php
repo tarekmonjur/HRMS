@@ -67,9 +67,11 @@
                                                 <i class="fa fa-edit"></i>
                                             </button>
                                         @endif
+                                        @if(in_array($chkUrl."/delete", session('userMenuShare')))
                                             <button type="button" @click="wantToDelete(info.id)" class="btn btn-sm btn-danger">
                                             <i class="fa fa-trash-o"></i>
                                             </button>
+                                        @endif
                                         </td>
                                     </tr>
                                 </tbody>

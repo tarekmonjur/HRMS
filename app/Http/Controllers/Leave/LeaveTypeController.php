@@ -17,7 +17,7 @@ class LeaveTypeController extends Controller
 	public function __construct()
     {
         $this->middleware('auth:hrms');
-        // $this->middleware('CheckPermissions', ['except' => ['getAllData']]);
+        $this->middleware('CheckPermissions', ['except' => ['getAllData']]);
 
         $this->middleware(function($request, $next){
             $this->auth = Auth::guard('hrms')->user();

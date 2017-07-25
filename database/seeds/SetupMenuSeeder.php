@@ -1,19 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
+//===== SQL FILE NAME WILL BE : menus.sql ===============
+//Copy ONLY SQL portion and save as menus.sql and import it in menus table
+//=======@@@@@@@========= Start ========@@@@@@@@=========
 
-class SetupMenuSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-            //===== menus.sql ===============
-        //======= ******** start ****** =====
-//       INSERT INTO `menus` (`id`, `menu_parent_id`, `module_id`, `menu_name`, `menu_url`, `menu_section_name`, `menu_icon_class`, `menu_status`, `created_at`, `updated_at`) VALUES
+// INSERT INTO `menus` (`id`, `menu_parent_id`, `module_id`, `menu_name`, `menu_url`, `menu_section_name`, `menu_icon_class`, `menu_status`, `created_at`, `updated_at`) VALUES
 // (1, 0, 1, 'View', 'promotion/index', 'Transfer / Promotion', 'fa fa-level-up', 1, NULL, NULL),
 // (2, 0, 1, 'View', 'employee/index', 'Employee', 'fa fa-level-up', 1, NULL, NULL),
 // (3, 1, 1, 'Add', 'promotion/add', 'Transfer / Promotion', 'fa fa-level-up', 1, NULL, NULL),
@@ -128,12 +119,7 @@ class SetupMenuSeeder extends Seeder
 // (106, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 // (107, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 
-// (108, 0, 4, 'View', 'payroll/salaries', 'Salaries', 'fa fa-level-up', 1, NULL, NULL);
+// (108, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
+// (109, 15, 5, 'Delete', 'leaveType/delete', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-        //======end========
-    }
-}
+// ========@@@@@@@======== END OF PAGE ==========@@@@@@==========
