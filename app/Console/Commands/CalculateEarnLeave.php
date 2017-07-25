@@ -55,6 +55,9 @@ class CalculateEarnLeave extends Command
                 $dbName = $info->database_name;
                 \Artisan::call("db:connect", ['database' => $dbName]);
 
+                //initialy make ther counter ZERO
+                $earnLeaves = 0;
+
                 $currentYear = date('Y');
                 $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
                 $current_date = $date->format('Y-m-d'); 
