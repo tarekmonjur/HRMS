@@ -37,17 +37,20 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('active:weekend',['dbname' => '1497516153_ALl_new_menu'])
+        $schedule->command('active:weekend')
                  ->timezone('Asia/Dhaka')
                  ->everyMinute();
 
-        $schedule->command('calculate:earnLeave',['dbname' => '1497516153_ALl_new_menu'])
+        $schedule->command('calculate:earnLeave')
                  ->timezone('Asia/Dhaka')
                  ->everyMinute();
         
-        $schedule->command('attendance:timesheet',['dbname' => '1497516153_ALl_new_menu'])->cron('* * * * * *');
+        $schedule->command('attendance:timesheet')->cron('* * * * * *');
+
+        $schedule->command('attendance:archive')->everyMinute();
         
-        $schedule->command('attendance:archive', ['dbname' => '1497516153_ALl_new_menu'])->everyMinute();
+        // $schedule->command('attendance:archive', ['dbname' => '1497516153_ALl_new_menu'])->everyMinute();
+        
 
     }
 
