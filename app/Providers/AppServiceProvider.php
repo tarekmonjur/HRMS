@@ -6,12 +6,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
-use App\Models\Module;
-use App\Models\Menu;
-use App\Models\UserPermission;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Artisan;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
