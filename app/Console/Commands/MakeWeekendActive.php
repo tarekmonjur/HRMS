@@ -12,14 +12,14 @@ class MakeWeekendActive extends Command
      *
      * @var string
      */
-    protected $signature = 'active:weekend';
+    protected $signature = 'active:weekend  {dbname}?';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Make Weekend Active';
 
     /**
      * Create a new command instance.
@@ -38,7 +38,7 @@ class MakeWeekendActive extends Command
      */
     public function handle()
     {
-        \Artisan::call("db:connect", ['database' => '1497516153_ALl_new_menu']);
+        \Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
 
         $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
         $current_date = $date->format('Y-m-d');

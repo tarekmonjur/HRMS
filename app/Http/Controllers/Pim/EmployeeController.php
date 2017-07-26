@@ -25,7 +25,9 @@ use App\Models\UserLeaveTypeMap;
 
 use App\Services\CommonService;
 use App\Services\PermissionService;
+
 use App\Jobs\UserEmailUpdate;
+use App\Jobs\CalculateEarnLeaveJob;
 
 use App\Http\Requests\EmployeeBasicInfoRequest;
 use App\Http\Requests\EmployeePersonalInfoRequest;
@@ -77,6 +79,7 @@ class EmployeeController extends Controller
      * @return $this
      */
     public function index(){
+
         $data['title'] = 'Employee List';
         $data['users'] = User::with('designation','createdBy','updatedBy')->where('status','!=',2)->orderBy('id','desc')->get();
         $data['modules_permission'] = Module::with('menus','menus.child_menu')->where('module_status', 1)->get();
@@ -264,6 +267,9 @@ class EmployeeController extends Controller
                 UserEmployeeTypeMap::create($request->all());
             }
 
+            //Just updating EarnLeaveJOb
+            dispatch(new CalculateEarnLeaveJob());
+            
             DB::commit();
 
             if($request->ajax()){
@@ -370,7 +376,6 @@ class EmployeeController extends Controller
             }
         }
         //leave end
-    
     }
 
     public function insertLeavePermissionEdit($user, $designation_id, $employee_type_id, $oldEmpType){
@@ -1129,6 +1134,9 @@ class EmployeeController extends Controller
                     UserEmployeeTypeMap::create($request->all());
                 }
             }
+
+            //Just updating EarnLeaveJOb
+            dispatch(new CalculateEarnLeaveJob());
 
             DB::commit();
 
