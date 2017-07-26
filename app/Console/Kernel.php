@@ -46,29 +46,27 @@ class Kernel extends ConsoleKernel
             foreach($databases as $database){
                 $schedule->command('active:weekend '.$database->database_name)
                         // ->timezone('Asia/Dhaka')
-                        ->cron('* * * * * *');
-                        // ->twiceDaily(1, 13);
+                        // ->cron('* * * * * *');
+                         ->twiceDaily(1, 13);
 
                 $schedule->command('calculate:earnLeave '.$database->database_name)
                         // ->timezone('Asia/Dhaka')
-                        ->cron('* * * * * *');
-                        // ->twiceDaily(1, 13);
+                        // ->cron('* * * * * *');
+                         ->twiceDaily(1, 13);
 
                 $schedule->command('attendance:timesheet '.$database->database_name)
-                    ->cron('* * * * * *');
-                    // ->twiceDaily(1, 13);
+                    // ->cron('* * * * * *');
+                     ->twiceDaily(1, 13);
             
                 $schedule->command('attendance:archive '.$database->database_name)
-                        ->cron('* * * * * *');
-                        // ->twiceDaily(1, 13);
+                        // ->cron('* * * * * *');
+                         ->twiceDaily(1, 13);
 
                 $schedule->command('salary:increment '.$database->database_name)
-                    ->cron('* * * * * *');
-                    // ->twiceDaily(1, 13);
+                    // ->cron('* * * * * *');
+                     ->twiceDaily(1, 13);
             }
         }
-
-
 
     }
 
