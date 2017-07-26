@@ -4,7 +4,7 @@
 Route::group(['prefix'=>'setup','namespace'=>'Setup\Auth'], function(){
 	Route::get('login', 'LoginController@showLoginForm');
 	Route::post('login', 'LoginController@login');
-	Route::post('logout', 'LoginController@logout');
+    Route::post('logout', 'LoginController@logout');
 
 	//Password Reset Routes...
 	Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');

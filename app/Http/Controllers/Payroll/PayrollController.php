@@ -246,14 +246,17 @@ class PayrollController extends Controller
 	    		$attendance_present = $all_attendance->whereIn('observation',[1,5,6])->count();
 	    		$attendance_leave = $all_attendance->where('observation',2)->count();
 	    		$attendance_holiday = $all_attendance->where('observation',3)->count();
-	    		$attendance_weekend = $all_attendance->whereIn('observation',[4,6])->count();
+                $attendance_only_weekend = $all_attendance->whereIn('observation',4)->count();
+	    		$attendance_present_weekend = $all_attendance->whereIn('observation',6)->count();
 	    		$attendance_late = $all_attendance->where('late_hour','!=',null)->count();
 
 	    		$attendance_present = $attendance_present + $maybe_present;
 
-	    		$total_attendance = $attendance_absent + $attendance_present + $attendance_leave + $attendance_holiday + $attendance_weekend;
-	    		// $attendance_absent = $attendance_absent + ($days - $total_attendance);
-	    		$payment_days = $days - $attendance_absent;
+	    		$total_attendance = $attendance_absent + $attendance_present + $attendance_leave + $attendance_holiday + $attendance_only_weekend;
+                $attendance_weekend = $attendance_only_weekend + $attendance_present_weekend;
+
+	    		$attendance_absent = $attendance_absent + ($days - $total_attendance);
+	    		$payment_days = $attendance_present + $attendance_weekend + $attendance_leave;
 
 	    		$attendances = [
 	    			'attendance_absent' => $attendance_absent,

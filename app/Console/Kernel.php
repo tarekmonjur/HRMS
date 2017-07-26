@@ -10,6 +10,7 @@ use App\Console\Commands\CalculateEarnLeave;
 use App\Console\Commands\MakeWeekendActive;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -37,17 +38,37 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('active:weekend',['dbname' => '1497516153_ALl_new_menu'])
-                 ->timezone('Asia/Dhaka')
-                 ->everyMinute();
 
-        $schedule->command('calculate:earnLeave',['dbname' => '1497516153_ALl_new_menu'])
-                 ->timezone('Asia/Dhaka')
-                 ->everyMinute();
-        
-        $schedule->command('attendance:timesheet',['dbname' => '1497516153_ALl_new_menu'])->cron('* * * * * *');
-        
-        $schedule->command('attendance:archive', ['dbname' => '1497516153_ALl_new_menu'])->everyMinute();
+        if(\Schema::hasTable('configs'))
+        {
+            $databases = DB::table('configs')->get();
+
+            foreach($databases as $database){
+                $schedule->command('active:weekend '.$database->database_name)
+                        // ->timezone('Asia/Dhaka')
+                        ->cron('* * * * * *');
+                        // ->twiceDaily(1, 13);
+
+                $schedule->command('calculate:earnLeave '.$database->database_name)
+                        // ->timezone('Asia/Dhaka')
+                        ->cron('* * * * * *');
+                        // ->twiceDaily(1, 13);
+
+                $schedule->command('attendance:timesheet '.$database->database_name)
+                    ->cron('* * * * * *');
+                    // ->twiceDaily(1, 13);
+            
+                $schedule->command('attendance:archive '.$database->database_name)
+                        ->cron('* * * * * *');
+                        // ->twiceDaily(1, 13);
+
+                $schedule->command('salary:increment '.$database->database_name)
+                    ->cron('* * * * * *');
+                    // ->twiceDaily(1, 13);
+            }
+        }
+
+
 
     }
 

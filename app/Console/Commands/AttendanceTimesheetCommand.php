@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Jobs\AttendanceTimesheetJob;
+
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\Command;
 
 class AttendanceTimesheetCommand extends Command
@@ -38,8 +40,8 @@ class AttendanceTimesheetCommand extends Command
      */
     public function handle()
     {
-        \Config::set('database.connections.mysql_hrms.strict',false);
-        \Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
+        Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
         dispatch(new AttendanceTimesheetJob());
+        // echo \DB::connection()->getDatabaseName();exit;
     }
 }

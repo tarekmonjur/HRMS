@@ -73,20 +73,22 @@ class DebitProvidentFundToSalaryGenerate implements ShouldQueue
                             ->whereBetween('pf_effective_date',[$start_date,$end_date])
                             ->first();
 
-                        $saveData = [
-                            'provident_fund_id' => $ProvidentFund->id,
-                            'pf_percent' => $provident_fund['percent'],
-                            'pf_amount' => $provident_fund['amount'],
-                            'pf_interest_percent' => 0.00,
-                            'pf_interest_amount' => 0.00,
-                            'pf_debit' => 0.00,
-                            'pf_credit' => $provident_fund['amount'],
-                            'pf_date' => $this->salaries['salary_month'],
-                            'pf_observation' => 1,
-                            'pf_remarks' => 'amount credit for monthly salary',
-                            'created_at' => Carbon::now()->format('Y-m-d'),
-                        ];
-                        PfCalculation::insert($saveData);
+                        if($ProvidentFund){    
+                            $saveData = [
+                                'provident_fund_id' => $ProvidentFund->id,
+                                'pf_percent' => $provident_fund['percent'],
+                                'pf_amount' => $provident_fund['amount'],
+                                'pf_interest_percent' => 0.00,
+                                'pf_interest_amount' => 0.00,
+                                'pf_debit' => 0.00,
+                                'pf_credit' => $provident_fund['amount'],
+                                'pf_date' => $this->salaries['salary_month'],
+                                'pf_observation' => 1,
+                                'pf_remarks' => 'amount credit for monthly salary',
+                                'created_at' => Carbon::now()->format('Y-m-d'),
+                            ];
+                            PfCalculation::insert($saveData);
+                        }
                     }
                 }
             }
