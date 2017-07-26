@@ -212,10 +212,7 @@
                                                                 <span class="caret"></span>
                                                                 <span class="sr-only">Toggle Dropdown</span>
                                                                 </button>
-                                                                <?php 
-                                                                  $chkUrl = "leave/index";
-                                                                ?>
-                                                                @if(in_array($chkUrl, session('userMenuShare')))
+                                                                
                                                                 <ul class="dropdown-menu toggle-cls" role="menu">
                                                                     <li>
                                                                       <a @click="changeStatus({{$info->id}}, 1)" v-show="{{$info->employee_leave_status}} != 1 && {{$info->employee_leave_status}} != 2">Pending</a>
@@ -227,7 +224,6 @@
                                                                       <a @click="changeStatus({{$info->id}}, 4)" v-show="{{$info->employee_leave_status}} != 4">Cancel</a>
                                                                     </li>
                                                                 </ul>
-                                                                @endif
                                                             </div>
                                                         </td>
                                                         <td>
@@ -317,7 +313,6 @@
                                                                 <span class="sr-only">Toggle Dropdown</span>
                                                                 </button>
                                                                 
-                                                                @if($loggedInEmp != $info->userName->id)
                                                                 <ul class="dropdown-menu toggle-cls" role="menu">
                                                                     <li>
                                                                       <a @click="changeStatus({{$info->id}}, 1)" v-show="{{$info->employee_leave_status}} != 1 && {{$info->employee_leave_status}} != 2">Pending</a>
@@ -329,7 +324,6 @@
                                                                       <a @click="changeStatus({{$info->id}}, 4)" v-show="{{$info->employee_leave_status}} != 4">Cancel</a>
                                                                     </li>
                                                                 </ul>
-                                                                @endif
                                                             </div>
                                                         </td>
                                                         <td>
