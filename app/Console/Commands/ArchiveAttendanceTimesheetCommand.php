@@ -41,5 +41,6 @@ class ArchiveAttendanceTimesheetCommand extends Command
         \Config::set('database.connections.mysql_hrms.strict',false);
         \Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
         dispatch(new ArchiveAttendanceTimesheetJob());
+        // echo \DB::connection()->getDatabaseName();exit;
     }
 }
