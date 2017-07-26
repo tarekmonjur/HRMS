@@ -119,7 +119,7 @@
 // (106, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 // (107, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
 
-// (108, 104, 6, 'Edit', 'settings/edit', 'Basic Settings', 'glyphicons glyphicons-settings', 1, NULL, NULL),
+// (108, 0, 4, 'View', 'payroll/salaries', 'Salaries', 'fa fa-level-up', 1, NULL, NULL),
 // (109, 15, 5, 'Delete', 'leaveType/delete', 'Leave Type', 'fa fa-level-up', 1, NULL, NULL);
 
 // ========@@@@@@@======== END OF PAGE ==========@@@@@@==========

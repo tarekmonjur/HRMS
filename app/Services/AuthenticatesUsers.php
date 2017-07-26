@@ -27,7 +27,7 @@ trait AuthenticatesUsers
      */
     public function showLoginForm()
     {
-       Artisan::call("db:connect");
+        Artisan::call("db:connect");
         return view('auth.login');
     }
 

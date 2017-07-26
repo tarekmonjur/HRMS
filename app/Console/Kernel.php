@@ -38,7 +38,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
         if(\Schema::hasTable('configs'))
         {
             $databases = DB::table('configs')->get();
