@@ -49,8 +49,7 @@ class AttendanceController extends Controller
 
 
     public function index(){
-        // dispatch(new AttendanceTimesheetJob());
-        // dispatch(new ArchiveAttendanceTimesheetJob());
+        dispatch(new AttendanceTimesheetJob());
 
     	$data['sidebar_hide'] = true;
     	return view('attendance.attendance')->with($data);
@@ -432,7 +431,7 @@ class AttendanceController extends Controller
             Attendance::whereIn('user_id',$userIds)->whereIn('date',$dates)->delete();
 
             Attendance::insert($csvContent);
-            //dispatch(new AttendanceTimesheetJob($job_call = 'csv'));
+            // dispatch(new AttendanceTimesheetJob($job_call = 'csv'));
             $request->session()->flash('success','Attendance successfully uploaded!');
         }
 
