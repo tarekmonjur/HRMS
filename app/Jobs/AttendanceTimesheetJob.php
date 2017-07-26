@@ -24,18 +24,14 @@ class AttendanceTimesheetJob implements ShouldQueue
 
     protected $calculateMonth;
 
-    protected $job_call;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($job_call = null)
+    public function __construct()
     {
         $this->calculateMonth = \Config::get('hrms.attendance_calculate_month');
-        $this->job_call = $job_call;
-        // dd($this->job_call);
     }
 
     /**
@@ -49,69 +45,48 @@ class AttendanceTimesheetJob implements ShouldQueue
         $end_date = $today_date;
         $start_date = Carbon::now()->subMonths($this->calculateMonth)->format('Y-m-d');
 
-        // $attendance  = $this->attendance($start_date, $end_date);
-
-        // $attendance = collect($attendance);
-        // $today_leaves = $attendance->where('observation',2)->where('date', $today_date)->all();
-        // $prev_leaves = $attendance->where('observation',2)->where('date','!=', $today_date)->all();
-        // $today_attendance = $attendance->where('date', $today_date)->all();
-        // $userIds = collect($today_attendance)->pluck('user_id')->toArray();
-
         $attendances  = $this->attendance($start_date, $end_date);
-        // dd($attendances);
 
         $today_attendance = [];
-        $prev_attendance = [];
-        $today_leaves = [];
         $prev_leaves = [];
+        $cancel_leaves = [];
+        $prev_attendance = [];
         $userIds = [];
+
+        $AttendanceTimesheet = AttendanceTimesheet::whereBetween('date',[$start_date, $end_date])->get();
 
         foreach($attendances as $attendance){
             if($attendance['date'] == $today_date){
-                if($attendance['observation'] == 2){
-                    $today_leaves[] = $attendance;
-                }else{
-                    $today_attendance[] = $attendance;
-                    $userIds[] = $attendance['user_id'];
-                }
+                $today_attendance[] = $attendance;
+                $userIds[] = $attendance['user_id'];
             }else{
-                if($attendance['observation'] == 2){
-                    $prev_leaves[] = $attendance;
+                if($attendance['observation'] == 10){
+                    $cancel_leaves[] = $attendance;
                 }else{
-                    $prev_attendance[] = $attendance;
+                    $timesheet_attendance = $AttendanceTimesheet->where('user_id', $attendance['user_id'])->where('date', $attendance['date'])->first();
+                    if(count($timesheet_attendance) > 0){
+                        if($timesheet_attendance->observation != $attendance['observation']){
+                            AttendanceTimesheet::where('user_id',$attendance['user_id'])->where('date',$attendance['date'])->update($attendance);
+                        }
+                    }else{
+                        AttendanceTimesheet::insert($attendance);
+                    }
                 }
             }
         }
-
-        $AttendanceTimesheet = AttendanceTimesheet::whereBetween('date',[$start_date, $end_date])->pluck('date')->toArray();
-        $prev_attendance = collect($prev_attendance);
-        // dd($prev_attendance);
-        // disable this when endable previous attendance data
-        $prev_attendance_data = $prev_attendance->whereNotIn('date', $AttendanceTimesheet)->all();
-        // dd($prev_attendance_data);
-        // dd($userIds);
-        // dd($today_attendance);
-
-        /* endable for reset previous attendance data */
-        if($this->job_call == 'csv'){
-            AttendanceTimesheet::whereIn('date', $AttendanceTimesheet)->delete();
-            $prev_attendance_data = $prev_attendance->toArray();
-        }
-       
-
-        if(count($userIds) > 0)
-            AttendanceTimesheet::where('date',$today_date)->whereIn('user_id',$userIds)->delete();
-
-        if(count($prev_attendance_data) > 0)
-            AttendanceTimesheet::insert($prev_attendance_data);
-
-        if(count($today_attendance) > 0)
-            AttendanceTimesheet::insert($today_attendance);
-
-        if(count($today_leaves) > 0)
-            AttendanceTimesheet::insert($today_leaves);
         
-        foreach ($prev_leaves as $info) {
+       
+        if(count($userIds) > 0){
+            AttendanceTimesheet::where('date',$today_date)->whereIn('user_id',$userIds)->delete();
+        }
+
+        if(count($today_attendance) > 0){
+            AttendanceTimesheet::insert($today_attendance);
+        }
+
+        // update cancel leaves data
+        foreach ($cancel_leaves as $info) {
+            $info['observation'] = 0;
             AttendanceTimesheet::where('user_id',$info['user_id'])->where('date',$info['date'])->update($info);
         }
 
@@ -129,14 +104,12 @@ class AttendanceTimesheetJob implements ShouldQueue
             'attendance' => function($q)use($start_date, $end_date){$q->whereBetween('date',[$start_date, $end_date]);},
             'leaves.leaveType',
             'leaves' => function($q){$q->where('employee_leave_status',3);},
+            'cancel_leaves' => function($q){$q->where('employee_leave_status',4);},
             'workShifts' => function($q)use($start_date, $end_date){
-                // $q->where(function($qu)use($start_date, $end_date){
-                //     $qu->whereBetween('start_date',[$start_date, $end_date]);
-                // })->orWhere(function($qu)use($start_date, $end_date){
-                //     $qu->whereBetween('end_date',[$start_date, $end_date]);
-                // })->where('status',1);
                 $q->where('status',1);
             }])->get();
+
+        // print_r($users);
 
         $get_holidays = DB::table('holidays')->where('holiday_status',1)->get();
         $holidays = $this->generateHoliday($get_holidays);
@@ -148,9 +121,17 @@ class AttendanceTimesheetJob implements ShouldQueue
             $attendance_array = $user->attendance->pluck('date')->toArray();
             $attendance_list = $user->attendance;
             $leaves = $this->generateLeaves($user->leaves);
+            // dd($leaves);
+            if(count($user->cancel_leaves) > 0){
+                // print_r($user->cancel_leaves);
+                $leave_user_id = $user->cancel_leaves[0]->user_id;
+                $cancel_leaves = $this->generateLeaves($user->cancel_leaves);
+            }else{
+                $cancel_leaves = [];
+            }
             $weekends = $this->generateWeekend($user->workShifts, $days, $company_weekend_days);
-            // dd($attendance_array);
             // print_r($weekends);
+            // print_r($user->cancel_leaves);
 
             foreach($days as $key => $day){
                 $leave_type = '';
@@ -159,6 +140,8 @@ class AttendanceTimesheetJob implements ShouldQueue
                     if(array_key_exists($day, $leaves)){
                         $observation = 2;
                         $leave_type = $leaves[$day];
+                    }elseif(array_key_exists($day,$cancel_leaves)){
+                            $observation = 10; //for cancel leaves
                     }elseif(in_array($day,$holidays)){
                         $observation = 3;
                     }elseif(in_array($day, $weekends)){
@@ -180,6 +163,7 @@ class AttendanceTimesheetJob implements ShouldQueue
                     ];
 
                 }else{
+                    
                     if(in_array($day, $holidays)){
                         $observation = 5;
                     }elseif(in_array($day,$weekends)){
@@ -189,6 +173,7 @@ class AttendanceTimesheetJob implements ShouldQueue
                     }
 
                     $attendance = $attendance_list->where('date',$day)->first();
+                    
                     $attendanceResult[] = [
                         // 'id' => $attendance->id,
                         'user_id' => $attendance->user_id,
@@ -206,7 +191,6 @@ class AttendanceTimesheetJob implements ShouldQueue
         // print_r($attendanceResult);
         // dd($attendanceResult);
         }
-
         return $attendanceResult;
     }
 

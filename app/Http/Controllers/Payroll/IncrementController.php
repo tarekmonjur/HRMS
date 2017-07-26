@@ -30,7 +30,8 @@ class IncrementController extends Controller
 
     public function index(Request $request)
     {
-        // \Artisan::call('salary:increment');
+        \Artisan::call('salary:increment');
+        
     	if($request->ajax()){
     		return Increment::with('user','incrementType','approvedBy','createdBy','updatedBy')->orderBy('id','desc')->get();
     	}

@@ -41,8 +41,6 @@ trait CommonService
     public function settings(){
         $settings = Setting::all();
         foreach ($settings as $setting) {
-            // $settingData[$setting->field_name] = $setting->field_value;
-            // \Config::set('hrms.'.$setting->field_name,$setting->field_value);
             Session([$setting->field_name => $setting->field_value]);
         }
     }

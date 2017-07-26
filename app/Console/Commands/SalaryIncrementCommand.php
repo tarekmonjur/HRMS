@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Increment;
+use App\Jobs\SalaryIncrementJob;
+
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\Command;
 
 class SalaryIncrementCommand extends Command
@@ -14,7 +14,7 @@ class SalaryIncrementCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'salary:increment';
+    protected $signature = 'salary:increment {dbname}?';
 
     /**
      * The console command description.
@@ -40,29 +40,13 @@ class SalaryIncrementCommand extends Command
      */
     public function handle()
     {
-        $toDate = Carbon::now()->format('Y-m-d');
-
         \Config::set('database.connections.mysql_hrms.strict',false);
-        \Artisan::call("db:connect", ['database' => '1489485338_afc_health']);
+        Artisan::call("db:connect", ['database' => $this->argument('dbname')]);
 
-        $increments = Increment::select('increments.id','user_id', \DB::raw('(SUM(increment_amount) + basic_salary) as total_increments'))
-                        ->where('approved_by','!=',0)
-                        ->where('increment_status',0)
-                        ->where('increment_effective_date',$toDate)
-                        ->join('users','users.id','=','increments.user_id')
-                        ->groupBy('user_id')
-                        ->get();
-        // dd($increments);
-        // \Config::set('database.connections.mysql_hrms.strict',true);
-        // \Artisan::call("db:connect", ['database' => '1489485338_afc_health']);
+        dispatch(new SalaryIncrementJob());
 
-        $increments_id = [];
-        foreach($increments as $info){  
-            $increments_id[] = $info->id; 
-            $updateData = ['basic_salary' => $info->total_increments];
-            User::where('id',$info->user_id)->update($updateData);
-        }
-        Increment::whereIn('id',$increments_id)->update(['increment_status'=>1]);
+        \Config::set('database.connections.mysql_hrms.strict',true);
+        // echo \DB::connection()->getDatabaseName();exit;
        
     }
 

@@ -234,6 +234,10 @@ class User extends Authenticatable
 
     public function leaves(){
         return $this->hasMany('App\Models\Leave');
+    }
+
+    public function cancel_leaves(){
+        return $this->hasMany('App\Models\Leave');
     } 
 
 
