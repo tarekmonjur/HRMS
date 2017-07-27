@@ -478,7 +478,9 @@ new Vue({
         var formData = new FormData(e.target);
         formData.append('file', document.getElementById('file').files[0]);
 
-        axios.post('/leave/edit', formData)
+        var pathArray = window.location.pathname.split( '/' );
+
+        axios.post("/"+pathArray[1]+"/edit", formData)
         .then(response => { 
            
           swal({
