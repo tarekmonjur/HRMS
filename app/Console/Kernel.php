@@ -56,19 +56,17 @@ class Kernel extends ConsoleKernel
 
                 $schedule->command('attendance:timesheet '.$database->database_name)
                     // ->cron('* * * * * *');
-                    ->twiceDaily(1, 13);
+                     ->twiceDaily(1, 13);
             
                 $schedule->command('attendance:archive '.$database->database_name)
                         // ->cron('* * * * * *');
-                        ->twiceDaily(1, 13);
+                         ->twiceDaily(1, 13);
 
                 $schedule->command('salary:increment '.$database->database_name)
                     // ->cron('* * * * * *');
-                    ->twiceDaily(1, 13);
+                     ->twiceDaily(1, 13);
             }
         }
-
-
 
     }
 

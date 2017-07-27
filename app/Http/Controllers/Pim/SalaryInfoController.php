@@ -45,18 +45,25 @@ class SalaryInfoController extends Controller
             'info_type' => 'required'
         ]);
 
-
         try{
+            $chk = BasicSalaryInfo::where('salary_info_name', $request->info_name)->first();
 
-            $data['data'] = BasicSalaryInfo::create([
-                'salary_info_name' => $request->info_name,
-                'salary_info_amount' => $request->info_amount,
-                'salary_info_amount_status' => $request->info_status,
-                'salary_info_type' => $request->info_type,
-            ]);
-        
-            $data['title'] = 'success';
-            $data['message'] = 'salary info successfully added!';
+            if(count($chk) > 0){
+                $data['title'] = 'danger';
+                $data['message'] = 'Duplicate entry !';
+            }
+            else{
+                $data['data'] = BasicSalaryInfo::create([
+                    'salary_info_name' => $request->info_name,
+                    'salary_info_amount' => $request->info_amount,
+                    'salary_info_amount_status' => $request->info_status,
+                    'salary_info_type' => $request->info_type,
+                ]);
+            
+                $data['title'] = 'success';
+                $data['message'] = 'salary info successfully added!';
+            }
+                
             return response()->json($data, 200);
 
         }catch (\Exception $e) {

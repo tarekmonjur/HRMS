@@ -25,6 +25,22 @@ class WeekendController extends Controller
 
     public function index(){
 
+        //only for first time when weekend table is empty
+        $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
+        $current_date = $date->format('Y-m-d'); 
+        $dateAry = explode('-', $current_date);
+    
+        $chk = Weekend::all();
+        if(count($chk) == 0){
+            Weekend::create([
+                'weekend' => 'Friday',
+                'weekend_from' => $dateAry[0]."-01-01",
+                'weekend_to' => $dateAry[0]."-12-31",
+                'status' => 1,
+            ]);
+        }
+        //end
+
     	return view('leave.weekend');
     }
 

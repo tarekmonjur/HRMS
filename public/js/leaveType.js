@@ -10461,6 +10461,34 @@ return jQuery;
                 errorsHtml += '</ul></di>';
                 $('#edit-form-errors').html(errorsHtml);
             });
+        },
+        wantToDelete: function wantToDelete(id) {
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this information!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            }, function () {
+                axios.get("/leaveType/delete/" + id, {}).then(function (response) {
+
+                    if (response.data.title == 'success') {
+                        swal('Removed', 'Data removed', 'success');
+                    } else {
+                        swal('Error:', 'Delete function not working', 'error');
+                    }
+
+                    setTimeout(function () {
+                        window.location.reload(1);
+                    }, 1000);
+                }).catch(function (error) {
+
+                    swal('Error:', 'Delete function not working', 'error');
+                });
+            });
         }
     }
 });
