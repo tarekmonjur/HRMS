@@ -2,7 +2,7 @@
 <header class="navbar navbar-fixed-top navbar-shadow">
     <div class="navbar-branding">
         <a class="navbar-brand" href="{{url("setup")}}">
-            <b>Admin</b>Designs
+            <b>IDDL</b> LTD.
         </a>
         {{-- <span id="toggle_sidemenu_l" class="ad ad-lines"></span> --}}
     </div>

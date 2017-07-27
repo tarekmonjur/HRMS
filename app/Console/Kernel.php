@@ -46,12 +46,12 @@ class Kernel extends ConsoleKernel
                 $schedule->command('active:weekend '.$database->database_name)
                         // ->timezone('Asia/Dhaka')
                         // ->cron('* * * * * *');
-                         ->twiceDaily(1, 13);
+                        ->twiceDaily(1, 13);
 
                 $schedule->command('calculate:earnLeave '.$database->database_name)
                         // ->timezone('Asia/Dhaka')
                         // ->cron('* * * * * *');
-                         ->twiceDaily(1, 13);
+                        ->twiceDaily(1, 13);
 
                 $schedule->command('attendance:timesheet '.$database->database_name)
                     // ->cron('* * * * * *');

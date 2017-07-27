@@ -412,21 +412,21 @@
                 <span class="caret caret-tp hidden-xs"></span>
             </a>
             <ul class="dropdown-menu list-group dropdown-persist w250" role="menu">
-                {{-- <li class="list-group-item">
+                <!-- <li class="list-group-item">
                     <a href="#" class="animated animated-short fadeInUp">
                         <span class="fa fa-envelope"></span> Messages
                         <span class="label label-warning">2</span>
                     </a>
-                </li> --}}
-                <!-- <li class="list-group-item">
-                    <a href="#" class="animated animated-short fadeInUp">
-                        <span class="fa fa-user"></span> Friends
-                        <span class="label label-warning">6</span>
-                    </a>
                 </li> -->
                 <li class="list-group-item">
+                    <a href="{{url('/employee/view/'.$auth->employee_no)}}" class="animated animated-short fadeInUp">
+                        <span class="fa fa-user"></span> My Profile
+                    </a>
+                </li>
+                <li class="list-group-item">
                     <a href="#" class="animated animated-short fadeInUp">
-                        <span class="fa fa-gear"></span> Account Settings </a>
+                        <span class="fa fa-gear"></span> Account Settings 
+                    </a>
                 </li>
                 <li class="dropdown-footer">
                     <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
