@@ -407,6 +407,7 @@ Route::group(['prefix' => '/myLeave', 'namespace' => 'Leave'],function (){
     Route::get('/details/{id?}','LeaveController@details');
     Route::get('/edit/{id}','LeaveController@edit');
     Route::post('/add','LeaveController@create');
+    Route::post('/edit','LeaveController@update');
 });
 
 
