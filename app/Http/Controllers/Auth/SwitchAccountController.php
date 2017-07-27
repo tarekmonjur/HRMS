@@ -81,7 +81,7 @@ class SwitchAccountController extends Controller
 
     	Artisan::call('db:connect',['database' => $database_name]);
 
-    	// try{
+    	try{
 	    	if($user = User::create([
 			    "employee_no" => $this->auth->employee_no,
 			    "employee_type_id" => $employee_type_id,
@@ -109,29 +109,28 @@ class SwitchAccountController extends Controller
 	    		$this->switchAccountLogin($database_name, $config_id,$user->id);
 	    	}
 
-	    // }catch(\Exception $e){
-	    	// $code = $e->getCode();
+	    }catch(\Exception $e){
+	    	$code = $e->getCode();
 
 	    	// if($code == '23000'){
-	    		// $message  = $e->getMessage();
+	    	// 	$message  = $e->getMessage();
 
-	    		// if(stristr($message,'REFERENCES')){
-	    		// 	$msgData = explode(' ', $message);
-	    		// 	$reference_key = array_search('REFERENCES',$msgData);
-	    		// 	$table =  str_replace('`','',$msgData[$reference_key+1]);
-	    		// }
+	    	// 	if(stristr($message,'REFERENCES')){
+	    	// 		$msgData = explode(' ', $message);
+	    	// 		$reference_key = array_search('REFERENCES',$msgData);
+	    	// 		$table =  str_replace('`','',$msgData[$reference_key+1]);
+	    	// 	}
 
-	    		// if(isset($table)){
-	    		// 	Artisan::call('db:connect',['database' => Session('database')]);
-	    		// 	$this->setDependanceyData($table);
-	    		// }
+	    	// 	if(isset($table)){
+	    	// 		Artisan::call('db:connect',['database' => Session('database')]);
+	    	// 		$this->setDependanceyData($table);
+	    	// 	}
 	    	// }
 
-     //        Artisan::call('db:connect',['database' => Session('database')]);
-     //        Session::flash('danger','Account not switch.Try again.');
-     //        return redirect()->back();
-	    // 	// $this->switchAccountRegister($database_name,$config_id);
-	    // }
+            Artisan::call('db:connect',['database' => Session('database')]);
+            Session::flash('danger','Account not switch.Try again.');
+            return redirect()->back();
+	    }
     }
 
 
