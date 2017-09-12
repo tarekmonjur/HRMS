@@ -45,7 +45,7 @@ class WorkShiftAssignController extends Controller
 	    			$q->where('work_shift_id',$id);
 	    		}
                 $q->where('status',1);
-    		}])->get();
+    		}])->where('status','!=',2)->get();
 
     	$empWorkShifts = [];	
     	foreach($workShift as $wsinfo){

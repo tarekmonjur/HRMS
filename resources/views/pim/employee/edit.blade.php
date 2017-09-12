@@ -1503,7 +1503,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" v-on:mouseover="myDatePicker" :name="'salary_info['+index+'][date]'" v-model="salary.salary_effective_date" class="mydatepicker form-control input-sm">
+                                                    <input type="text" v-on:mouseover="myDatePicker" v-on:focusout="pushAllowance($event.target,index)" :name="'salary_info['+index+'][date]'" v-model="salary.salary_effective_date" class="mydatepicker form-control input-sm">
                                                 </td>
                                                 <td>
                                                     <input type="text" :name="'salary_info['+index+'][amount]'" v-model="salary.salary_amount" v-on:keyup.delete="setDefaultZero(index)" v-on:keyup="calculateTotalSalary" class="form-control input-sm text-right">

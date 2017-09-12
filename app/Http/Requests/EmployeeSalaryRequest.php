@@ -37,7 +37,7 @@ class EmployeeSalaryRequest extends FormRequest
 
         return [
             'basic_salary' => 'required|numeric',
-            'salary_in_cache' => 'nullable|required|numeric',
+            'salary_in_cache' => 'nullable|numeric',
             'effective_date' => 'required|date',
             // 'salary_info.*.id' => 'required',
             // 'salary_info.*.type' => 'required',
