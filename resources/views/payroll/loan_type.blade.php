@@ -53,7 +53,7 @@
                    <td>
                       @if(in_array($chkUrl."/edit", session('userMenuShare')))
                       <div class="btn-group pt5">
-                         <a class="btn btn-sm" :class="(loanType.loan_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,loanType.id)" :status="loanType.loan_type_status" v-text="(loanType.loan_type_status == 0)?'Active':'Inactive'"></a>
+                         <a class="btn btn-sm" :class="(loanType.loan_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus(loanType.id,index,loanType.loan_type_status)" v-text="(loanType.loan_type_status == 0)?'Active':'Inactive'"></a>
                       </div>
                       @endif
                    </td>

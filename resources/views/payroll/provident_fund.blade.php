@@ -80,8 +80,10 @@
                      <span v-text="provident.created_at"></span>
                    </td>
                    <td>
-                     <span v-html="getFullName(provident.updated_by)"></span><br>
-                     <span v-text="provident.updated_at"></span>
+                     <div v-if="provident.updated_by">
+                       <span v-html="getFullName(provident.updated_by)"></span><br>
+                       <span v-text="provident.updated_at"></span>
+                     </div>
                    </td>
                    <td>
                       <div class="btn-group">

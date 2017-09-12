@@ -80,7 +80,7 @@
                    <td v-text="loan.loan_amount"></td>
                    <td>
                       <div class="btn-group pt5">
-                         <a class="btn btn-sm" :class="(loan.loan_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,loan.id)" :status="loan.loan_status" v-text="(loan.loan_status == 0)?'Active':'Inactive'"></a>
+                         <a class="btn btn-sm" :class="(loan.loan_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus(loan.id,index,loan.loan_status)" v-text="(loan.loan_status == 0)?'Active':'Inactive'"></a>
                       </div>
                    </td>
                    <td v-if="loan.approved_by">
@@ -94,9 +94,11 @@
                      <span v-html="getFullName(loan.created_by)"></span><br>
                      <span v-text="loan.created_at"></span>
                    </td>
-                   <td >
+                   <td>
+                    <div v-if="loan.updated_by">
                      <span v-html="getFullName(loan.updated_by)"></span><br>
                      <span v-text="loan.updated_at"></span>
+                     </div>
                    </td>
                    <td>
                       <div class="btn-group">

@@ -451,7 +451,7 @@ trait CommonService
                 ->join('departments','departments.id','=','units.unit_departments_id');
         }
 
-        return $result->get();
+        return $result->where('status',1)->get();
     }
 
 

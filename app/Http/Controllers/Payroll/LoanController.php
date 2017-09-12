@@ -126,8 +126,10 @@ class LoanController extends Controller
                 $loan->update($request->all());
             }else{
                 $id = $request->id;
-                $duration = Loan::cal_loan_duration($request->loan_start_date, $request->loan_end_date);
-                $request->offsetSet('loan_duration',$duration);
+                if(!$request->has('loan_status')){
+                    $duration = Loan::cal_loan_duration($request->loan_start_date, $request->loan_end_date);
+                    $request->offsetSet('loan_duration',$duration);
+                }
                 $request->offsetSet('updated_by', $this->auth->id);
                 Loan::find($id)->update($request->all());
             }
