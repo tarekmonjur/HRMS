@@ -98,7 +98,7 @@ class AttendanceTimesheetJob implements ShouldQueue
         
         $days = $this->generateDays($start_date, $end_date);
         $company_weekend_days = $this->getCompanyWeekend();
-        // dd($days);
+        // dd($company_weekend_days);
 
         $users = User::with([
             'attendance' => function($q)use($start_date, $end_date){$q->whereBetween('date',[$start_date, $end_date]);},
@@ -130,7 +130,7 @@ class AttendanceTimesheetJob implements ShouldQueue
                 $cancel_leaves = [];
             }
             $weekends = $this->generateWeekend($user->workShifts, $days, $company_weekend_days);
-            // print_r($weekends);
+            // dd($weekends);
             // print_r($user->cancel_leaves);
 
             foreach($days as $key => $day){

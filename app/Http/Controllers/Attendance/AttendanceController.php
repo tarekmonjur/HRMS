@@ -164,6 +164,14 @@ class AttendanceController extends Controller
             Attendance::create($request->all());
         }
 
+        if($request->observation == 4){
+            $request->offsetSet('observation',6);
+        }elseif($request->observation == 3){
+            $request->offsetSet('observation',5);
+        }else{
+            $request->offsetSet('observation',1);
+        }
+
         if($observation == 'present'){
             if($attend = AttendanceTimesheet::find($request->time_sheet_id)){
                 $attend->update($request->all());
@@ -239,6 +247,10 @@ class AttendanceController extends Controller
     protected function timesheetObservation($from_date, $to_date){
 
         $last_row = $this->attendanceTimesheet->orderBy('date','asc')->first();
+        if(count($last_row) <= 0){
+            return 'present';
+        }
+
         $last_date = date('Y-m-d',strtotime($last_row->date));
 
         if($from_date >= $last_date){

@@ -158,7 +158,7 @@ new Vue({
       },
 
 
-      addAttendance(index,user_id,timeSheetId,date,fullname,modal_id){
+      addAttendance(index,user_id,timeSheetId,date,observation,fullname,modal_id){
         this.index = index;
         this.attend = [];
 
@@ -171,6 +171,7 @@ new Vue({
           'date':date,
           'in_time':null,
           'out_time': null,
+          'observation': observation
         };
 
         this.modal_open(modal_id);

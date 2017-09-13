@@ -84,7 +84,7 @@
                   <tr v-for="(attendance,index) in attendances" class="text-center">
                     <td v-text="index+1"></td>
                     <td v-text="attendance.date"></td>
-                    <td v-on:click.prevent="addAttendance(index,attendance.user_id, attendance.id, attendance.date, userName,'#attendance_modal')">
+                    <td v-on:click.prevent="addAttendance(index,attendance.user_id, attendance.id, attendance.date, attendance.observation, userName,'#attendance_modal')">
 
                       <!-- attendance -->
                       <div v-if="attendance.observation == 1">
@@ -231,7 +231,7 @@
                   <form v-on:submit.prevent="saveAttendance">
                     <input type="hidden" name="user_id" v-model="attend.user_id">
                     <input type="hidden" name="time_sheet_id" v-model="attend.time_sheet_id">
-                    <input type="hidden" name="observation" value="1">
+                    <input type="hidden" name="observation" v-model="attend.observation">
 
                     <div class="row">
                       <div class="col-md-12">
