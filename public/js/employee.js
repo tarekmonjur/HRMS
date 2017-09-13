@@ -302,7 +302,7 @@ var employee = new Vue({
         },
 
         getTabData(){
-            $('#employee > .panel > .panel-body').LoadingOverlay("show");
+            $('#employee > .panel').LoadingOverlay("show");
 
             this.urlChange(this.tab);
             this.errors = [];
@@ -356,7 +356,7 @@ var employee = new Vue({
                 this.getLanguage();
                 this.getLanguages();
             }
-            $('#employee > .panel > .panel-body').LoadingOverlay("hide");
+            $('#employee > .panel').LoadingOverlay("hide");
         },
 
 
@@ -652,12 +652,18 @@ var employee = new Vue({
         },
 
         pushAllowance(index1,index2){
-
-            var allowIndex = index1.options[index1.selectedIndex].index;
-            this.empSalaries[index2].salary_info_type = this.allowances[allowIndex].salary_info_type;
-            this.empSalaries[index2].salary_amount_type = (this.allowances[allowIndex].salary_info_amount_status == '0')?'percent':'fixed';
             
-            this.calculateTotalSalary();
+            if(index1.type == 'text'){
+                // console.log(index1, index1.type, index1.value);
+                this.empSalaries[index2].salary_effective_date = index1.value;
+            }else{
+                var allowIndex = index1.options[index1.selectedIndex].index;
+                this.empSalaries[index2].salary_info_type = this.allowances[allowIndex].salary_info_type;
+                this.empSalaries[index2].salary_amount_type = (this.allowances[allowIndex].salary_info_amount_status == '0')?'percent':'fixed';
+                
+                this.calculateTotalSalary();
+            }
+
         },
 
 

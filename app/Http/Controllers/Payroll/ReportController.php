@@ -62,12 +62,14 @@ class ReportController extends Controller
 	    	$salary_month = $request->salary_month;
 
 	        $user_ids = $this->getUserIds($branch_id, $department_id, $unit_id, $user_id, $salary_month);
+	        // dd($user_ids);
 	        $salaries = Salary::with('user.details','user.designation','user.unit.department')
 	        			->whereIn('user_id', $user_ids)
 	        			->where('salary_month', $salary_month)
 	        			->get();
 
           	// $salaries = Salary::get();
+			// dd($salaries);
 
 			$salary_reports = [];
 	        foreach($salaries as $salary)
@@ -76,7 +78,7 @@ class ReportController extends Controller
 	    			'user_id'=> $salary->user_id,
 	    			'employee_no' =>  $salary->user->employee_no,
 	    			'full_name' => $salary->user->fullname,
-	    			'joining_date' => $salary->user->details->joining_date,
+	    			'joining_date' => ($salary->user->details)?$salary->user->details->joining_date:'',
 	    			'department' => $salary->user->unit->department->department_name,
 	    			'designation' => $salary->user->designation->designation_name,
 	    			'basic_salary' => number_format($salary->basic_salary, 2),
@@ -103,8 +105,8 @@ class ReportController extends Controller
 	    		];
 	        }			
 
-	        return $salary_reports;
 	        // dd($salaries);
+	        return $salary_reports;
     	}
     }
 

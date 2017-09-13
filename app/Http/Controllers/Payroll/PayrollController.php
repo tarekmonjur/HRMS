@@ -256,14 +256,15 @@ class PayrollController extends Controller
                 $attendance_weekend = $attendance_only_weekend + $attendance_present_weekend;
 
 	    		$attendance_absent = $attendance_absent + ($days - $total_attendance);
-	    		$payment_days = $attendance_present + $attendance_weekend + $attendance_leave;
+	    		$payment_days = $attendance_present + $attendance_weekend + $attendance_present_weekend + $attendance_leave;
 
 	    		$attendances = [
 	    			'attendance_absent' => $attendance_absent,
 	    			'attendance_present' => $attendance_present,
 	    			'attendance_leave' => $attendance_leave,
 	    			'attendance_holiday' => $attendance_holiday,
-	    			'attendance_weekend' => $attendance_weekend,
+                    'attendance_weekend' => $attendance_weekend,
+	    			'attendance_present_weekend' => $attendance_present_weekend,
 	    			'attendance_late' => $attendance_late,
 	    		];
 
@@ -280,7 +281,8 @@ class PayrollController extends Controller
     						$total_allowance = $total_allowance + $salary_amount;
     					}elseif($info->salary_amount_type == 'percent'){
     						$percent = $salary_amount;
-    						$salary_amount = (($basic_salary + $salary_in_cash) * $salary_amount)/100;
+                            // $salary_amount = (($basic_salary + $salary_in_cash) * $salary_amount)/100;
+    						$salary_amount = (($basic_salary) * $salary_amount)/100;
     						$total_allowance = $total_allowance + $salary_amount;
     					}
 
@@ -290,6 +292,8 @@ class PayrollController extends Controller
     						'percent' => $percent,
     						'amount' => $salary_amount,
     						'effective_date' => $info->salary_effective_date,
+                            'is_provident_fund' => false,
+                            'is_loan' => false,
     					];
 
     				}
@@ -299,7 +303,8 @@ class PayrollController extends Controller
     						$total_deduction = $total_deduction + $salary_amount;
     					}elseif($info->salary_amount_type == 'percent'){
     						$percent = $salary_amount;
-    						$salary_amount = (($basic_salary + $salary_in_cash) * $salary_amount)/100;
+                            // $salary_amount = (($basic_salary + $salary_in_cash) * $salary_amount)/100;
+    						$salary_amount = (($basic_salary) * $salary_amount)/100;
     						$total_deduction = $total_deduction + $salary_amount;
     					}
 
@@ -309,6 +314,8 @@ class PayrollController extends Controller
     						'amount' => $salary_amount,
     						'amount_type' => $info->salary_amount_type,
     						'effective_date' => $info->salary_effective_date,
+                            'is_provident_fund' => false,
+                            'is_loan' => false,
     					];
     				}
     			}
@@ -327,6 +334,8 @@ class PayrollController extends Controller
                             'percent' => $bonus->bonus_type_amount,
                             'amount' => $bonus_amount,
                             'effective_date' => $bonus->bonus_effective_date,
+                            'is_provident_fund' => false,
+                            'is_loan' => false,
                         ];
                     }
                     // dd($user->bonus);
@@ -337,7 +346,8 @@ class PayrollController extends Controller
                 {
                     foreach($user->providentFund as $providentFund)
                     {
-                        $provident_fund_amount = (($basic_salary + $salary_in_cash) * $providentFund->pf_percent_amount)/100;
+                        //$provident_fund_amount = (($basic_salary + $salary_in_cash) * $providentFund->pf_percent_amount)/100;
+                        $provident_fund_amount = (($basic_salary) * $providentFund->pf_percent_amount)/100;
                         $total_deduction = $total_deduction + $provident_fund_amount;
 
                         $deductions[] = [
@@ -346,6 +356,8 @@ class PayrollController extends Controller
                             'percent' => $providentFund->pf_percent_amount,
                             'amount' => $provident_fund_amount,
                             'effective_date' => $providentFund->pf_effective_date,
+                            'is_provident_fund' => true,
+                            'is_loan' => false,
                         ];
                     }
                     // dd($user->providentFund);
@@ -363,6 +375,8 @@ class PayrollController extends Controller
                             'percent' => 0.00,
                             'amount' => $loan->loan_deduct_amount,
                             'effective_date' => '',
+                            'is_provident_fund' => false,
+                            'is_loan' => true,
                         ];
                     }
                 }
@@ -471,12 +485,14 @@ class PayrollController extends Controller
                 },'bonus.bonusType',
                 'providentFund'=>function($q)use($start_date, $end_date){
 					$q->where('pf_status',1)->where('approved_by','!=',0)
-						->whereBetween('pf_effective_date',[$start_date,$end_date]);
+                        // ->whereBetween('pf_effective_date',[$start_date,$end_date]);
+						->where('pf_effective_date','<=',$start_date)
+                        ->orWhere('pf_effective_date','<=',$end_date);
 				},
                 'loan'=>function($q)use($start_date, $end_date){
 					$q->where('loan_status',1)
 						->where('approved_by','!=',0)
-                        ->where('loan_duration','>=','loan_complete_duration');
+                        ->where('loan_duration','>','loan_complete_duration');
 						// ->where('loan_start_date','<=',$end_date)
 						// ->where('loan_end_date','=>',$end_date);
 				}])

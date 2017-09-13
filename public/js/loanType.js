@@ -212,9 +212,9 @@ var work = new Vue({
       },
 
 
-      changeStatus(e,id){
+      changeStatus(id,index,status){
         this.loadinShow('#datatableCall');
-        var status = e.target.getAttribute('status');
+        this.index = index;
         var status2;
 
         if(status == 1){
@@ -224,17 +224,7 @@ var work = new Vue({
         }
         
         axios.post('/loantype/edit',{'id':id,'loan_type_status':status2}).then((response) => {
-          e.target.setAttribute('status',status2);
-
-          if(status == 0){
-            e.target.classList.remove("text-primary");
-            e.target.classList.add("text-danger");
-            e.target.text = "Inactive";            
-          }else{
-            e.target.classList.remove("text-danger");
-            e.target.classList.add("text-primary");
-            e.target.text = "Active";
-          }
+          this.$set(this.loanTypes, this.index, response.data.data);
           this.loadinHide('#datatableCall');
           this.showMessage(response.data);
         }).catch((error) => {

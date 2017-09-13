@@ -39,12 +39,12 @@ class LoanInstallmentUpdateToSalaryGenerate implements ShouldQueue
             if(count($deduction_info)>0)
             {
                 $collect = collect($deduction_info);
-                $loan = $collect->where('name','loan')->first();
+                $loan = $collect->where('is_loan',true)->where('name','loan')->first();
                 if(count($loan)>0)
                 {
                     $loans = Loan::where('loan_status',1)
                         ->where('approved_by','!=',0)
-                        ->where('loan_duration','>=','loan_complete_duration')
+                        ->where('loan_duration','>','loan_complete_duration')
                         ->get();
 
                     $salary_month = $this->salaries['salary_month'];

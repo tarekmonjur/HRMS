@@ -53,14 +53,14 @@
                    <td>
                     @if(in_array($chkUrl."/edit", session('userMenuShare')))
                      <div class="btn-group pt5">
-                         <a class="btn btn-sm" :class="(incrementType.increment_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,incrementType.id)" :status="incrementType.increment_type_status" v-text="(incrementType.increment_type_status == 0)?'Active':'Inactive'"></a>
+                         <a class="btn btn-sm" :class="(incrementType.increment_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus(incrementType.id,index,incrementType.increment_type_status)" v-text="(incrementType.increment_type_status == 0)?'Active':'Inactive'"></a>
                        </div>
                     @endif
                    </td>
                    <td v-html="getFullName(incrementType.created_by)"></td>
                    <td v-html="getFullName(incrementType.updated_by)"></td>
                    <td v-text="incrementType.created_at"></td>
-                   <td v-text="incrementType.updated_at"></td>
+                   <td><span v-if="incrementType.updated_by" v-text="incrementType.updated_at"></span></td>
                    <td>
                       @if(in_array($chkUrl."/edit", session('userMenuShare')))
                       <div class="btn-group">

@@ -188,7 +188,7 @@ var work = new Vue({
 
       deleteBonusType(id,index){
        var vueThis = this;
-       this.index = index;
+       vueThis.index = index;
 
        swal({
           title: "Are you sure?",
@@ -212,9 +212,9 @@ var work = new Vue({
       },
 
 
-      changeStatus(e,id){
+      changeStatus(id,index,status){
         this.loadinShow('#datatableCall');
-        var status = e.target.getAttribute('status');
+        this.index = index;
         var status2;
 
         if(status == 1){
@@ -224,21 +224,10 @@ var work = new Vue({
         }
         
         axios.post('/bonustype/edit',{'id':id,'bonus_type_status':status2}).then((response) => {
-          e.target.setAttribute('status',status2);
-
-          if(status == 0){
-            e.target.classList.remove("text-primary");
-            e.target.classList.add("text-danger");
-            e.target.text = "Inactive";            
-          }else{
-            e.target.classList.remove("text-danger");
-            e.target.classList.add("text-primary");
-            e.target.text = "Active";
-          }
+          this.$set(this.bonusTypes, this.index, response.data.data);
           this.loadinHide('#datatableCall');
           this.showMessage(response.data);
         }).catch((error) => {
-
           if(error.response.status == 500 || error.response.data.status == 'danger'){
               this.showMessage(error.response.data);
           }

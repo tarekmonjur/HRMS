@@ -128,7 +128,7 @@ class IncrementTypeController extends Controller
 
     	try{
             $request->offsetSet('updated_by', $this->auth->id);
-    		$bank = IncrementType::find($request->id)->update($request->all());
+    		IncrementType::find($request->id)->update($request->all());
 
     		if($request->ajax()){
                 $data['data'] = IncrementType::with('createdBy','updatedBy')->find($request->id);

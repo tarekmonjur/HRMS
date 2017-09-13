@@ -97,7 +97,7 @@
                   <a style="color: #fff;" target="_blank" :href="'view/'+user.employee_no+'?from_date='+from_date+'&to_date='+to_date" v-text="user.first_name+' '+user.last_name+' ('+user.employee_no+')'"></a>
                 </td>
 
-                <td v-for="(attendance,aIndex) in user.attendanceTimesheets" class="text-center show_name" v-on:click.prevent="addAttendance(uIndex,aIndex,user.id, attendance.id, attendance.date, user.first_name+' '+user.last_name+' ('+user.employee_no+')','#attendance_modal')">
+                <td v-for="(attendance,aIndex) in user.attendanceTimesheets" class="text-center show_name" v-on:click.prevent="addAttendance(uIndex,aIndex,user.id, attendance.id, attendance.date, attendance.observation, user.first_name+' '+user.last_name+' ('+user.employee_no+')','#attendance_modal')">
 
                   <div style="position: relative!important;"></div>
                   <div class="name_show">
@@ -194,7 +194,7 @@
                   <form v-on:submit.prevent="saveAttendance">
                     <input type="hidden" name="user_id" v-model="attend.user_id">
                     <input type="hidden" name="time_sheet_id" v-model="attend.time_sheet_id">
-                    <input type="hidden" name="observation" value="1">
+                    <input type="hidden" name="observation" v-model="attend.observation">
 
                     <div class="row">
                       <div class="col-md-12">

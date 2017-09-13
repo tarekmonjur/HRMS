@@ -48,12 +48,12 @@
             <tbody v-if="bonusTypes !=''">
                 <tr v-for="(bonusType,index) in bonusTypes">
                    <td v-text="index+1"></td>
-                   <td v-text="bonusType. bonus_type_name"></td>
+                   <td v-text="bonusType.bonus_type_name"></td>
                    <td v-text="bonusType.bonus_type_remarks"></td>
                    <td>
                       @if(in_array($chkUrl."/edit", session('userMenuShare')))
                       <div class="btn-group pt5">
-                         <a class="btn btn-sm" :class="(bonusType.bonus_type_status == 0)?'text-primary':'text-danger'" v-on:click="changeStatus($event,bonusType.id)" :status="bonusType.bonus_type_status" v-text="(bonusType.bonus_type_status == 0)?'Active':'Inactive'"></a>
+                         <a class="btn btn-sm" :class="(bonusType.bonus_type_status == 0)?'text-primary':'text-danger'" v-on:click.prevent="changeStatus(bonusType.id,index,bonusType.bonus_type_status)" v-text="(bonusType.bonus_type_status == 0)?'Active':'Inactive'"></a>
                       </div>
                       @endif
                    </td>

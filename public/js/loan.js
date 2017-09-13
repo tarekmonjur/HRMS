@@ -275,7 +275,7 @@ var work = new Vue({
           text: "You will not be able to panding this imaginary data!",
           // type: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
+          confirmButtonColor: "#70ca63",
           confirmButtonText: "Yes, approved it!",
           closeOnConfirm: false
         },
@@ -285,17 +285,14 @@ var work = new Vue({
               swal(response.data.message, "success");
             }).catch((error)=>{
               // console.log(error);
-              swal("Cancelled", error.response.data.message, "error");
+              swal("Cancelled", error.response.data.danger, "error");
             });
         });
       },
 
 
-      changeStatus(e,id){
+      changeStatus(id,index,status){
         this.loadinShow('#datatableCall');
-        var status = e.target.getAttribute('status');
-        var status2;
-
         if(status == 1){
           status2 = 0;
         }else{
@@ -303,17 +300,7 @@ var work = new Vue({
         }
         
         axios.post('/loan/edit',{'id':id,'loan_status':status2}).then((response) => {
-          e.target.setAttribute('status',status2);
-
-          if(status == 0){
-            e.target.classList.remove("text-primary");
-            e.target.classList.add("text-danger");
-            e.target.text = "Inactive";            
-          }else{
-            e.target.classList.remove("text-danger");
-            e.target.classList.add("text-primary");
-            e.target.text = "Active";
-          }
+          this.$set(this.loans,index,response.data.data);
           this.loadinHide('#datatableCall');
           this.showMessage(response.data);
         }).catch((error) => {
