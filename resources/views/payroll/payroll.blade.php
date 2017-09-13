@@ -154,6 +154,7 @@
                   Leave : <span class="text-info" v-text="payroll.attendances.attendance_leave"></span> days<br>
                   Holiday : <span class="text-danger" v-text="payroll.attendances.attendance_holiday"></span> days<br>
                   Weekend : <span class="text-primary" v-text="payroll.attendances.attendance_weekend"></span> days<br>
+                  Weekend Present : <span class="text-primary" v-text="payroll.attendances.attendance_present_weekend"></span> days<br>
                   late : <span class="text-warning" v-text="payroll.attendances.attendance_late"></span> days<br>
                 </td>
                 <td v-else class="text-center">-----</td>

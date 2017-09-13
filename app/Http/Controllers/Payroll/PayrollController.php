@@ -256,14 +256,15 @@ class PayrollController extends Controller
                 $attendance_weekend = $attendance_only_weekend + $attendance_present_weekend;
 
 	    		$attendance_absent = $attendance_absent + ($days - $total_attendance);
-	    		$payment_days = $attendance_present + $attendance_weekend + $attendance_leave;
+	    		$payment_days = $attendance_present + $attendance_weekend + $attendance_present_weekend + $attendance_leave;
 
 	    		$attendances = [
 	    			'attendance_absent' => $attendance_absent,
 	    			'attendance_present' => $attendance_present,
 	    			'attendance_leave' => $attendance_leave,
 	    			'attendance_holiday' => $attendance_holiday,
-	    			'attendance_weekend' => $attendance_weekend,
+                    'attendance_weekend' => $attendance_weekend,
+	    			'attendance_present_weekend' => $attendance_present_weekend,
 	    			'attendance_late' => $attendance_late,
 	    		];
 
