@@ -36,6 +36,8 @@ class ComposerServiceProvider extends ServiceProvider
         //     $view->with('settings',$settingData);
         // });
 
+        View()->share('chkUrl', \Request::segment(1));
+
     }
 
     /**

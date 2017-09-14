@@ -22,8 +22,8 @@
             $(this).siblings('.second-menu').toggle();
           }
         });
-        // var secondMenu = '<div class="second-menu"><img class="avatar" src="/files/' + config_id + '/' +data.id+ '/' + data.photo+'"></div>';
-        var secondMenu = '<div class="second-menu"><img class="avatar" src="'+ data.image+'"></div>';
+        var secondMenu = '<div class="second-menu"><img class="avatar" src="/files/' + config_id + '/' +data.id+ '/' + data.image+'"></div>';
+        // var secondMenu = '<div class="second-menu"><img class="avatar" src="'+ data.image+'"></div>';
         $node.append(secondMenuIcon).append(secondMenu);
       }
     });
