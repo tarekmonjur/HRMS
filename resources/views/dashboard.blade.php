@@ -121,6 +121,7 @@
 
     var data = '<?php echo json_encode($organogram);?>';
     var datascource = JSON.parse(data);
+    var config_id = {{Session('config_id')}}
     // console.log(datascource);
 
   </script>
