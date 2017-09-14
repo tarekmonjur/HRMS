@@ -234,15 +234,17 @@
                 </td>
                 <td v-text="payroll.total_salary"></td>
                 <td>
+                  @if(in_array($chkUrl."/add", session('userMenuShare')))
                   <div class="btn-group mt5">
                     <a v-on:click="editSalary(payroll.user_id, index, '#payroll_modal')" class="btn btn-xs btn-primary"><i class="glyphicons glyphicons-pencil"></i>
                     </a>
                   </div>
-                  
+
                   <div class="btn-group mt5">
                     <a v-on:click="comfirmSalary(payroll.user_id, index)" class="btn btn-xs btn-success"><i class="glyphicons glyphicons-ok_2"></i>
                     </a>
                   </div>
+                  @endif
                 </td>
               </tr>
             </tbody>
