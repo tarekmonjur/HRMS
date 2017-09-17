@@ -34,7 +34,8 @@ class DepartmentController extends Controller
     public function create(Request $request){
 
     	$this->validate($request, [
-		    'name' => 'required'
+		    'name' => 'required',
+            'effective_date' => 'after:' . date('Y-m-d',strtotime("-1 days")) . '|date_format:Y-m-d|nullable'
 		]);
 
         DB::beginTransaction();
