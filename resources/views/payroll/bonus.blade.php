@@ -21,9 +21,15 @@
     <div class="panel-heading">
         <div class="panel-title">
             <span class="glyphicon glyphicon-tasks"></span>Bonuses
+
+            <?php 
+              $chkUrl = \Request::segment(1);
+            ?>
+            @if(in_array($chkUrl."/add", session('userMenuShare')))
             <span class="pull-right">
               <a v-on:click="modal_open('#bonus_modal'), bonus = []" onclick="document.getElementById('bonus_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Bonus</a>
             </span>
+            @endif
         </div>
     </div>
     <div class="panel-body pn">
@@ -77,15 +83,19 @@
                        <span class="text-success">Approved</span>
                    </td>
                    <td v-else>
-                     <div class="btn-group">
-                           <a v-on:click="editBonus(bonus.id, index, '#bonus_modal'),bonus=[]" class="btn btn-sm btn-primary"><i class="glyphicons glyphicons-pencil"></i>
-                           </a>
-                       </div>
-                       <div class="btn-group">
+                      @if(in_array($chkUrl."/edit", session('userMenuShare')))
+                        <div class="btn-group">
+                             <a v-on:click="editBonus(bonus.id, index, '#bonus_modal'),bonus=[]" class="btn btn-sm btn-primary"><i class="glyphicons glyphicons-pencil"></i>
+                             </a>
+                        </div>
+                      @endif
+                      @if(in_array($chkUrl."/delete", session('userMenuShare')))
+                        <div class="btn-group">
                            <a v-on:click="deleteBonus(bonus.id,index)" class="btn btn-sm btn-danger">
                                <i class="glyphicons glyphicons-bin"></i>
                            </a>
-                       </div>
+                        </div>
+                      @endif
                    </td>
                 </tr>
             </tbody>
