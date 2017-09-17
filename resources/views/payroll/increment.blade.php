@@ -21,9 +21,16 @@
     <div class="panel-heading">
         <div class="panel-title">
             <span class="glyphicon glyphicon-tasks"></span> Increments
-            <span class="pull-right">
-              <a v-on:click="modal_open('#increment_modal'), increment = []" onclick="document.getElementById('increment_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Increment</a>
-            </span>
+
+            <?php 
+              $chkUrl = \Request::segment(1);
+            ?>
+            @if(in_array($chkUrl."/add", session('userMenuShare')))
+              <span class="pull-right">
+                <a v-on:click="modal_open('#increment_modal'), increment = []" onclick="document.getElementById('increment_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Increment</a>
+              </span>
+            @endif
+
         </div>
     </div>
     <div class="panel-body pn">
@@ -83,15 +90,21 @@
                        <span class="text-success">Approved</span>
                    </td>
                    <td v-else>
-                     <div class="btn-group">
+                      @if(in_array($chkUrl."/edit", session('userMenuShare')))
+                        <div class="btn-group">
                            <a v-on:click="editincrement(increment.id, index, '#increment_modal'),increment=[]" class="btn btn-sm btn-primary"><i class="glyphicons glyphicons-pencil"></i>
                            </a>
-                       </div>
-                       <div class="btn-group">
+                        </div>
+                      @endif
+                      
+                      @if(in_array($chkUrl."/delete", session('userMenuShare')))
+                        <div class="btn-group">
                            <a v-on:click="deleteincrement(increment.id,index)" class="btn btn-sm btn-danger">
                                <i class="glyphicons glyphicons-bin"></i>
                            </a>
-                       </div>
+                        </div>
+                      @endif
+
                    </td>
                 </tr>
             </tbody>

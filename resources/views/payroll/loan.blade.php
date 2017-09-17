@@ -21,9 +21,16 @@
     <div class="panel-heading">
         <div class="panel-title">
             <span class="glyphicon glyphicon-tasks"></span>Loans
-            <span class="pull-right">
-              <a v-on:click="modal_open('#loan_modal'), loan = []" onclick="document.getElementById('loan_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Loan</a>
-            </span>
+
+            <?php 
+              $chkUrl = \Request::segment(1);
+            ?>
+            @if(in_array($chkUrl."/add", session('userMenuShare')))
+              <span class="pull-right">
+                <a v-on:click="modal_open('#loan_modal'), loan = []" onclick="document.getElementById('loan_modal_form').reset()" class="btn btn-sm btn-dark btn-gradient dark"><span class="glyphicons glyphicon-pencil"></span> &nbsp; Add Loan</a>
+              </span>
+            @endif
+
         </div>
     </div>
     <div class="panel-body pn">
@@ -101,13 +108,17 @@
                      </div>
                    </td>
                    <td>
-                      <div class="btn-group">
-                        <a v-on:click="editLoan(loan.id, index, '#loan_modal'),loan=[]" class="btn btn-xs btn-primary"> <i class="glyphicons glyphicons-pencil"></i></a>
-                      </div>
+                      @if(in_array($chkUrl."/edit", session('userMenuShare')))
+                        <div class="btn-group">
+                          <a v-on:click="editLoan(loan.id, index, '#loan_modal'),loan=[]" class="btn btn-xs btn-primary"> <i class="glyphicons glyphicons-pencil"></i></a>
+                        </div>
+                      @endif
 
-                      <div v-if="!loan.approved_by" class="btn-group">
-                          <a v-on:click="deleteLoan(loan.id,index)" class="btn btn-xs btn-danger"> <i class="glyphicons glyphicons-bin"></i> </a>
-                      </div>
+                      @if(in_array($chkUrl."/delete", session('userMenuShare')))
+                        <div v-if="!loan.approved_by" class="btn-group">
+                            <a v-on:click="deleteLoan(loan.id,index)" class="btn btn-xs btn-danger"> <i class="glyphicons glyphicons-bin"></i> </a>
+                        </div>
+                      @endif
                    </td>
                 </tr>
             </tbody>

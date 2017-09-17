@@ -78,7 +78,7 @@
                                             <label for="name" class="col-md-3 control-label">Name<span class="text-danger">*</span> :</label>
 
                                             <div class="col-md-9">
-                                                <input id="name" type="text" class="form-control input-sm" name="name" value="{{ old('name') }}" autofocus>
+                                                <input id="name" type="text" class="form-control input-sm" name="name" value="{{ old('name') }}" maxlength="98" autofocus>
 
                                                 @if ($errors->has('name'))
                                                     <span class="help-block">

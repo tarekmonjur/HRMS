@@ -2,7 +2,7 @@
 
 //===== SQL FILE NAME WILL BE : menus.sql ===============
 //Copy ONLY SQL portion and save as menus.sql and import it in menus table
-//=======@@@@@@@========= Start ========@@@@@@@@=========
+//=======@@@@@@@========= Start ======== @@@@@@@@ =========
 
 // INSERT INTO `menus` (`id`, `menu_parent_id`, `module_id`, `menu_name`, `menu_url`, `menu_section_name`, `menu_icon_class`, `menu_status`, `created_at`, `updated_at`) VALUES
 // (1, 0, 1, 'View', 'promotion/index', 'Transfer / Promotion', 'fa fa-level-up', 1, NULL, NULL),
@@ -105,10 +105,10 @@
 // (93, 92, 5, 'Add', 'incrementtype/add', 'Increment Type', 'fa fa-level-up', 1, NULL, NULL),
 // (94, 92, 5, 'Edit', 'incrementtype/edit', 'Increment Type', 'fa fa-level-up', 1, NULL, NULL),
 // (95, 92, 5, 'Delete', 'incrementtype/delete', 'Increment Type', 'fa fa-level-up', 1, NULL, NULL),
-// (96, 0, 5, 'View', 'loantype/index', 'Lone Type', 'fa fa-level-up', 1, NULL, NULL),
-// (97, 96, 5, 'Add', 'loantype/add', 'Lone Type', 'fa fa-level-up', 1, NULL, NULL),
-// (98, 96, 5, 'Edit', 'loantype/edit', 'Lone Type', 'fa fa-level-up', 1, NULL, NULL),
-// (99, 96, 5, 'Delete', 'loantype/delete', 'Lone Type', 'fa fa-level-up', 1, NULL, NULL),
+// (96, 0, 5, 'View', 'loantype/index', 'Loan Type', 'fa fa-level-up', 1, NULL, NULL),
+// (97, 96, 5, 'Add', 'loantype/add', 'Loan Type', 'fa fa-level-up', 1, NULL, NULL),
+// (98, 96, 5, 'Edit', 'loantype/edit', 'Loan Type', 'fa fa-level-up', 1, NULL, NULL),
+// (99, 96, 5, 'Delete', 'loantype/delete', 'Loan Type', 'fa fa-level-up', 1, NULL, NULL),
 // (100, 0, 5, 'View', 'claimtype/index', 'Claim Type', 'fa fa-level-up', 1, NULL, NULL),
 // (101, 100, 5, 'Add', 'claimtype/add', 'Claim Type', 'fa fa-level-up', 1, NULL, NULL),
 // (102, 100, 5, 'Edit', 'claimtype/edit', 'Claim Type', 'fa fa-level-up', 1, NULL, NULL),
