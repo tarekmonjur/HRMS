@@ -21,8 +21,8 @@ Artisan::command('migrate:own:rollback {directory}',function($directory){
 
 // Create migration command for tenant
 Artisan::command('migrate:hrms',function(){
-	Artisan::call('migrate',['--path'=>'/database/migrations/hrms']);
-	Artisan::call('migrate',['--path'=>'/database/migrations/hrms/relations']);
+	Artisan::call('migrate',['--path'=>'/database/migrations/hrms', '--force' => '--force']);
+	Artisan::call('migrate',['--path'=>'/database/migrations/hrms/relations', '--force' => '--force']);
 	$this->info('migration success.');
 })->describe('Migrate hrms directory database.');
 
