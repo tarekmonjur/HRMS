@@ -158,7 +158,7 @@ class ConfigController extends Controller
 	    	Artisan::call("db:connect", ['database'=> $database_name]);
 	    	
             Artisan::call("migrate:hrms");
-	    	Artisan::call("db:seed");
+	    	Artisan::call("db:seed", ['--force' => '--force']);
 
 	    	User::create([
                     'employee_no'    => $config->company_code.'-0000',

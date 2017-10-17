@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->integer('designation_id')->unsigned();   
             $table->integer('unit_id')->unsigned();   
             $table->integer('supervisor_id')->unsigned()->nullable()->default(0);   
+            $table->decimal('gross_salary',12,2)->nullable();   
             $table->decimal('basic_salary',12,2)->nullable();   
             $table->decimal('salary_in_cache',12,2)->nullable();   
             $table->date('effective_date')->nullable();   
