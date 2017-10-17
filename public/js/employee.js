@@ -81,6 +81,9 @@ var employee = new Vue({
         showCgpa: true,
         job_duration: null,
 
+        gross_salary:null,
+        isDisabled: false,
+        isTextDanger: false,
         basic_salary:null,
         salary_in_cache:null,
         totalSalaryAmount: 0.00,
@@ -677,10 +680,12 @@ var employee = new Vue({
         calculateTotalSalary(){
 
             let basic_salary = parseInt(this.salaries.basic_salary);
+            let gross_salary = parseInt(this.salaries.gross_salary); //sakib
 
             if(basic_salary < 0 || isNaN(basic_salary)){
                 basic_salary = 0;
             }
+
             let sData;
             let tempAllow=0;
             let totalSalary = 0;
@@ -691,7 +696,8 @@ var employee = new Vue({
 
                 if(this.empSalaries[sData].salary_info_type == 'allowance'){
                     if(this.empSalaries[sData].salary_amount_type == 'percent'){
-                        tempAllow = this.calculatePercent(basic_salary,tempAmount);
+                        // tempAllow = this.calculatePercent(basic_salary,tempAmount);
+                        tempAllow = this.calculatePercent(gross_salary,tempAmount);
                         totalSalary = totalSalary + tempAllow;
                     }else if(this.empSalaries[sData].salary_amount_type == 'fixed'){
                         tempAllow = tempAmount;
@@ -699,25 +705,47 @@ var employee = new Vue({
                     }
                 }else if(this.empSalaries[sData].salary_info_type == 'deduction'){
                     if(this.empSalaries[sData].salary_amount_type == 'percent'){
-                        tempAllow = this.calculatePercent(basic_salary,tempAmount);
+                        // tempAllow = this.calculatePercent(basic_salary,tempAmount);
+                        tempAllow = this.calculatePercent(gross_salary,tempAmount);
                         totalSalary = totalSalary - tempAllow;
                     }else if(this.empSalaries[sData].salary_amount_type == 'fixed'){
                         tempAllow = tempAmount;
                         totalSalary = totalSalary - tempAllow;
                     }
                 }
-                // console.log(tempAllow);
             }
+
             this.totalSalaryAmount = basic_salary + totalSalary;
 
             let salary_in_cache = this.salaries.salary_in_cache;
+            
             if(isNaN(parseInt(salary_in_cache))){
                 salary_in_cache = 0;
             }
-            this.grossSalaryAmount = this.totalSalaryAmount + parseInt(salary_in_cache);
+            else{
+                salary_in_cache = parseInt(salary_in_cache);
+            }
+
+            if(isNaN(parseInt(gross_salary))){
+                gross_salary = 0;
+            }
+
+            this.grossSalaryAmount = gross_salary;
             this.grossSalaryAmountInWords = this.convertNumberToWords(this.grossSalaryAmount);
-            // console.log(this.empSalaries);
-            // console.log(totalSalary);
+
+            //check calculate salary with given Gross
+            if(gross_salary == (this.totalSalaryAmount + salary_in_cache)){
+    
+                this.isDisabled = '';
+                this.isTextDanger = '';
+            }
+            else{
+                this.isDisabled = 'true';
+                this.isTextDanger = 'true';
+            }
+
+            // this.grossSalaryAmount = this.totalSalaryAmount + parseInt(salary_in_cache);
+            // this.grossSalaryAmountInWords = this.convertNumberToWords(this.grossSalaryAmount);
         },
 
 

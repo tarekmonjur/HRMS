@@ -1680,6 +1680,14 @@
 
                             <div class="row">
                                 <div class="col-md-3">
+                                    <div class="form-group" :class="{'has-error': errors.gross_salary}">
+                                        <label class="control-label">Gross Salary Amount: <span class="text-danger">*</span></label>
+                                        <input type="text" name="gross_salary" class="form-control input-sm" v-on:keyup="calculateTotalSalary" v-model="salaries.gross_salary" :disabled="salaries.added">
+                                        <span v-if="errors.gross_salary" class="help-block" v-text="errors.gross_salary[0]"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
                                     <div class="form-group" :class="{'has-error': errors.basic_salary}">
                                         <label class="control-label">Basic Salary Amount: <span class="text-danger">*</span></label>
                                         <input type="text" name="basic_salary" class="form-control input-sm" v-on:keyup="calculateTotalSalary" v-model="salaries.basic_salary" :disabled="salaries.added">
@@ -1765,7 +1773,7 @@
                                                 <td class="text-right" style="font-weight: bold" v-text="grossSalaryAmount"></td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
+                                            <tr v-bind:class="{ 'text-danger': isTextDanger }">
                                                 <td colspan="4" class="text-right"><strong>Gross Salary in words: </strong></td>
                                                 <td class="text-right" style="font-weight: bold" v-text="grossSalaryAmountInWords"></td>
                                                 <td></td>
@@ -1856,11 +1864,14 @@
 
                             <hr class="short alt">
 
+                            <!--If Salary Invalid Input disabled:this.isDisabled-->
+
                             <div class="section row mbn">
                                 <div class="col-sm-2 pull-right">
                                     <p class="text-left">
                                         <button type="submit" :disabled="salaries.added"
                                                 name="save_salary_and_next" v-on:click="submit_button='save_salary_and_next'"
+                                                v-bind:class="{ 'disabled': this.isDisabled }"
                                                 class="btn btn-dark btn-gradient dark btn-block"><span
                                                     class="glyphicons glyphicons-ok_2"></span> &nbsp; Save & Next
                                             <span class="glyphicons glyphicons-right_arrow"></span>
@@ -1872,6 +1883,7 @@
                                     <p class="text-left">
                                         <button type="submit" :disabled="salaries.added"
                                                 name="save_salary" v-on:click="submit_button='save_salary'"
+                                                v-bind:class="{ 'disabled': this.isDisabled }"
                                                 class="btn btn-dark btn-gradient dark btn-block"><span
                                                     class="glyphicons glyphicons-ok_2"></span> &nbsp; Save Salary
                                         </button>

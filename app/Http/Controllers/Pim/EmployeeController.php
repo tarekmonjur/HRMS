@@ -648,6 +648,7 @@ class EmployeeController extends Controller
             $request->offsetSet('created_by', $this->auth->id);
 
             User::where('id',$request->userId)->update([
+                'gross_salary' => $request->gross_salary,
                 'basic_salary' => $request->basic_salary,
                 'salary_in_cache' => $request->salary_in_cache,
                 'effective_date' => $request->effective_date,
@@ -1241,6 +1242,7 @@ class EmployeeController extends Controller
             $request->offsetSet('user_id', $request->userId);
 
             User::where('id',$request->userId)->update([
+                'gross_salary' => $request->gross_salary,
                 'basic_salary' => $request->basic_salary,
                 'salary_in_cache' => $request->salary_in_cache,
                 'effective_date' => $request->effective_date,
