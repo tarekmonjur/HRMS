@@ -45,7 +45,6 @@ class EmployeeBasicInfoRequest extends FormRequest
             'branch_id' => 'required|numeric',
             'designation_id' => 'required|numeric',
             'unit_id' => 'required|numeric',
-            // 'supervisor_id' => 'required|numeric',
             'first_name' => 'required|alpha_spaces',
             'last_name' => 'required|alpha_spaces',
             'email' => $email,
@@ -53,16 +52,12 @@ class EmployeeBasicInfoRequest extends FormRequest
             'password' => 'nullable|min:6|max:16',
             'retype_password' => 'nullable|same:password',
             'image' => 'nullable|mimes:jpeg,jpg,png,gif|max:4000',
-            'present_division_id' => 'required',
-            'present_district_id' => 'required',
-            'present_policestation_id' => 'required',
-            // 'present_postoffice' => 'required',
-            // 'present_address' => 'required',
-            'permanent_division_id' => 'required',
-            'permanent_district_id' => 'required',
-            'permanent_policestation_id' => 'required',
-            // 'permanent_postoffice' => 'required',
-            // 'permanent_address' => 'required',
+            // 'present_division_id' => 'required',
+            // 'present_district_id' => 'required',
+            // 'present_policestation_id' => 'required',
+            // 'permanent_division_id' => 'required',
+            // 'permanent_district_id' => 'required',
+            // 'permanent_policestation_id' => 'required',
         ];
     }
 
@@ -74,15 +69,15 @@ class EmployeeBasicInfoRequest extends FormRequest
             'employee_type_id' => 'employee type',
             'supervisor_id' => 'employee supervisor',
 
-            'present_division_id' => 'division',
-            'present_district_id' => 'district',
-            'present_policestation_id' => 'police station',
-            'present_postoffice' => 'post office',
+            // 'present_division_id' => 'division',
+            // 'present_district_id' => 'district',
+            // 'present_policestation_id' => 'police station',
+            // 'present_postoffice' => 'post office',
 
-            'permanent_division_id' => 'division',
-            'permanent_district_id' => 'district',
-            'permanent_policestation_id' => 'police station',
-            'permanent_postoffice' => 'post office',
+            // 'permanent_division_id' => 'division',
+            // 'permanent_district_id' => 'district',
+            // 'permanent_policestation_id' => 'police station',
+            // 'permanent_postoffice' => 'post office',
         ];
     }
 

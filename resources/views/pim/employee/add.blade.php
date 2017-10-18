@@ -213,14 +213,14 @@
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label class="control-label">Password : </label>
+                                                    <label class="control-label">Password : <span class="text-danger">*</span></label>
                                                     <input type="password" disabled="disabled" :value="basics.password" class="form-control input-sm">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label class="control-label">Retype Password :</label>
+                                                    <label class="control-label">Retype Password :<span class="text-danger">*</span></label>
                                                     <input type="password" disabled="disabled" class="form-control input-sm">
                                                 </div>
                                             </div>
@@ -250,21 +250,21 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Division : <span class="text-danger">*</span></label>
+                                                            <label class="control-label">Division : </label>
                                                             <input type="text" :value="basics.address.present_division.division_name" disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">District : <span class="text-danger">*</span></label>
+                                                            <label class="control-label">District : </label>
                                                             <input type="text" :value="basics.address.present_district.district_name" disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Police Station : <span class="text-danger">*</span></label>
+                                                            <label class="control-label">Police Station : </label>
                                                             <input type="text" :value="basics.address.present_police_station.police_station_name" disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
@@ -273,8 +273,7 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Post Office : <span
-                                                                        class="text-danger">*</span></label>
+                                                            <label class="control-label">Post Office : </label>
                                                             <input type="text"
                                                                    :value="basics.address.present_postoffice"
                                                                    disabled="disabled" class="form-control input-sm">
@@ -282,8 +281,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="form-group">
-                                                            <label class="control-label">Address : <span
-                                                                        class="text-danger">*</span></label>
+                                                            <label class="control-label">Address : </label>
                                                             <textarea disabled="disabled" class="form-control input-sm"
                                                                       cols="60"
                                                                       rows="1">@{{basics.address.present_address}}</textarea>
@@ -300,8 +298,7 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Division : <span
-                                                                        class="text-danger">*</span></label>
+                                                            <label class="control-label">Division : </label>
                                                             <input type="text"
                                                                    :value="basics.address.permanent_division.division_name"
                                                                    disabled="disabled" class="form-control input-sm">
@@ -310,8 +307,7 @@
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">District : <span
-                                                                        class="text-danger">*</span></label>
+                                                            <label class="control-label">District : </label>
                                                             <input type="text"
                                                                    :value="basics.address.permanent_district.district_name"
                                                                    disabled="disabled" class="form-control input-sm">
@@ -320,8 +316,7 @@
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Police Station : <span
-                                                                        class="text-danger">*</span></label>
+                                                            <label class="control-label">Police Station : </label>
                                                             <input type="text"
                                                                    :value="basics.address.permanent_police_station.police_station_name"
                                                                    disabled="disabled" class="form-control input-sm">
@@ -332,8 +327,7 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Post Office : <span
-                                                                        class="text-danger">*</span></label>
+                                                            <label class="control-label">Post Office : </label>
                                                             <input type="text"
                                                                    :value="basics.address.permanent_postoffice"
                                                                    disabled="disabled" class="form-control input-sm">
@@ -341,8 +335,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="form-group">
-                                                            <label class="control-label">Address : <span
-                                                                        class="text-danger">*</span></label>
+                                                            <label class="control-label">Address : </label>
                                                             <textarea disabled="disabled" class="form-control input-sm"
                                                                       cols="60"
                                                                       rows="1">@{{basics.address.permanent_address}}</textarea>
@@ -525,7 +518,7 @@
 
                                         <div class="col-md-3">
                                             <div class="form-group" :class="{'has-error': errors.password}">
-                                                <label class="control-label">Password : </label>
+                                                <label class="control-label">Password : <span class="text-danger">*</span></label>
                                                 <input type="password" name="password" class="form-control input-sm" placeholder="Enter Password">
                                                 <span v-if="errors.password" class="help-block" v-text="errors.password[0]"></span>
                                             </div>
@@ -533,7 +526,7 @@
 
                                         <div class="col-md-3">
                                             <div class="form-group" :class="{'has-error': errors.retype_password}">
-                                                <label class="control-label">Retype Password :</label>
+                                                <label class="control-label">Retype Password :<span class="text-danger">*</span></label>
                                                 <input type="password" name="retype_password" class="form-control input-sm" placeholder="Enter Retype Password">
                                                 <span v-if="errors.retype_password" class="help-block" v-text="errors.retype_password[0]"></span>
                                             </div>
@@ -567,8 +560,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_division_id}">
-                                                        <label class="control-label">Division : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Division : </label>
                                                         <select v-model="present_division_id" class="form-control input-sm" name="present_division_id" >
                                                             <option :value="''">---- Select Division ----</option>
                                                             <option v-for="(division, index) in divisions" :value="division.id" v-text="division.division_name"></option>
@@ -579,8 +571,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_district_id}">
-                                                        <label class="control-label">District : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">District : </label>
                                                         <select v-model="present_district_id" class="form-control input-sm" name="present_district_id" >
                                                             <option :value="''">---- Select District ----</option>
                                                             <option v-for="(district, index) in districts" :value="district.id" v-text="district.district_name"></option>
@@ -591,8 +582,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_policestation_id}">
-                                                        <label class="control-label">Police Station : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Police Station : </label>
                                                         <select class="form-control input-sm"
                                                                 name="present_policestation_id">
                                                             <option :value="''">---- Select Police Station ----</option>
@@ -634,8 +624,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_division_id}">
-                                                        <label class="control-label">Division : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Division : </label>
                                                         <select v-model="permanent_division_id" class="form-control input-sm"
                                                                 name="permanent_division_id" >
                                                             <option :value="''">---- Select Division ----</option>
@@ -648,7 +637,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_district_id}">
-                                                        <label class="control-label">District : <span class="text-danger">*</span></label>
+                                                        <label class="control-label">District : </label>
                                                         <select v-model="permanent_district_id" class="form-control input-sm"
                                                                 name="permanent_district_id" >
                                                             <option :value="''">---- Select Employee Designation ----
@@ -662,7 +651,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_policestation_id}">
-                                                        <label class="control-label">Police Station : <span class="text-danger">*</span></label>
+                                                        <label class="control-label">Police Station : </label>
                                                         <select class="form-control input-sm" name="permanent_policestation_id">
                                                             <option :value="''">---- Select Police Station ----</option>
                                                             <option v-for="(policeStation,index) in permanentPoliceStations"
