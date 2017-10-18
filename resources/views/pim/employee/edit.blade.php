@@ -309,8 +309,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_division_id}">
-                                                        <label class="control-label">Division : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Division : </label>
                                                         <select class="form-control input-sm" name="present_division_id" v-model="present_division_id = basics.address.present_division_id">
                                                             <option value="">---- Select Division ----</option>
                                                             <option v-for="(division, index) in divisions" :value="division.id" v-text="division.division_name"></option>
@@ -321,8 +320,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_district_id}">
-                                                        <label class="control-label">District : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">District : </label>
                                                         <select class="form-control input-sm" name="present_district_id"
                                                                 v-model="present_district_id = basics.address.present_district_id">
                                                             <option :value="''">---- Select District ----</option>
@@ -335,8 +333,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_policestation_id}">
-                                                        <label class="control-label">Police Station : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Police Station : </label>
                                                         <select class="form-control input-sm" v-model="basics.address.present_policestation_id"
                                                                 name="present_policestation_id">
                                                             <option :value="''">---- Select Police Station ----</option>
@@ -378,8 +375,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_division_id}">
-                                                        <label class="control-label">Division : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Division : </label>
                                                         <select class="form-control input-sm"
                                                                 name="permanent_division_id"
                                                                 v-model="permanent_division_id = basics.address.permanent_division_id">
@@ -393,8 +389,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_district_id}">
-                                                        <label class="control-label">District : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">District : </label>
                                                         <select class="form-control input-sm"
                                                                 name="permanent_district_id"
                                                                 v-model="permanent_district_id = basics.address.permanent_district_id">
@@ -409,8 +404,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_policestation_id}">
-                                                        <label class="control-label">Police Station : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Police Station : </label>
                                                         <select class="form-control input-sm" v-model="basics.address.permanent_policestation_id"
                                                                 name="permanent_policestation_id">
                                                             <option :value="''">---- Select Police Station ----</option>
@@ -458,8 +452,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_division_id}">
-                                                        <label class="control-label">Division : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Division : </label>
                                                         <select class="form-control input-sm" name="present_division_id"
                                                                 v-model="present_division_id" >
                                                             <option :value="''">---- Select Division ----</option>
@@ -471,8 +464,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_district_id}">
-                                                        <label class="control-label">District : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">District : </label>
                                                         <select class="form-control input-sm" name="present_district_id"
                                                                 v-model="present_district_id">
                                                             <option :value="''">---- Select District ----</option>
@@ -484,8 +476,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.present_policestation_id}">
-                                                        <label class="control-label">Police Station : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Police Station : </label>
                                                         <select class="form-control input-sm"
                                                                 name="present_policestation_id">
                                                             <option :value="''">---- Select Police Station ----</option>
@@ -527,8 +518,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_division_id}">
-                                                        <label class="control-label">Division : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Division : </label>
                                                         <select class="form-control input-sm"
                                                                 name="permanent_division_id"
                                                                 v-model="permanent_division_id">
@@ -542,8 +532,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_district_id}">
-                                                        <label class="control-label">District : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">District : </label>
                                                         <select class="form-control input-sm"
                                                                 name="permanent_district_id"
                                                                 v-model="permanent_district_id">
@@ -558,8 +547,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group" :class="{'has-error': errors.permanent_policestation_id}">
-                                                        <label class="control-label">Police Station : <span
-                                                                    class="text-danger">*</span></label>
+                                                        <label class="control-label">Police Station : </label>
                                                         <select class="form-control input-sm"
                                                                 name="permanent_policestation_id">
                                                             <option :value="''">---- Select Police Station ----</option>
