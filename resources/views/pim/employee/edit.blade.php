@@ -284,7 +284,7 @@
                                             <div class="fileupload admin-form" :class="(basics.photo)?'fileupload-exists':'fileupload-new'"
                                                  data-provides="fileupload">
                                                 <div class="fileupload-preview thumbnail mb15">
-                                                    <img v-if="basics.photo" class="img-responsive" :src="'/files/'+config_id+'/'+basics.id+'/'+basics.photo" alt="holder">
+                                                    <img v-if="basics.photo" class="img-responsive" :src="'/storage/'+config_id+'/'+basics.id+'/'+basics.photo" alt="holder">
                                                     <img v-else class="img-responsive" src="{{asset('img/placeholder.png')}}" alt="holder">
                                                 </div>
                                                 <span class="button btn btn-sm btn-dark btn-file btn-block ph5">
@@ -1008,7 +1008,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label">Certificate:</label>
                                                     <div>
-                                                        <a v-if="education.certificate" :href="'/files/'+config_id+'/'+education.user_id+'/'+education.certificate" target="_blank" class="text-success">
+                                                        <a v-if="education.certificate" :href="'/storage/'+config_id+'/'+education.user_id+'/'+education.certificate" target="_blank" class="text-success">
                                                             <i class="fa fa-2x fa-file-image-o"></i>
                                                             Click here to view certificate
                                                         </a>
@@ -1665,7 +1665,7 @@
 
                                         <div class="fileupload-new admin-form" data-provides="fileupload">
                                             <div class="fileupload-preview thumbnail mb5">
-                                                 <img v-if="nominee.nominee_photo" class="img-responsive" :src="'/files/'+config_id+'/'+nominee.user_id+'/'+nominee.nominee_photo" alt="holder">
+                                                 <img v-if="nominee.nominee_photo" class="img-responsive" :src="'/storage/'+config_id+'/'+nominee.user_id+'/'+nominee.nominee_photo" alt="holder">
                                                 <img v-else class="img-responsive" src="{{asset('img/placeholder.png')}}" alt="holder">
                                             </div>
                                             <!-- <span class="button btn btn-sm btn-dark btn-file btn-block ph5">

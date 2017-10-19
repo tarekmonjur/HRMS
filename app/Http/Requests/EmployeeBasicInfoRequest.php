@@ -26,7 +26,7 @@ class EmployeeBasicInfoRequest extends FormRequest
 
         if($this->segment(3)){
 //             $employee_no ='required|regex:/[0-9][\-{1}][0-9]+$/|unique:users,id,'.$this->segment(3);
-             $employee_no ='required|regex:/[0-9a-zA-Z][\-{1}][0-9]+$/|unique:users,id,'.$this->segment(3);
+             $employee_no ='required|regex:/[0-9a-zA-Z][\-{1}][0-9]+$/|unique:users,employee_no,'.$this->segment(3);
              $email = 'required|email|unique:users,email,'.$this->segment(3);
              // $password = 'nullable';
              // $retype_pass = 'nullable';
