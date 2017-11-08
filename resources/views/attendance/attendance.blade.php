@@ -218,6 +218,12 @@
                               <span v-if="errors.out_time" class="text-danger" v-text="errors.out_time[0]"></span>
                           </div>
                       </div>
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label text-danger"> Make employee absent:</label>
+                              <input type="checkbox" name="make_absent" v-model="make_absent" v-on:click="makeAbsend(attend.observation)" class="input-sm">
+                          </div>
+                      </div>
                     </div>
 
                     <hr class="short alt">

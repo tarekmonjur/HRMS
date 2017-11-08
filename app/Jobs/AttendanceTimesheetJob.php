@@ -98,10 +98,9 @@ class AttendanceTimesheetJob implements ShouldQueue
         
         $days = $this->generateDays($start_date, $end_date);
         $company_weekend_days = $this->getCompanyWeekend();
-        // dd($company_weekend_days);
 
         $users = User::with([
-            'attendance' => function($q)use($start_date, $end_date){$q->whereBetween('date',[$start_date, $end_date]);},
+            'attendance' => function($q)use($start_date, $end_date){ $q->whereBetween('date',[$start_date, $end_date]);},
             'leaves.leaveType',
             'leaves' => function($q){$q->where('employee_leave_status',3);},
             'cancel_leaves' => function($q){$q->where('employee_leave_status',4);},
@@ -109,34 +108,82 @@ class AttendanceTimesheetJob implements ShouldQueue
                 $q->where('status',1);
             }])->get();
 
-        // print_r($users);
-
         $get_holidays = DB::table('holidays')->where('holiday_status',1)->get();
         $holidays = $this->generateHoliday($get_holidays);
-        // dd($holidays);
 
         $attendanceResult = [];
-
+        //----
+        $sakib = 0;
+        
+        //----
         foreach ($users as $user) {
             $attendance_array = $user->attendance->pluck('date')->toArray();
+
+            //-------
+            $day_inTime_outTime_ary = [];   
+            $final_days = []; 
+            $sakib++;
+            
+            // if($sakib == 2){
+
+                $all_atten_data = $user->attendance->toArray();
+                            
+                $counter = 0;
+
+                foreach($all_atten_data as $key => $value){
+                    foreach($value as $key => $val){
+                        if($key == 'date'){
+                            $day_inTime_outTime_ary[$counter]['date'] = $val;
+                        }
+
+                        if($key == 'in_time'){
+                            $day_inTime_outTime_ary[$counter]['in_time'] = $val;
+                        }
+
+                        if($key == 'out_time'){
+                            $day_inTime_outTime_ary[$counter]['out_time'] = $val;
+                        }
+                    }
+
+                    $counter++;
+                }
+
+                foreach($day_inTime_outTime_ary as $info){
+                    if($info['in_time'] == "00:00:00" && $info['out_time'] == "00:00:00"){
+                        
+                    }else{
+                        $final_days[] = $info['date'];
+                    }
+                }
+
+                // dd($day_inTime_outTime_ary);
+                // dd($attendance_array);
+            // }
+            //-------
+
             $attendance_list = $user->attendance;
             $leaves = $this->generateLeaves($user->leaves);
-            // dd($leaves);
+
             if(count($user->cancel_leaves) > 0){
-                // print_r($user->cancel_leaves);
+                
                 $leave_user_id = $user->cancel_leaves[0]->user_id;
                 $cancel_leaves = $this->generateLeaves($user->cancel_leaves);
             }else{
                 $cancel_leaves = [];
             }
             $weekends = $this->generateWeekend($user->workShifts, $days, $company_weekend_days);
-            // dd($weekends);
-            // print_r($user->cancel_leaves);
+
+            // dd($days);
 
             foreach($days as $key => $day){
                 $leave_type = '';
                 
-                if(!in_array($day, $attendance_array)){
+                // if(!in_array($day, $attendance_array)){
+                //--------------------------
+                if(!in_array($day, $final_days)){
+                    // echo $day."<br/>";
+                //--------------------------
+
                     if(array_key_exists($day, $leaves)){
                         $observation = 2;
                         $leave_type = $leaves[$day];
@@ -163,7 +210,7 @@ class AttendanceTimesheetJob implements ShouldQueue
                     ];
 
                 }else{
-                    
+                    // echo "---------".$day."<br/>";
                     if(in_array($day, $holidays)){
                         $observation = 5;
                     }elseif(in_array($day,$weekends)){
@@ -175,7 +222,6 @@ class AttendanceTimesheetJob implements ShouldQueue
                     $attendance = $attendance_list->where('date',$day)->first();
                     
                     $attendanceResult[] = [
-                        // 'id' => $attendance->id,
                         'user_id' => $attendance->user_id,
                         'date' => $attendance->date,
                         'observation' => $observation,
@@ -188,9 +234,10 @@ class AttendanceTimesheetJob implements ShouldQueue
                     ];
                 }
             }
-        // print_r($attendanceResult);
-        // dd($attendanceResult);
         }
+
+    
+        
         return $attendanceResult;
     }
 
