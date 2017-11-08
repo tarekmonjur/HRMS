@@ -21,11 +21,11 @@ class Attendance extends Model
 
     
     public function getInTimeAttribute($value){
-    	return date('h:i A',strtotime($value));
+    	return ($value != "00:00:00")?date('h:i A',strtotime($value)):"00:00:00";
     }
     
 
     public function getOutTimeAttribute($value){
-    	return date('h:i A',strtotime($value));
+    	return ($value != "00:00:00")?date('h:i A',strtotime($value)):"00:00:00";
     }
 }

@@ -15,6 +15,7 @@ new Vue({
     to_date:null,
 		uIndex:null,
 		aIndex:null,
+    make_absent:null,
 		hideShowId: '#showAttendance',
 		departments:[],
 		showAttendance:false,
@@ -112,7 +113,7 @@ new Vue({
       },
 
 
-      	getDepartments(){
+      getDepartments(){
             axios.get('/get-departments').then(response => {
                 this.departments = response.data;
         	});
@@ -138,6 +139,7 @@ new Vue({
 
           axios.post('/attendance/index',formData).then((response) => {
             this.errors = [];
+
               this.attendances = response.data.attendance;
               this.days = response.data.days;
               this.dayList = response.data.dayList;
@@ -164,6 +166,13 @@ new Vue({
       	this.aIndex = aIndex;
       	this.attend = [];
 
+        if(observation == 0){
+          this.make_absent = true;
+        }
+        else{
+          this.make_absent = false;
+        }
+
       	this.loadinShow(modal_id);
 
       	this.attend = {
@@ -180,6 +189,15 @@ new Vue({
       	this.loadinHide(modal_id);
       },
 
+      makeAbsend(val){
+
+        // alert('testing ...'+val);
+        if(this.make_absent == false){
+          
+          this.attend.in_time = "00:00:00";
+          this.attend.out_time = "00:00:00";
+        }
+      },
 
       saveAttendance(e){
 
