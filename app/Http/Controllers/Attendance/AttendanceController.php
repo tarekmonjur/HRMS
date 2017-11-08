@@ -88,39 +88,48 @@ class AttendanceController extends Controller
             'out_time' => 'required',
         ]);
 
-        $workShiftMap = new WorkShiftEmployeeMap;
-        $emp_work_shift = $workShiftMap->get_work_shift_by_user_id_and_date($request->user_id,$request->date);
+        // if($request->in_time == "00:00:00" && $request->out_time == "00:00:00"){
 
-        if($emp_work_shift){
-            $late_count_time =  $emp_work_shift->late_count_time;
-            
-            if(strtotime($request->in_time) > strtotime($late_count_time)){
-                //late
-                $late_hour = date('H.i',strtotime($request->in_time) - strtotime($emp_work_shift->shift_start_time));
-            }
-            else{
-                //not late
-                $late_hour = null;
-            }
-        }else{
-            
-            $common_val = CommonWorkShift::orderBy('id', 'DESC')->first();
-            $late_count_time =  $common_val->common_late_count_time;
+        //     $request->offsetSet('late_count_time', "00:00:00");
+        //     $request->offsetSet('late_hour', "00:00:00");
+        //     $request->offsetSet('total_work_hour', "00:00:00");
+        // }
+        // else{
 
-            if(strtotime($request->in_time) > strtotime($late_count_time)){
-                //late
-                $late_hour = date('H.i',strtotime($request->in_time) - strtotime($common_val->common_shift_start_time));
-            }
-            else{
-                //not late
-                $late_hour = null;
-            }
-        }
+            $workShiftMap = new WorkShiftEmployeeMap;
+            $emp_work_shift = $workShiftMap->get_work_shift_by_user_id_and_date($request->user_id,$request->date);
 
-        $request->offsetSet('late_count_time',$late_count_time);
-        $request->offsetSet('late_hour',$late_hour);
-        $total_work_hour = date('H.i',strtotime($request->out_time) - strtotime($request->in_time));
-        $request->offsetSet('total_work_hour',$total_work_hour);
+            if($emp_work_shift){
+                $late_count_time =  $emp_work_shift->late_count_time;
+                
+                if(strtotime($request->in_time) > strtotime($late_count_time)){
+                    //late
+                    $late_hour = date('H.i',strtotime($request->in_time) - strtotime($emp_work_shift->shift_start_time));
+                }
+                else{
+                    //not late
+                    $late_hour = null;
+                }
+            }else{
+                
+                $common_val = CommonWorkShift::orderBy('id', 'DESC')->first();
+                $late_count_time =  $common_val->common_late_count_time;
+
+                if(strtotime($request->in_time) > strtotime($late_count_time)){
+                    //late
+                    $late_hour = date('H.i',strtotime($request->in_time) - strtotime($common_val->common_shift_start_time));
+                }
+                else{
+                    //not late
+                    $late_hour = null;
+                }
+            }
+
+            $request->offsetSet('late_count_time',$late_count_time);
+            $request->offsetSet('late_hour',$late_hour);
+            $total_work_hour = date('H.i',strtotime($request->out_time) - strtotime($request->in_time));
+            $request->offsetSet('total_work_hour',$total_work_hour);
+        // }
 
         try{
             $attendance = $this->saveAttendance($request);
@@ -138,6 +147,7 @@ class AttendanceController extends Controller
             $request->session()->flash('danger','Attendance Added!');
 
         }catch(\Exception $e){
+
             if($request->ajax()){
                 $data['status'] = 'danger';
                 $data['statusType'] = 'NotOk';
@@ -170,6 +180,11 @@ class AttendanceController extends Controller
             $request->offsetSet('observation',5);
         }else{
             $request->offsetSet('observation',1);
+        }
+
+        //make employee absent
+        if($request->in_time == "00:00:00" && $request->out_time == "00:00:00"){
+            $request->offsetSet('observation',0);
         }
 
         if($observation == 'present'){
@@ -226,6 +241,7 @@ class AttendanceController extends Controller
         }else{
             $attendance = $this->attendanceTimesheet->get_attendance_timesheet($from_date, $to_date, $department_id, $timesheet_observation);
         }
+
 
 		$dateData = $this->generateDays($from_date, $to_date);
     	$attendances = ['days' => $dateData['dates'], 'dayList' => $dateData['date_list'], 'attendance' => $attendance];
