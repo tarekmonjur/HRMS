@@ -18,11 +18,11 @@ class CreateEmployeeReferencesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('reference_name',50);
-            $table->string('reference_email',50);
-            $table->string('reference_department',50);
+            $table->string('reference_email',50)->nullable();
+            $table->string('reference_department',50)->nullable();
             $table->string('reference_organization',100);
             $table->string('reference_phone',20);
-            $table->text('reference_address',20);
+            $table->text('reference_address',20)->nullable();
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);
             $table->timestamps();

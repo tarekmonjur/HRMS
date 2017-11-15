@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(HrmsPoliceStationCreateSeeder::class);
 
         $this->call(HrmsEmployeeTypeCreateSeeder::class);
+        $this->call(HrmsEmployeeStatusSeeder::class);
 
         $this->call(HrmsBranchCreateSeeder::class);
         $this->call(HrmsUnitCreateSeeder::class);

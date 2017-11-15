@@ -132,7 +132,7 @@
                                         </div>
                                             
                                         <div class="row">
-                                            <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id ==4 || basics.employee_type_id ==1">
+                                            <div class="col-md-2">
                                                 <div class="form-group" :class="{'has-error': errors.from_date}">
                                                     <label class="control-label"><span v-text="basics.employee_type.type_name"></span> From Date : <span class="text-danger">*</span></label>
                                                     <input v-if="basics.employee_type_map" type="text" name="from_date" :value="basics.employee_type_map.from_date" class="form-control input-sm" placeholder="Enter From Date" disabled="disabled">
@@ -148,7 +148,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-8" v-if="basics.employee_type_id == 2 || basics.employee_type_id ==4 || basics.employee_type_id ==1">
+                                            <div class="col-md-8">
                                                 <div class="form-group" :class="{'has-error': errors.remarks}">
                                                     <label class="control-label"><span v-text="basics.employee_type.type_name"></span> Remark :</label>
                                                     <input v-if="basics.employee_type_map" type="text" :value="basics.employee_type_map.remarks" name="remarks" class="form-control input-sm" disabled="disabled">
@@ -420,7 +420,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-2" v-if="type_map == 1 || type_map == 2 || type_map == 4">
+                                        <div class="col-md-2">
                                             <div class="form-group" :class="{'has-error': errors.from_date}">
                                                 <label class="control-label"><span v-text="type_name"></span> From Date : <span class="text-danger">*</span></label>
                                                 <input type="text" name="from_date" v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter From Date" readonly="readonly">
@@ -436,7 +436,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-8" v-if="type_map == 1 || type_map == 2 || type_map == 4">
+                                        <div class="col-md-8">
                                             <div class="form-group" :class="{'has-error': errors.remarks}">
                                                 <label class="control-label"><span v-text="type_name"></span> Remark :</label>
                                                 <input type="text" name="remarks" class="form-control input-sm">
@@ -2276,13 +2276,13 @@
 
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">Reference Email  : <span class="text-danger">*</span></label>
+                                            <label class="control-label">Reference Email  : </label>
                                             <input type="text" :value="reference.reference_email" class="form-control input-sm" readonly="readonly">
                                         </div>
                                     </div>
                                      <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">Reference Department : <span class="text-danger">*</span></label>
+                                            <label class="control-label">Reference Department : </label>
                                             <input type="text" :value="reference.reference_department" class="form-control input-sm" readonly="readonly">
                                         </div>
                                     </div>
@@ -2304,7 +2304,7 @@
                                     
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">Reference Address : <span class="text-danger">*</span></label>
+                                            <label class="control-label">Reference Address : </label>
                                             <textarea type="text" :value="reference.reference_address" class="form-control input-sm" readonly="readonly"></textarea>
                                         </div>
                                     </div>

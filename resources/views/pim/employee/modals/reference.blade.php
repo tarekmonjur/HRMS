@@ -26,14 +26,14 @@
 
                             <div class="col-md-4">
                                 <div class="form-group" :class="{'has-error': errors.reference_email}">
-                                    <label class="control-label">Reference Email  : <span class="text-danger">*</span></label>
+                                    <label class="control-label">Reference Email  : </label>
                                     <input type="text" name="reference_email" class="form-control input-sm" v-model="singleReference.reference_email">
                                     <span v-if="errors.reference_email" class="text-danger">@{{ errors.reference_email[0]}}</span>
                                 </div>
                             </div>
                              <div class="col-md-4">
                                 <div class="form-group" :class="{'has-error': errors.reference_department}">
-                                    <label class="control-label">Reference Department : <span class="text-danger">*</span></label>
+                                    <label class="control-label">Reference Department : </label>
                                     <input type="text" name="reference_department" class="form-control input-sm" v-model="singleReference.reference_department">
                                     <span v-if="errors.reference_department" class="text-danger">@{{ errors.reference_department[0]}}</span>
                                 </div>
@@ -58,7 +58,7 @@
                             
                             <div class="col-md-4">
                                 <div class="form-group" :class="{'has-error': errors.reference_address}">
-                                    <label class="control-label">Reference Address : <span class="text-danger">*</span></label>
+                                    <label class="control-label">Reference Address : </label>
                                     <textarea type="text" name="reference_address" class="form-control input-sm" v-model="singleReference.reference_address"></textarea>
                                     <span v-if="errors.reference_address" class="text-danger">@{{ errors.reference_address[0]}}</span>
                                 </div>

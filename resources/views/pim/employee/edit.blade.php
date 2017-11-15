@@ -136,23 +136,10 @@
                                                 <span v-if="errors.unit_id" class="help-block" v-text="errors.unit_id[0]"></span>
                                                 </div>
                                             </div>
-
-                                        <!-- <div class="col-md-2">
-                                            <div class="form-group mt25">
-                                                <button type="button" id="add_new_designation_button"
-                                                        onclick="modal_open('#add_new_designation_button','#add_new_designation_modal')"
-                                                        v-on:click="getDepartmentsAndLevels()"
-                                                        class="btn btn-sm btn-dark btn-gradient dark btn-block"
-                                                        data-effect="mfp-newspaper"><span
-                                                            class="glyphicons glyphicons-briefcase"></span> &nbsp; Add
-                                                    Designation
-                                                </button>
-                                            </div>
-                                        </div> -->
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id ==4 || basics.employee_type_id ==1">
+                                        <div class="col-md-2">
                                             <div class="form-group" :class="{'has-error': errors.from_date}">
                                                 <label class="control-label"><span v-text="type_name"></span> From Date : <span class="text-danger">*</span></label>
                                                 <input type="text" name="from_date" :value="(basics.employee_type_map)?basics.employee_type_map.from_date:''" v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter From Date" readonly="readonly">
@@ -170,7 +157,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6" v-if="basics.employee_type_id == 2 || basics.employee_type_id == 4 || basics.employee_type_id ==1">
+                                        <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': errors.remarks}">
                                                 <label class="control-label"><span v-text="type_name"></span> Remark :</label>
                                                 <input v-if="basics.employee_type_map" type="text" name="remarks" :value="(basics.employee_type_map)?basics.employee_type_map.remarks:''" class="form-control input-sm">
@@ -2079,13 +2066,13 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="control-label">Reference Email  : <span class="text-danger">*</span></label>
+                                                    <label class="control-label">Reference Email  : </label>
                                                     <input type="text" :value="reference.reference_email" class="form-control input-sm" readonly="readonly">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="control-label">Reference Department : <span class="text-danger">*</span></label>
+                                                    <label class="control-label">Reference Department : </label>
                                                     <input type="text" :value="reference.reference_department" class="form-control input-sm" readonly="readonly">
                                                 </div>
                                             </div>
@@ -2107,7 +2094,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="control-label">Reference Address : <span class="text-danger">*</span></label>
+                                                    <label class="control-label">Reference Address : </label>
                                                     <textarea type="text" :value="reference.reference_address" class="form-control input-sm" readonly="readonly"></textarea>
                                                 </div>
                                             </div>
@@ -2149,14 +2136,14 @@
 
                                         <div class="col-md-4">
                                             <div class="form-group" :class="{'has-error': errors.reference_email}">
-                                                <label class="control-label">Reference Email  : <span class="text-danger">*</span></label>
+                                                <label class="control-label">Reference Email  : </label>
                                                 <input type="text" name="reference_email" class="form-control input-sm">
                                                 <span v-if="errors.reference_email" class="text-danger">@{{ errors.reference_email[0]}}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group" :class="{'has-error': errors.reference_department}">
-                                                <label class="control-label">Reference Department : <span class="text-danger">*</span></label>
+                                                <label class="control-label">Reference Department : </label>
                                                 <input type="text" name="reference_department" class="form-control input-sm">
                                                 <span v-if="errors.reference_department" class="text-danger">@{{ errors.reference_department[0]}}</span>
                                             </div>
@@ -2181,7 +2168,7 @@
 
                                         <div class="col-md-4">
                                             <div class="form-group" :class="{'has-error': errors.reference_address}">
-                                                <label class="control-label">Reference Address : <span class="text-danger">*</span></label>
+                                                <label class="control-label">Reference Address : </label>
                                                 <textarea type="text" name="reference_address" class="form-control input-sm"></textarea>
                                                 <span v-if="errors.reference_address" class="text-danger">@{{ errors.reference_address[0]}}</span>
                                             </div>

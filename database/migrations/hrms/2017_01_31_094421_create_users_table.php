@@ -33,7 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('email', 45)->unique();            
             $table->string('password');            
             $table->rememberToken();           
-            $table->boolean('status')->default(1)->comment='0=inactive, 1=active'; 
+            $table->tinyInteger('status')->default(1);
             $table->string('mobile_number',16); 
             $table->string('photo',200)->nullable();  
             $table->integer('created_by')->default(0);    
