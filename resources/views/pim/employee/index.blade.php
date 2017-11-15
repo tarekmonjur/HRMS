@@ -59,13 +59,6 @@
                    <td>{{$user->fullname}}</td>
                    <td>{{$user->email}}</td>
                    <td>{{$user->designation->designation_name}}</td>
-
-                   {{-- <td> --}}
-                      {{-- @if($user->created_by > 0) --}}
-                      {{-- <button type="button" class="btn btn-xs btn-success" onclick="showData({{$user->id}})" data-toggle="modal"                data-target=".showData">Permissions</button> --}}
-                      {{-- @endif --}}
-                   {{-- </td>  --}}
-
                    <td>{{$user->designation->department->department_name}}</td>
               
                    <td>
@@ -80,12 +73,12 @@
                    <td>{{$user->created_at}}</td>
                    <td>{{$user->updated_at}}</td>
                    <td>
-                       <div class="btn-group pb5">
+                       <div class="btn-group">
                            <a href="{{url('/employee/edit/'.$user->id)}}" class="btn btn-sm btn-primary">
                                <i class="glyphicons glyphicons-pencil"></i>
                            </a>
                        </div>
-                       <div class="btn-group pb5">
+                       <div class="btn-group">
                            <a href="{{url('/employee/view/'.$user->employee_no)}}" class="btn btn-sm btn-success">
                                <i class="glyphicons glyphicons-eye_open"></i>
                            </a>
@@ -93,10 +86,34 @@
                        <div class="btn-group">
                            <button type="button" class="btn btn-info btn-sm" onclick="showLeaveData({{$user->id}})" data-toggle="modal" data-target=".showLeaveData">Leaves</button>
                        </div>
-                       <div class="btn-group pt5">
-                          @if(in_array($chkUrl."/delete", session('userMenuShare')))
-                           <a class="btn btn-sm {{($user->status == 0)?'text-primary':'text-danger'}}" v-on:click="changeStatus($event,<?php echo $user->id;?>)">{{($user->status == 0)?'Active':'Inactive'}}</a>
-                          @endif
+                       <div class="btn-group">
+                        @if(in_array($chkUrl."/delete", session('userMenuShare')))
+                           <button type="button" class="btn btn-warning btn-sm" @click="EmployeeStatus({{$user->id}})" data-toggle="modal" data-target=".EmployeeStatus">
+                             @if($user->status==1)
+                                {{"Active"}}
+                             @elseif($user->status==2)
+                                {{"Retired"}}
+                             @elseif($user->status==3)
+                                {{"Released"}}
+                             @elseif($user->status==4)
+                                {{"Resigned"}}
+                             @elseif($user->status==5)
+                                {{"Terminated"}}
+                             @elseif($user->status==6)
+                                {{"Dismissed"}}
+                             @elseif($user->status==7)
+                                {{"Contract Terminated"}}
+                             @elseif($user->status==8)
+                                {{"Abscond"}}
+                             @elseif($user->status==9)
+                                {{"Transfer"}}
+                             @elseif($user->status==10)
+                                {{"Deactive"}}
+                             @else
+                                {{"Undefined"}}
+                             @endif
+                           </button>
+                        @endif
                        </div>
                        <div class="btn-group">
                        <button type="button" class="btn btn-sm btn-success" onclick="showData({{$user->id}})" data-toggle="modal" data-target=".showData">Permissions</button>
@@ -109,10 +126,14 @@
         </table>
     </div>
 </div>
-</section>
 
 @include('pim.employee.modals.permission')
 @include('pim.employee.modals.leave')
+@include('pim.employee.modals.employee_status')
+
+</section>
+
+
 
 @section('script')
 
@@ -179,45 +200,122 @@ function showLeaveData(id){
 
   new Vue({
     el: '#employee_list',
+    data:{
+      user_id: '',
+      HTMLcontent: '',
+      show_history: [],
+    },
     methods:{
 
-      changeStatus(e,id){
-        $.LoadingOverlay("show");
-        // console.log(e.target.className = 'tarek');
-        var status = e.target.text;
-        axios.post('/employee/status-change',{'id':id,'status':status}).then((response) => {
-          if(status == 'Active'){
-            e.target.classList.remove("text-primary");
-            e.target.classList.add("text-danger");
-            e.target.text = "Inactive";            
-          }else{
-            e.target.classList.remove("text-danger");
-            e.target.classList.add("text-primary");
-            e.target.text = "Active";
-          }
-          $.LoadingOverlay("hide");
-          this.showMessage(response.data);
-        }).catch((error) => {
+      returnStatusName(id){
 
-          if(error.response.status == 500 || error.response.data.status == 'danger'){
-                this.showMessage(error.response.data);
+        var stName = "Undefined";
+
+        if(id == 1){
+          stName = "Active";
+        }
+        else if(id == 2){
+          stName = "Retired";
+        }
+        else if(id == 3){
+          stName = "Released";
+        }
+        else if(id == 4){
+          stName = "Resigned";
+        }
+        else if(id == 5){
+          stName = "Terminated";
+        }
+        else if(id == 6){
+          stName = "Dismissed";
+        }
+        else if(id == 7){
+          stName = "Contract Terminated";
+        }
+        else if(id == 8){
+          stName = "Abscond";
+        }
+        else if(id == 9){
+          stName = "Transfer";
+        }
+        else if(id == 10){
+          stName = "Deactive";
+        }
+
+        return stName;
+      },
+
+      EmployeeStatus(data){
+
+        this.user_id = data;
+
+        //getEmployeeStatus get history .. if no history.. 
+        //it generate one history Automatically 
+        axios.get('/employee/get_employee_status/'+this.user_id).then(response => {
+          
+          this.show_history = response.data;
+        });
+      },
+
+      empUpdateStatus(e){
+        
+        // var pathArray = window.location.pathname.split( '/' );
+        
+        var formData = new FormData(e.target);
+
+        // formData.append('file', document.getElementById('file').files[0]);
+
+        axios.post("updateEmployeeStatus", formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
             }
-          $.LoadingOverlay("hide");
-        });
-      },
+        })
+        .then((response) => { 
+    
+            this.HTMLcontent = null;
 
-      showMessage(data){
-        new PNotify({
-            title: data.title,
-            text: data.message,
-            shadow: true,
-            addclass: 'stack_top_right',
-            type: data.status,
-            width: '290px',
-            delay: 2000,
-            icon: false,
+            if(response.data.title == 'error'){
+              swal({
+                title: response.data.title+"!",
+                text: response.data.message,
+                type: response.data.title,
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Done",
+                closeOnConfirm: true
+              });
+            }
+            else{
+              swal({
+                  title: response.data.title+"!",
+                  text: response.data.message,
+                  type: response.data.title,
+                  showCancelButton: false,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "Done",
+                  closeOnConfirm: false
+              },
+              function(){
+                  location.href=location.href;
+              });
+            }
+              
+        })
+        .catch((error) => {
+            
+            if(error.response.status != 200){ //error 422
+                var errors = error.response.data;
+
+                var errorsHtml = '<div class="alert alert-danger"><ul>';
+                $.each( errors , function( key, value ) {
+                    errorsHtml += '<li>' + value[0] + '</li>';
+                });
+                errorsHtml += '</ul></di>';
+                
+                this.HTMLcontent = errorsHtml;
+            }
         });
-      },
+      }
     }
   });
 </script>

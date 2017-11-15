@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeeTypeTable extends Migration
+class CreateEmployeeStatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateEmployeeTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_types', function (Blueprint $table) {
+        Schema::create('employee_status', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type_name',100);
+            $table->string('status_name',200);
             $table->boolean('status')->default(1)->comment='1=active, 0=inactive';
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateEmployeeTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_types');
+        Schema::dropIfExists('employee_status');
     }
 }
