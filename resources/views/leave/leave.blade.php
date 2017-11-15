@@ -95,7 +95,7 @@
                                                         $fileName = $info->employee_leave_attachment;
                                                     ?>
                                                     @if(!empty($fileName))
-                                                        <a target="_blank" href="{{asset("files/leave_doc/$folderName/$fileName")}}" style="cursor: pointer;"><i class="fa fa-file fa-2x" aria-hidden="true"></i></a>
+                                                        <a target="_blank" href="{{asset("storage/leave_doc/$folderName/$fileName")}}" style="cursor: pointer;"><i class="fa fa-file fa-2x" aria-hidden="true"></i></a>
                                                     @endif
                                                 </td>
                                                 {{-- <td>{{$info->approvedByUser?$info->approvedByUser->first_name." ".$info->approvedByUser->last_name:'-'}}</td>

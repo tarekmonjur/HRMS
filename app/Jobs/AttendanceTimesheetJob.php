@@ -113,7 +113,7 @@ class AttendanceTimesheetJob implements ShouldQueue
 
         $attendanceResult = [];
         //----
-        $sakib = 0;
+        // $sakib = 0;
         
         //----
         foreach ($users as $user) {
@@ -122,7 +122,7 @@ class AttendanceTimesheetJob implements ShouldQueue
             //-------
             $day_inTime_outTime_ary = [];   
             $final_days = []; 
-            $sakib++;
+            // $sakib++;
             
             // if($sakib == 2){
 

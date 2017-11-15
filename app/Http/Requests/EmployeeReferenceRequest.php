@@ -26,11 +26,8 @@ class EmployeeReferenceRequest extends FormRequest
         return [
             'user_id' => 'required|numeric',
             'reference_name' => 'required|alpha_spaces',
-            'reference_email' => 'required|email',
-            'reference_department' => 'required|alpha_spaces',
             'reference_organization' => 'required|alpha_spaces',
             'reference_phone' => 'required|max:16|min:6|regex:/\+*[0-9]+$/',
-            'reference_address' => 'required',
         ];
     }
 }

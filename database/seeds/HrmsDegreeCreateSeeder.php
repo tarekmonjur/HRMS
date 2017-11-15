@@ -36,6 +36,8 @@ class HrmsDegreeCreateSeeder extends Seeder
 			['education_level_id'=>'1','degree_name'=>'S.S.C (Secondary School Certificate)', 'status'=>'1'],
 			['education_level_id'=>'1','degree_name'=>'H.S.C (Higher Secondary Certificate)', 'status'=>'1'],
 			['education_level_id'=>'2','degree_name'=>'B.Sc. Engr.(Bachelor of Science in Engineering)', 'status'=>'1'],
+			['education_level_id'=>'2','degree_name'=>'M.B.S (Master of Business and Science)', 'status'=>'1'],
+			['education_level_id'=>'2','degree_name'=>'B.B.S (Bachelor of Business Studies)', 'status'=>'1'],
 		]);
     }
 }
