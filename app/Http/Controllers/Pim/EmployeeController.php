@@ -64,7 +64,7 @@ class EmployeeController extends Controller
     public function __construct(Auth $auth,User $user)
     {
         $this->middleware('auth:hrms');
-        $this->middleware('CheckPermissions', ['except' => ['viewEmployeeProfile', 'statusChange', 'permission', 'updatePermission', 'leave', 'updateLeave', 'employeeStatus', 'updateEmployeeStatus', 'getEmployeeStatus']]);
+        $this->middleware('CheckPermissions', ['except' => ['viewEmployeeProfile', 'statusChange', 'permission', 'updatePermission', 'leave', 'updateLeave', 'employeeStatus', 'updateEmployeeStatus', 'getEmployeeStatus', 'testJobEmpStatus']]);
 
         $this->middleware(function($request, $next){
             $this->auth = Auth::guard('hrms')->user();
@@ -82,7 +82,7 @@ class EmployeeController extends Controller
     public function index(){
 
         $data['title'] = 'Employee List';
-        $data['users'] = User::with('designation','createdBy','updatedBy')->where('status','!=',2)->orderBy('status')->get();
+        $data['users'] = User::with('designation','createdBy','updatedBy')->orderBy('status')->get();
         $data['modules_permission'] = Module::with('menus','menus.child_menu')->where('module_status', 1)->get();
         $data['sidebar_hide'] = true;
         $data['leave_types'] = LeaveType::where('leave_type_status', 1)->get();
@@ -160,6 +160,7 @@ class EmployeeController extends Controller
 
         $data = UserEmployeeStatusMap::where('user_id', $id)->get();
 
+        //If no data in user_emp_status_map it generate data
         if(count($data) == 0){
             $emp_type_data = UserEmployeeTypeMap::where('user_id', $id)->first();
 
@@ -244,6 +245,29 @@ class EmployeeController extends Controller
 
         return response()->json($data); 
 
+    }
+
+    public function testJobEmpStatus(){
+
+        $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
+        $current_date = $date->format('Y-m-d');
+
+        $prev_date = date('Y-m-d', strtotime($current_date .' -2 day'));
+        echo $current_date."----".$prev_date."<br/>";
+
+        $data = UserEmployeeStatusMap::where('from_date', $current_date)->get();
+
+        if(count($data) > 0){
+
+            foreach($data as $info){
+
+                echo $info->user_id."---FromDate: ".$info->from_date." ---Status: ".$info->employee_status_id."<br/>";
+                $findUser = User::where('id', $info->user_id)->first();
+                $findUser->status = $info->employee_status_id;
+                $findUser->save();
+            }
+        }
+                
     }
 
     /**

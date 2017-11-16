@@ -46,9 +46,6 @@
                                         <td v-text="info.status==1?'Active':'Inactive'"></td>
                                         <td v-text="info.created_at"></td>
                                         <td>
-                                            {{-- <button type="button" @click="editData(info.id, index)" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target=".dataEdit">
-                                                <i class="fa fa-edit"></i>
-                                            </button> --}}
                                             @if(in_array($chkUrl."/delete", session('userMenuShare')))
                                                 <button type="button" v-if="info.status==0" @click="deleteData(info.id, index)" class="btn btn-sm btn-danger">
                                                     <i class="fa fa-trash-o"></i>

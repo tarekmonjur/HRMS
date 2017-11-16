@@ -18,15 +18,15 @@ class CreateEmployeeAddressTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('present_postoffice')->nullable();
-            $table->integer('present_policestation_id')->unsigned();
-            $table->integer('present_district_id')->unsigned();
-            $table->integer('present_division_id')->unsigned();
+            $table->integer('present_policestation_id')->unsigned()->nullable();
+            $table->integer('present_district_id')->unsigned()->nullable();
+            $table->integer('present_division_id')->unsigned()->nullable();
             $table->string('present_address')->nullable();
             
             $table->string('permanent_postoffice')->nullable();
-            $table->integer('permanent_policestation_id')->unsigned();
-            $table->integer('permanent_district_id')->unsigned();
-            $table->integer('permanent_division_id')->unsigned();
+            $table->integer('permanent_policestation_id')->unsigned()->nullable();
+            $table->integer('permanent_district_id')->unsigned()->nullable();
+            $table->integer('permanent_division_id')->unsigned()->nullable();
             $table->string('permanent_address')->nullable();
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);
