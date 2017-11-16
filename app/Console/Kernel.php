@@ -8,6 +8,7 @@ use App\Console\Commands\AttendanceTimesheetCommand;
 use App\Console\Commands\ArchiveAttendanceTimesheetCommand;
 use App\Console\Commands\CalculateEarnLeave;
 use App\Console\Commands\MakeWeekendActive;
+use App\Console\Commands\ChangeEmployeeStatus;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,8 @@ class Kernel extends ConsoleKernel
         MakeWeekendActive::class,
         SalaryIncrementCommand::class,
         AttendanceTimesheetCommand::class,
-        ArchiveAttendanceTimesheetCommand::class
+        ArchiveAttendanceTimesheetCommand::class,
+        ChangeEmployeeStatus::class
     ];
 
     /**
@@ -64,6 +66,10 @@ class Kernel extends ConsoleKernel
                 $schedule->command('salary:increment '.$database->database_name)
                     // ->cron('* * * * * *');
                      ->twiceDaily(1, 13);
+
+                $schedule->command('change:employeeStatus '.$database->database_name)
+                    // ->cron('* * * * * *');
+                     ->daily();
             }
         }
 
