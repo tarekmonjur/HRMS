@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\UserEmployeeTypeMap;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -126,7 +128,7 @@ class User extends Authenticatable
 
     public function employeeTypeMap(){
         return $this->hasOne('App\Models\UserEmployeeTypeMap')->orderBy('id','desc');
-    }
+    }  
 
     public function branch(){
         return $this->belongsTo('App\Models\Branch');
@@ -266,7 +268,50 @@ class User extends Authenticatable
     public function get_user_data_by_user_tab($user_id,$tab,$flag=null){
 
         if($tab == ''){
-            $basic = User::with('employeeType','employeeTypeMap','supervisor','designation.department','designation.level','branch','unit','address.presentDivision','address.presentDistrict','address.presentPoliceStation','address.permanentDivision','address.permanentDistrict','address.permanentPoliceStation')->find($user_id);
+            
+            // $basic = User::with('employeeType','employeeTypeMap','supervisor','designation.department','designation.level','branch','unit','address.presentDivision','address.presentDistrict','address.presentPoliceStation','address.permanentDivision','address.permanentDistrict','address.permanentPoliceStation')->find($user_id);
+            
+            // return response()->json($basic);
+
+            //this condition only valid
+            //when only one upcoming type is possible
+
+
+            $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
+            $currentDate = $date->format('Y-m-d');
+
+            $dataa = UserEmployeeTypeMap::where('user_id', $user_id)->orderBy('id', 'DESC')->take(2)->get();
+
+            if(count($dataa) == 1){
+                
+                $currentAry = $dataa[0];
+            }
+            else{
+                if(empty($dataa[0]->to_date) && (strtotime($dataa[0]->from_date) <= strtotime($currentDate))){
+
+                
+                    $currentAry = $dataa[0];
+                }
+                elseif((strtotime($dataa[0]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[0]->to_date) >= strtotime($currentDate)) && !empty($dataa[0]->to_date)){
+
+                    
+                    $currentAry = $dataa[0];
+                }
+                elseif((strtotime($dataa[1]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[1]->to_date) >= strtotime($currentDate)) && !empty($dataa[1]->to_date)){
+
+                
+                    $currentAry = $dataa[1];
+                }
+                else{
+                    
+                    $currentAry = $dataa[0];
+                }
+            }
+                
+            $basic['typeInfo'] = $currentAry;
+
+            $basic['basicInfo'] = User::with('employeeType','employeeTypeMap','supervisor','designation.department','designation.level','branch','unit','address.presentDivision','address.presentDistrict','address.presentPoliceStation','address.permanentDivision','address.permanentDistrict','address.permanentPoliceStation')->find($user_id);
+
             return response()->json($basic);
         }
 
