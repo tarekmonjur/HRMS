@@ -21,7 +21,7 @@ class CreateEmpTypeMapWithEmpStatusTable extends Migration
             $table->date('to_date')->nullable();
             $table->text('remarks')->nullable();
             $table->string('document_files', 200)->nullable();
-            $table->tinyInteger('pending_status', 1)->default(0)->comment='0=pending 1=complete';
+            $table->tinyInteger('pending_status')->nullable()->comment='0=pending 1=complete';
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
