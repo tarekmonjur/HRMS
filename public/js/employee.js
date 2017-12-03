@@ -74,6 +74,7 @@ var employee = new Vue({
         levels: [],
 
         basics: [],
+        currentEmpType: [],
         experiences: [],
         educations: [],
 
@@ -383,9 +384,12 @@ var employee = new Vue({
         getBasic(){
             var url = this.makeUrl();
             axios.get(url).then(response => {
-                this.basics = response.data;
-                this.type_name = this.basics['employee_type'].type_name;
-                // console.log(this.basics['employee_type'].type_name);
+                this.basics = response.data.basicInfo;
+                this.currentEmpType = response.data.typeInfo;
+
+                if(this.basics == undefined){
+                    this.basics = response.data;
+                }
             });
         },
 
@@ -394,7 +398,6 @@ var employee = new Vue({
             var url = this.makeUrl();
             axios.get(url).then(response => {
                 this.personals = response.data;
-            // console.log(this.personals);
             });
         },
 
@@ -866,9 +869,12 @@ var employee = new Vue({
                 .then((response) => {
                 $('#employee > .panel > .panel-body').LoadingOverlay("hide");
                 var data = response.data;
-                this.user_id = data.data.id;
+                // this.user_id = data.data.id;
+                this.user_id = data.data.typeInfo.user_id;
                 this.errors = [];
-                this.basics = data.data;
+                // this.basics = data.data;
+                this.basics = data.data.basicInfo;
+                this.currentEmpType = data.data.typeInfo;
                 this.showMessage(data);
                 console.log(data);
                 if(data.type){

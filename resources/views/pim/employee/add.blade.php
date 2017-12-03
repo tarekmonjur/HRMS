@@ -100,12 +100,18 @@
                                             </div>
 
                                             <div class="col-md-2">
-                                                <div class="form-group">
+                                                <!-- <div class="form-group">
                                                     <label class="control-label">Employee Type : <span class="text-danger">*</span></label>
-                                                    <!-- <select class="form-control input-sm" disabled="disabled">
-                                                        <option v-for="(employeeType,index) in employeeTypes" :selected="employeeType.id == basics.employee_type_id" v-text="employeeType.type_name"></option>
-                                                    </select> -->
+                                                    
                                                     <input type="text" class="form-control input-sm" :value="basics.employee_type.type_name" disabled="disabled">
+                                                </div> -->
+                                                <div class="form-group" :class="{'has-error': errors.employee_type_id}">
+                                                    <label class="control-label">Employee Type : <span class="text-danger">*</span></label>
+                                                    <select class="form-control input-sm" id="employee_type_id" v-on:change="TypeDependancey" v-model="currentEmpType.employee_type_id" disabled="">
+                                                        <option value="">...Select Employee Type...</option>
+                                                        <option v-for="(employeeType,index) in employeeTypes" :value="employeeType.id" v-text="employeeType.type_name"></option>
+                                                    </select>
+                                                    <span v-if="errors.employee_type_id" class="help-block" v-text="errors.employee_type_id[0]"></span>
                                                 </div>
                                             </div>
 
@@ -133,14 +139,19 @@
                                             
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <div class="form-group" :class="{'has-error': errors.from_date}">
+                                                <!-- <div class="form-group" :class="{'has-error': errors.from_date}">
                                                     <label class="control-label"><span v-text="basics.employee_type.type_name"></span> From Date : <span class="text-danger">*</span></label>
                                                     <input v-if="basics.employee_type_map" type="text" name="from_date" :value="basics.employee_type_map.from_date" class="form-control input-sm" placeholder="Enter From Date" disabled="disabled">
+                                                    <span v-if="errors.from_date" class="help-block" v-text="errors.from_date[0]"></span>
+                                                </div> -->
+                                                <div class="form-group" :class="{'has-error': errors.from_date}">
+                                                    <label class="control-label"><span v-text="type_name"></span> From Date : <span class="text-danger">*</span></label>
+                                                    <input type="text" name="from_date" :value="(currentEmpType)?currentEmpType.from_date:''" v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter From Date" readonly="readonly">
                                                     <span v-if="errors.from_date" class="help-block" v-text="errors.from_date[0]"></span>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id ==4">
+                                            <!-- <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id ==4">
                                                 <div class="form-group" :class="{'has-error': errors.to_date}">
                                                     <label class="control-label"><span v-text="basics.employee_type.type_name"></span> To Date : <span class="text-danger">*</span></label>
                                                     <input v-if="basics.employee_type_map" type="text" name="to_date" :value="basics.employee_type_map.to_date" class="form-control input-sm" placeholder="Enter To Date" disabled="disabled">
@@ -152,6 +163,23 @@
                                                 <div class="form-group" :class="{'has-error': errors.remarks}">
                                                     <label class="control-label"><span v-text="basics.employee_type.type_name"></span> Remark :</label>
                                                     <input v-if="basics.employee_type_map" type="text" :value="basics.employee_type_map.remarks" name="remarks" class="form-control input-sm" disabled="disabled">
+                                                    <span v-if="errors.remarks" class="help-block" v-text="errors.remarks[0]"></span>
+                                                </div>
+                                            </div> -->
+                                            <div class="col-md-2" v-if="currentEmpType.employee_type_id == 2 || currentEmpType.employee_type_id == 4">
+                                                <div class="form-group" :class="{'has-error': errors.to_date}">
+                                                    <label class="control-label"><span v-text="type_name"></span> To Date : <span class="text-danger">*</span></label>
+                                                    <input type="text" name="to_date" :value="(currentEmpType)?currentEmpType.to_date:''"
+
+                                                     v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter To Date" readonly="readonly">
+                                                    <span v-if="errors.to_date" class="help-block" v-text="errors.to_date[0]"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group" :class="{'has-error': errors.remarks}">
+                                                    <label class="control-label"><span v-text="type_name"></span> Remark :</label>
+                                                    <input type="text" name="remarks" :value="(currentEmpType)?currentEmpType.remarks:''" class="form-control input-sm">
                                                     <span v-if="errors.remarks" class="help-block" v-text="errors.remarks[0]"></span>
                                                 </div>
                                             </div>
@@ -251,21 +279,21 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="control-label">Division : </label>
-                                                            <input type="text" :value="basics.address.present_division.division_name" disabled="disabled" class="form-control input-sm">
+                                                            <input type="text" :value="basics.address.present_division?basics.address.present_division.division_name:''" disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="control-label">District : </label>
-                                                            <input type="text" :value="basics.address.present_district.district_name" disabled="disabled" class="form-control input-sm">
+                                                            <input type="text" :value="basics.address.present_district?basics.address.present_district.district_name:''" disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Station : </label>
-                                                            <input type="text" :value="basics.address.present_police_station.police_station_name" disabled="disabled" class="form-control input-sm">
+                                                            <input type="text" :value="basics.address.present_police_station?basics.address.present_police_station.police_station_name:''" disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -300,7 +328,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Division : </label>
                                                             <input type="text"
-                                                                   :value="basics.address.permanent_division.division_name"
+                                                                   :value="basics.address.permanent_division?basics.address.permanent_division.division_name:''"
                                                                    disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
@@ -309,7 +337,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">District : </label>
                                                             <input type="text"
-                                                                   :value="basics.address.permanent_district.district_name"
+                                                                   :value="basics.address.permanent_district?basics.address.permanent_district.district_name:''"
                                                                    disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>
@@ -318,7 +346,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Police Station : </label>
                                                             <input type="text"
-                                                                   :value="basics.address.permanent_police_station.police_station_name"
+                                                                   :value="basics.address.permanent_police_station?basics.address.permanent_police_station.police_station_name:''"
                                                                    disabled="disabled" class="form-control input-sm">
                                                         </div>
                                                     </div>

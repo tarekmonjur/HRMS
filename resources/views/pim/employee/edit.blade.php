@@ -105,12 +105,14 @@
                                         <div class="col-md-2">
                                             <div class="form-group" :class="{'has-error': errors.employee_type_id}">
                                                 <label class="control-label">Employee Type : <span class="text-danger">*</span></label>
-                                                <select class="form-control input-sm" id="employee_type_id" name="employee_type_id" v-on:change="TypeDependancey" v-model="basics.employee_type_id">
+                                                <select class="form-control input-sm" id="employee_type_id" v-on:change="TypeDependancey" v-model="currentEmpType.employee_type_id" disabled="">
                                                     <option value="">...Select Employee Type...</option>
                                                     <option v-for="(employeeType,index) in employeeTypes" :value="employeeType.id" v-text="employeeType.type_name"></option>
                                                 </select>
                                                 <span v-if="errors.employee_type_id" class="help-block" v-text="errors.employee_type_id[0]"></span>
                                             </div>
+                                            <input type="hidden" v-model="currentEmpType.employee_type_id" name="employee_type_id">
+                                            <input type="hidden" v-model="currentEmpType.id" name="current_employee_map_type_id">
                                         </div>
 
                                         <div class="col-md-3">
@@ -142,15 +144,15 @@
                                         <div class="col-md-2">
                                             <div class="form-group" :class="{'has-error': errors.from_date}">
                                                 <label class="control-label"><span v-text="type_name"></span> From Date : <span class="text-danger">*</span></label>
-                                                <input type="text" name="from_date" :value="(basics.employee_type_map)?basics.employee_type_map.from_date:''" v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter From Date" readonly="readonly">
+                                                <input type="text" name="from_date" :value="(currentEmpType)?currentEmpType.from_date:''" v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter From Date" readonly="readonly">
                                                 <span v-if="errors.from_date" class="help-block" v-text="errors.from_date[0]"></span>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id == 4">
+                                        <div class="col-md-2" v-if="currentEmpType.employee_type_id == 2 || currentEmpType.employee_type_id == 4">
                                             <div class="form-group" :class="{'has-error': errors.to_date}">
                                                 <label class="control-label"><span v-text="type_name"></span> To Date : <span class="text-danger">*</span></label>
-                                                <input type="text" name="to_date" :value="(basics.employee_type_map)?basics.employee_type_map.to_date:''"
+                                                <input type="text" name="to_date" :value="(currentEmpType)?currentEmpType.to_date:''"
 
                                                  v-on:mouseover="myDatePicker" class="mydatepicker form-control input-sm" placeholder="Enter To Date" readonly="readonly">
                                                 <span v-if="errors.to_date" class="help-block" v-text="errors.to_date[0]"></span>
@@ -160,22 +162,11 @@
                                         <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': errors.remarks}">
                                                 <label class="control-label"><span v-text="type_name"></span> Remark :</label>
-                                                <input v-if="basics.employee_type_map" type="text" name="remarks" :value="(basics.employee_type_map)?basics.employee_type_map.remarks:''" class="form-control input-sm">
+                                                <input type="text" name="remarks" :value="(currentEmpType)?currentEmpType.remarks:''" class="form-control input-sm">
                                                 <span v-if="errors.remarks" class="help-block" v-text="errors.remarks[0]"></span>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-2" v-if="basics.employee_type_id == 2 || basics.employee_type_id ==4">
-                                            <div class="form-group">
-                                                <label class="control-label"> Employee Type Change is?:</label>
-                                                <div class="radio-custom mb5">
-                                                    <input id="history" name="type_status" type="radio" value="1">
-                                                    <label for="history">History</label>
-                                                    <input id="replace" name="type_status" type="radio" value="0" checked="checked">
-                                                    <label for="replace">Replace</label>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -233,7 +224,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group" :class="{'has-error': errors.email}">
                                                 <label class="control-label">Email Address : <span class="text-danger">*</span></label>
-                                                <input type="email" name="email" :value="basics.email" class="form-control input-sm" placeholder="Enter Email Address">
+                                                <input type="email" name="email" :value="basics.email" class="form-control input-sm" placeholder="Enter Email Address" readonly>
                                                 <input type="hidden" name="old_email" :value="basics.email">
 
                                                 <span v-if="errors.email" class="help-block" v-text="errors.email[0]"></span>

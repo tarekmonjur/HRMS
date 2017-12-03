@@ -11,7 +11,13 @@
                     <div class="form-group" style="padding-top: 0px;">
                         <div class="row">
                             <div class="col-md-12 control-label">
-                                <div align="center"><h5 style="padding-top: 0px;margin-top: 0px;">Status History</h5></div>
+                                <div align="center"><h5 style="padding-top: 0px;margin-top: 0px;">
+                                    Current/Last Type <br>
+                                    <span class="btn-success btn-xs">Name# @{{ returnTypeName(final_or_current_type_id) }}</span>
+                                    <span class="btn-info btn-xs">From Date# @{{ final_or_current_type_from_date }}</span>
+                                    <span class="btn-success btn-xs" v-if="final_or_current_type_to_date">To Date# @{{ final_or_current_type_to_date }}</span>
+                                    <br/><br/>Status History</h5>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-10 col-md-offset-1">
@@ -22,6 +28,7 @@
                                     <th>From Date</th>
                                     <th>To Date</th>
                                     <th>Remarks</th>
+                                    <th></th>
                                 </tr>
                                 <tr v-for="(info, index) in show_history">
                                     <td v-text="index+1"></td>
@@ -29,6 +36,7 @@
                                     <td v-text="info.from_date"></td>
                                     <td v-text="info.to_date"></td>
                                     <td v-text="info.remarks"></td>
+                                    <td v-if="info.id == upcomming_status"><div class="btn btn-danger btn-xs" @click="deleteUpComming(info.id, 'EmpStatus')"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                 </tr>
                             </table>
                         </div>
@@ -40,7 +48,8 @@
 
                     {{ csrf_field() }}
 
-                    <input type="hidden" name="user_id" v-model="user_id">
+                    <input type="hidden" name="user_emp_type_map_id" v-model="final_or_current_type_map_id">
+                    <input type="hidden" name="to_date_limit" v-model="final_or_current_type_to_date">
 
                     <div class="form-group">
                         <label for="status_name" class="col-md-3 control-label">Employee Status <span class="text-danger">*</span></label>
