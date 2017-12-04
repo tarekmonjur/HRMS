@@ -230,7 +230,7 @@ class EmployeeController extends Controller
         }
         //######### find upcomming status --Finished
 
-        //********* Check emp Valid or Not **********
+        //@@******* Check emp Valid or Not **********
         $validityStatus = "Valid";
 
         if(!empty($finalOrCurrentType->to_date) && (strtotime($finalOrCurrentType->to_date) < strtotime($current_date))) {
@@ -627,7 +627,7 @@ class EmployeeController extends Controller
                 $request->offsetSet('photo',$photo);
             }
             $user = User::create($request->all());
-            //****Insert Data Into Leave & Permission
+            //@@**Insert Data Into Leave & Permission
             $this->insertLeavePermission($user, $request->designation_id, $request->employee_type_id);
             if($user){
                 if(isset($photo)){
@@ -642,8 +642,8 @@ class EmployeeController extends Controller
             $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
             $current_date = $date->format('Y-m-d');
             $createUserEmpType = UserEmployeeTypeMap::create($request->all());
-            //****Insert Data Into Emp Status
-            //****for future emp type Status data will be not inserted 
+            //@@**Insert Data Into Emp Status
+            //@@**for future emp type Status data will be not inserted 
             if(strtotime($request->from_date) <= strtotime($current_date)) {
                 EmpTypeMapWithEmpStatus::create([
                     'user_emp_type_map_id' => $createUserEmpType->id,
@@ -655,7 +655,7 @@ class EmployeeController extends Controller
                 ]);
             }
             
-            //****Just updating EarnLeaveJOb
+            //@@**Just updating EarnLeaveJOb
             dispatch(new CalculateEarnLeaveJob());
             // echo "ttss";
             // var_dump($request->all());
