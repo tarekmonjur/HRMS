@@ -596,13 +596,10 @@ class EmployeeController extends Controller
      */
 
     public function addEmployee(EmployeeBasicInfoRequest $request){
-
         $request->offsetSet('password', bcrypt($request->password));
         $request->offsetSet('created_by',$this->auth->id);
-
         try{
             Artisan::call('db:connect');
-
             if(UserEmails::where('email',$request->email)->count() <= 0){
                 UserEmails::create([
                     'config_id' => Session('config_id'),
@@ -623,21 +620,15 @@ class EmployeeController extends Controller
                     return redirect()->back()->withInput();
                 }
             }
-
-
             Artisan::call("db:connect", ['database' => Session('database')]);
             DB::beginTransaction();
-
             if($request->hasFile('image')){
                 $photo = time().'.'.$request->image->extension();
                 $request->offsetSet('photo',$photo);
             }
-
             $user = User::create($request->all());
-
             //****Insert Data Into Leave & Permission
             $this->insertLeavePermission($user, $request->designation_id, $request->employee_type_id);
-
             if($user){
                 if(isset($photo)){
                     if(!$request->image->storeAs(Session('config_id').'/'.$user->id,$photo)){
@@ -645,21 +636,18 @@ class EmployeeController extends Controller
                     }
                 }
             }
-
             $request->offsetSet('user_id',$user->id);
             EmployeeAddress::create($request->all());
             
             $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
             $current_date = $date->format('Y-m-d');
-
             $createUserEmpType = UserEmployeeTypeMap::create($request->all());
-
             //****Insert Data Into Emp Status
             //****for future emp type Status data will be not inserted 
             if(strtotime($request->from_date) <= strtotime($current_date)) {
                 EmpTypeMapWithEmpStatus::create([
                     'user_emp_type_map_id' => $createUserEmpType->id,
-                    'employee_status_id' => $empStatus,
+                    'employee_status_id' => 1,
                     'from_date' => $request->from_date,
                     'to_date' => $request->to_date,
                     'remarks' => "Generated when employee add.",
@@ -669,13 +657,10 @@ class EmployeeController extends Controller
             
             //****Just updating EarnLeaveJOb
             dispatch(new CalculateEarnLeaveJob());
-
             // echo "ttss";
             // var_dump($request->all());
             // die();
-
             DB::commit();
-
             if($request->ajax()){
                 $userData = $this->user->get_user_data_by_user_tab($user->id, $request->tab);
                 $data['data'] = $userData->original;
@@ -687,18 +672,13 @@ class EmployeeController extends Controller
                 $data['message'] = 'Employee Successfully Added!';
                 return response()->json($data,200);
             }
-
             $request->session()->flash('success','Employee Successfully Added!');
-
             if($request->has('save_next')){
                 return redirect('/employee/add/'.$user->id.'/personal');
             }
-
             return redirect('/employee/add/'.$user->id);
-
         }catch(\Exception $e){
             DB::rollback();
-
             if($request->ajax()){
                 $data['status'] = 'danger';
                 $data['statusType'] = 'NotOk';
@@ -708,7 +688,6 @@ class EmployeeController extends Controller
                 $data['message'] = 'Personal Info Not Saved.';
                 return response()->json($data,500);
             }
-
             $request->session()->flash('danger','Employee Not Added!');
             return redirect()->back()->withInput();
         }
@@ -1982,48 +1961,49 @@ class EmployeeController extends Controller
         return redirect('employee/index');
     }
 
-    public function testJobEmpStatus($user_id){
+    public function testJobEmpStatus(){
 
-        //this condition only valid
-        //when only one upcoming type is possible
+        $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
+        $currentDate = $date->format('Y-m-d');
 
-        //this condition only valid
-            //when only one upcoming type is possible
+        $all_user = User::all();
 
-            $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
-            $currentDate = $date->format('Y-m-d');
+        foreach($all_user as $user){
 
-            $dataa = UserEmployeeTypeMap::where('user_id', $user_id)->orderBy('id', 'DESC')->take(2)->get();
+            echo $user->email;
+
+            $dataa = UserEmployeeTypeMap::where('user_id', $user->id)->orderBy('id', 'DESC')->take(2)->get();
 
             if(count($dataa) == 1){
                 // dd($dataa);
-                $currentAry = $dataa[0];
+                $current_type = $dataa[0]->employee_type_id;
             }
             else{
                 if(empty($dataa[0]->to_date) && (strtotime($dataa[0]->from_date) <= strtotime($currentDate))){
 
                     // dd($dataa[0]);
-                    $currentAry = $dataa[0];
+                    $current_type = $dataa[0]->employee_type_id;
                 }
                 elseif((strtotime($dataa[0]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[0]->to_date) >= strtotime($currentDate)) && !empty($dataa[0]->to_date)){
 
                     // dd($dataa[0]);
-                    $currentAry = $dataa[0];
+                    $current_type = $dataa[0]->employee_type_id;
                 }
                 elseif((strtotime($dataa[1]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[1]->to_date) >= strtotime($currentDate)) && !empty($dataa[1]->to_date)){
 
                     // dd($dataa[1]);
-                    $currentAry = $dataa[1];
+                    $current_type = $dataa[1]->employee_type_id;
+                    $upCommingType = $dataa[0]->id;
                 }
                 else{
                     // echo "Invalid";
                     // dd($dataa[0]);
-                    $currentAry = $dataa[0];
+                    // $current_type = $dataa[0]->employee_type_id;
+                    $current_type = "Invalid";
                 }
             }
-                
-            $basic['typeInfo'] = $currentAry;
 
-            dd($basic['typeInfo']);
+            echo "====".$current_type."<br>";
+        }
     }
 }
