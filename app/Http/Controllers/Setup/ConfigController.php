@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\Module;
 use App\Models\LevelPermission;
 use App\Models\UserPermission;
+use App\Models\UserEmployeeTypeMap;
 use App\Models\Setup\UserEmails;
 use App\Models\Setup\Config;
 use App\Models\Setup\Package;
@@ -170,8 +171,15 @@ class ConfigController extends Controller
                     'last_name'      => $last_name,    
                     'email'          => $email, 
                     'password'       => bcrypt($password),  
+                    'status'         => 1,
                     'mobile_number'  => $mobile_number,
 	    		]);
+
+            UserEmployeeTypeMap::create([
+                    'user_id'    => 1,
+                    'employee_type_id' => 1,
+                    'from_date' => "2017-04-05",
+                ]);
 
             Setting::insert([
                     ['field_name' => "company_name",'field_value' => $company_name],

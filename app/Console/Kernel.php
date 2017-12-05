@@ -68,8 +68,8 @@ class Kernel extends ConsoleKernel
                      ->twiceDaily(1, 13);
 
                 $schedule->command('change:employeeStatus '.$database->database_name)
-                    // ->cron('* * * * * *');
-                     ->daily();
+                     ->dailyAt('1:20');
+                     // ->everyMinute();
             }
         }
 
