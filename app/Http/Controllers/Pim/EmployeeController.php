@@ -376,9 +376,9 @@ class EmployeeController extends Controller
             $eff_to_date = null;
         }
 
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
-        try{
+        // try{
             //if already have upcoming type.. new type not be added
             if(strtotime($current_date) > strtotime($type_map->from_date)){
 
@@ -397,9 +397,9 @@ class EmployeeController extends Controller
                 $type_map->updated_by = Auth::user()->id;
                 $type_map->save();
 
-                DB::commit();
-                $data['title'] = 'success';
-                $data['message'] = 'New employee type successfully added !';
+                // DB::commit();
+                // $data['title'] = 'success';
+                // $data['message'] = 'New employee type successfully added !';
             }
             else{
                 //delete previous type
@@ -421,19 +421,19 @@ class EmployeeController extends Controller
                 $type_map_prev->updated_by = Auth::user()->id;
                 $type_map_prev->save();
 
-                DB::commit();
-                $data['title'] = 'success';
-                $data['message'] = 'New employee type successfully added...... !';
+                // DB::commit();
+                // $data['title'] = 'success';
+                // $data['message'] = 'New employee type successfully added...... !';
             }
             
-        }catch (\Exception $e) {
+        // }catch (\Exception $e) {
            
-           DB::rollback(); 
-           $data['title'] = 'error';
-           $data['message'] = 'Employee type not changed !';
-        }
+        //    DB::rollback(); 
+        //    $data['title'] = 'error';
+        //    $data['message'] = 'Employee type not changed !';
+        // }
 
-        return response()->json($data);
+        // return response()->json($data);
         
     }
 
@@ -629,6 +629,7 @@ class EmployeeController extends Controller
             $user = User::create($request->all());
             //@@**Insert Data Into Leave & Permission
             $this->insertLeavePermission($user, $request->designation_id, $request->employee_type_id);
+            
             if($user){
                 if(isset($photo)){
                     if(!$request->image->storeAs(Session('config_id').'/'.$user->id,$photo)){
