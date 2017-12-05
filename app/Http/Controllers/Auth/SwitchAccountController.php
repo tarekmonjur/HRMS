@@ -97,7 +97,7 @@ class SwitchAccountController extends Controller
 			    "nick_name" => $this->auth->nick_name,
 			    "email" => $this->auth->email,
 			    "password" => $this->auth->password,
-			    "status" => 2,
+			    "status" => 55,
 			    "mobile_number" => $this->auth->mobile_number,
 			    "photo" => $this->auth->photo,
 	    		]))
