@@ -25,7 +25,6 @@ use App\Models\UserLeaveTypeMap;
 use App\Models\EmployeeStatus;
 use App\Models\EmployeeType;
 
-use App\Models\UserEmployeeStatusMap; //will be removed
 use App\Models\EmpTypeMapWithEmpStatus;
 
 use App\Services\CommonService;
@@ -389,7 +388,7 @@ class EmployeeController extends Controller
                 $save->employee_type_id = $request->type_name;
                 $save->from_date = $eff_date;
                 $save->to_date = $eff_to_date;
-                $save->remarks = $request->remarks;
+                $save->remarks = $request->type_remarks;
                 $save->created_by = Auth::user()->id;
                 $save->save();
 
@@ -620,6 +619,7 @@ class EmployeeController extends Controller
                     return redirect()->back()->withInput();
                 }
             }
+            
             Artisan::call("db:connect", ['database' => Session('database')]);
             DB::beginTransaction();
             if($request->hasFile('image')){
@@ -642,6 +642,7 @@ class EmployeeController extends Controller
             $date = new \DateTime(null, new \DateTimeZone('Asia/Dhaka'));
             $current_date = $date->format('Y-m-d');
             $createUserEmpType = UserEmployeeTypeMap::create($request->all());
+
             //@@**Insert Data Into Emp Status
             //@@**for future emp type Status data will be not inserted 
             if(strtotime($request->from_date) <= strtotime($current_date)) {
@@ -657,9 +658,7 @@ class EmployeeController extends Controller
             
             //@@**Just updating EarnLeaveJOb
             dispatch(new CalculateEarnLeaveJob());
-            // echo "ttss";
-            // var_dump($request->all());
-            // die();
+            
             DB::commit();
             if($request->ajax()){
                 $userData = $this->user->get_user_data_by_user_tab($user->id, $request->tab);
@@ -801,51 +800,51 @@ class EmployeeController extends Controller
         //remove leave types end
 
         //insert leave info depend on emp type start
-        $emp_type = $employee_type_id; 
-        $commonTypeId = [];
+        // $emp_type = $employee_type_id; 
+        // $commonTypeId = [];
 
-        $leaveTypes = LeaveType::where('leave_type_status', 1)->get();
+        // $leaveTypes = LeaveType::where('leave_type_status', 1)->get();
 
-        if(count($leaveTypes) > 0){
+        // if(count($leaveTypes) > 0){
             
-            foreach($leaveTypes as $val){
+        //     foreach($leaveTypes as $val){
                 
-                $leaveTypeAry = explode(',', $val->leave_type_effective_for);
+        //         $leaveTypeAry = explode(',', $val->leave_type_effective_for);
 
-                if($val->leave_type_is_earn_leave == 1){
-                    $num_of_days = 0;
-                }
-                else{
-                    $num_of_days = $val->leave_type_number_of_days; 
-                }
+        //         if($val->leave_type_is_earn_leave == 1){
+        //             $num_of_days = 0;
+        //         }
+        //         else{
+        //             $num_of_days = $val->leave_type_number_of_days; 
+        //         }
 
-                if(in_array($emp_type, $leaveTypeAry)){
-                    $commonTypeId['type_id'][] = $val->id;
-                    $commonTypeId['days'][] = $num_of_days;
-                    $commonTypeId['from_year'][] = $val->leave_type_active_from_year;
-                    $commonTypeId['to_year'][] = $val->leave_type_active_to_year;
-                }
-            }
+        //         if(in_array($emp_type, $leaveTypeAry)){
+        //             $commonTypeId['type_id'][] = $val->id;
+        //             $commonTypeId['days'][] = $num_of_days;
+        //             $commonTypeId['from_year'][] = $val->leave_type_active_from_year;
+        //             $commonTypeId['to_year'][] = $val->leave_type_active_to_year;
+        //         }
+        //     }
 
-            $length = count($commonTypeId['type_id']);
+        //     $length = count($commonTypeId['type_id']);
 
-            if(!empty($length)){
-                for($i=0 ; $i < $length; $i++){
-                    $user_leave_type[] = [
-                        'user_id' => $user->id,
-                        'leave_type_id' => $commonTypeId['type_id'][$i],
-                        'number_of_days' => $commonTypeId['days'][$i],
-                        'active_from_year' => $commonTypeId['from_year'][$i],
-                        'active_to_year' => $commonTypeId['to_year'][$i],
-                        'status' => 1,
-                    ];
-                }
-            }
+        //     if(!empty($length)){
+        //         for($i=0 ; $i < $length; $i++){
+        //             $user_leave_type[] = [
+        //                 'user_id' => $user->id,
+        //                 'leave_type_id' => $commonTypeId['type_id'][$i],
+        //                 'number_of_days' => $commonTypeId['days'][$i],
+        //                 'active_from_year' => $commonTypeId['from_year'][$i],
+        //                 'active_to_year' => $commonTypeId['to_year'][$i],
+        //                 'status' => 1,
+        //             ];
+        //         }
+        //     }
 
-            if(!empty($user_leave_type)){
-                UserLeaveTypeMap::insert($user_leave_type);
-            }
-        }
+        //     if(!empty($user_leave_type)){
+        //         UserLeaveTypeMap::insert($user_leave_type);
+        //     }
+        // }
         //leave end
     
     }
@@ -1489,7 +1488,6 @@ class EmployeeController extends Controller
             //  Insert Data Into Leave & Permission
             $this->insertLeavePermissionEdit($user, $request->designation_id, $request->employee_type_id, $oldEmpTypeId);
 
-
             // ####@@***@@#### User Employee Type Map Start*********
             
             $currentDataForUpdate = UserEmployeeTypeMap::find($request->current_employee_map_type_id);
@@ -1560,7 +1558,7 @@ class EmployeeController extends Controller
             //@@@@@@ Depand on type remove status --Start
             if($request->employee_type_id == 2 || $request->employee_type_id == 4){
 
-                $forRemove = EmpTypeMapWithEmpStatus::where('user_emp_type_map_id', $currentDataForUpdate->id)->where('from_date', '>=', $request->to_date);
+                $forRemove = EmpTypeMapWithEmpStatus::where('user_emp_type_map_id', $currentDataForUpdate->id)->where('from_date', '>=', $request->to_date)->first();
 
                 if(count($forRemove) > 0){
                     $forRemove->delete();
@@ -1577,7 +1575,7 @@ class EmployeeController extends Controller
 
                 $chk = EmpTypeMapWithEmpStatus::where('user_emp_type_map_id', $currentDataForUpdate->id)->orderBy('id', 'DESC')->first();
 
-                if($chk->employee_status_id != 1 && strtotime($chk->from_date) < strtotime($current_date)){
+                if(strtotime($chk->from_date) < strtotime($current_date)){
 
                     $sav = new EmpTypeMapWithEmpStatus;
                     $sav->user_emp_type_map_id = $currentDataForUpdate->id;
@@ -1970,40 +1968,136 @@ class EmployeeController extends Controller
 
         foreach($all_user as $user){
 
-            echo $user->email;
+            echo $user->id."--".$user->email;
 
             $dataa = UserEmployeeTypeMap::where('user_id', $user->id)->orderBy('id', 'DESC')->take(2)->get();
 
             if(count($dataa) == 1){
-                // dd($dataa);
-                $current_type = $dataa[0]->employee_type_id;
+
+                if(empty($dataa[0]->to_date) && (strtotime($dataa[0]->from_date) <= strtotime($currentDate))){
+
+                    $current_type = $dataa[0]->employee_type_id;
+                    $current_type_map_id = $dataa[0]->id;
+                    $current_type_from_date = $dataa[0]->from_date;
+                }
+                elseif((strtotime($dataa[0]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[0]->to_date) >= strtotime($currentDate)) && !empty($dataa[0]->to_date)){
+
+                    $current_type = $dataa[0]->employee_type_id;
+                    $current_type_map_id = $dataa[0]->id;
+                    $current_type_from_date = $dataa[0]->from_date;
+                }
+                elseif((strtotime($dataa[0]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[0]->to_date) <= strtotime($currentDate)) && !empty($dataa[0]->to_date)){
+
+                    $current_type = "Invalid";
+                    $current_type_map_id = $dataa[0]->id;
+                    $current_type_to_date = $dataa[0]->to_date;
+                }
+                else{
+                    $current_type = "Invalid";
+                    $current_type_map_id = $dataa[0]->id;
+                    $current_type_to_date = $dataa[0]->to_date;
+                }
             }
             else{
                 if(empty($dataa[0]->to_date) && (strtotime($dataa[0]->from_date) <= strtotime($currentDate))){
 
-                    // dd($dataa[0]);
                     $current_type = $dataa[0]->employee_type_id;
+                    $current_type_map_id = $dataa[0]->id;
+                    $current_type_from_date = $dataa[0]->from_date;
                 }
                 elseif((strtotime($dataa[0]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[0]->to_date) >= strtotime($currentDate)) && !empty($dataa[0]->to_date)){
 
-                    // dd($dataa[0]);
                     $current_type = $dataa[0]->employee_type_id;
+                    $current_type_map_id = $dataa[0]->id;
+                    $current_type_from_date = $dataa[0]->from_date;
+                }
+                elseif((strtotime($dataa[0]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[0]->to_date) <= strtotime($currentDate)) && !empty($dataa[0]->to_date)){
+
+                    $current_type = "Invalid";
+                    $current_type_map_id = $dataa[0]->id;
+                    $current_type_to_date = $dataa[0]->to_date;
                 }
                 elseif((strtotime($dataa[1]->from_date) <= strtotime($currentDate)) && (strtotime($dataa[1]->to_date) >= strtotime($currentDate)) && !empty($dataa[1]->to_date)){
 
-                    // dd($dataa[1]);
                     $current_type = $dataa[1]->employee_type_id;
-                    $upCommingType = $dataa[0]->id;
+                    $current_type_map_id = $dataa[1]->id;
+                    $current_type_from_date = $dataa[1]->from_date;
                 }
                 else{
-                    // echo "Invalid";
-                    // dd($dataa[0]);
-                    // $current_type = $dataa[0]->employee_type_id;
                     $current_type = "Invalid";
+                    $current_type_map_id = 0;
                 }
             }
 
-            echo "====".$current_type."<br>";
+            echo " ==== ".$current_type."<br>";
+
+            if($current_type != "Invalid"){
+
+                if($currentDate == $current_type_from_date){
+
+                    // echo "********** Create Active Status ******** Change Status ********<br/>";
+
+                    $chkingg = EmpTypeMapWithEmpStatus::where('user_emp_type_map_id', $current_type_map_id)->orderBy('id', 'DESC')->first();
+
+                    if(count($chkingg) > 0){
+                       if($chkingg->employee_status_id != 1){
+
+                            $sav = new EmpTypeMapWithEmpStatus;
+                            $sav->user_emp_type_map_id = $current_type_map_id;
+                            $sav->employee_status_id = 1;
+                            $sav->from_date = $current_type_from_date;
+                            $sav->remarks = "At the time emp type change.";
+                            $sav->save(); 
+                        } 
+                    }
+                    else{
+                        $sav = new EmpTypeMapWithEmpStatus;
+                        $sav->user_emp_type_map_id = $current_type_map_id;
+                        $sav->employee_status_id = 1;
+                        $sav->from_date = $current_type_from_date;
+                        $sav->remarks = "At the time emp type change.";
+                        $sav->save();
+                    }
+                        
+                    User::find($user->id)->update(['status' => 1]);
+                }
+                else{
+
+                    $status = EmpTypeMapWithEmpStatus::where('user_emp_type_map_id', $current_type_map_id)->get();
+
+                    if(count($status) > 0){
+
+                        foreach($status as $info){
+                            echo "*** ".$info->employee_status_id."***".$info->from_date;
+
+                            if($currentDate == $info->from_date){
+
+                                $stat = $info->employee_status_id;
+                                echo "******* Change status Active/Deactive *******@ $stat<br/>"; 
+                                
+                                User::find($user->id)->update(['status' => $stat]);
+                            }
+
+                            echo "<br/>";
+                        }
+                    }
+                }                
+            }
+            else{
+
+                $chkinggInvalid = EmpTypeMapWithEmpStatus::where('user_emp_type_map_id', $current_type_map_id)->orderBy('id', 'DESC')->first();
+
+                if(count($chkinggInvalid) > 0){
+
+                    if((strtotime($chkinggInvalid->from_date) < strtotime($currentDate))) {
+
+                        $chkinggInvalid->to_date = $current_type_to_date;
+                        $chkinggInvalid->save();
+                    }
+                }
+
+                User::find($user->id)->update(['status' => 10]);
+            }
         }
     }
 }
