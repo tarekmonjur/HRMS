@@ -26,8 +26,8 @@ class CreateEmpTypeMapWithEmpStatusTable extends Migration
             $table->integer('updated_by')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_emp_type_map_id')->references('id')->on('user_employee_type_maps')->onDelete('restrict');
-            $table->foreign('employee_status_id')->references('id')->on('employee_status')->onDelete('restrict');
+            $table->foreign('user_emp_type_map_id')->references('id')->on('user_employee_type_maps')->onDelete('cascade');
+            $table->foreign('employee_status_id')->references('id')->on('employee_status')->onDelete('cascade');
         });
     }
 
