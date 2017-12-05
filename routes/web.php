@@ -153,7 +153,9 @@ Route::group(['prefix' => '/employee', 'namespace' => 'Pim'],function (){
     Route::get('/get_employee_status/{id}','EmployeeController@getEmployeeStatus');
     Route::post('/updateEmployeeStatus','EmployeeController@updateEmployeeStatus');
 
-    //test job
+    Route::post('/updateEmpType','EmployeeController@updateEmpType');
+    Route::get('/get_employee_types_history/{id}','EmployeeController@getEmployeeTypesHistory');
+    Route::get('/delete_up_comming/{id}/{typee}','EmployeeController@deleteUpComming');
     Route::get('/testJobEmpStatus','EmployeeController@testJobEmpStatus');
 });
 

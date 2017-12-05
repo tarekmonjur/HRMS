@@ -24,8 +24,8 @@ class CreateUserEmployeeTypeMapsTable extends Migration
             $table->integer('updated_by')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
-            $table->foreign('employee_type_id')->references('id')->on('employee_types')->onDelete('restrict');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('employee_type_id')->references('id')->on('employee_types')->onDelete('cascade');
         });
     }
 
