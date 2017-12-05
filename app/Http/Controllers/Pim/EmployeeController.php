@@ -84,7 +84,7 @@ class EmployeeController extends Controller
     public function index(){
 
         $data['title'] = 'Employee List';
-        $data['users'] = User::with('designation','createdBy','updatedBy')->orderBy('status')->get();
+        $data['users'] = User::with('designation','createdBy','updatedBy')->orderBy('status')->where('status', '!=', 55)->get();
         $data['modules_permission'] = Module::with('menus','menus.child_menu')->where('module_status', 1)->get();
         $data['sidebar_hide'] = true;
         $data['leave_types'] = LeaveType::where('leave_type_status', 1)->get();
@@ -629,7 +629,7 @@ class EmployeeController extends Controller
             $user = User::create($request->all());
             //@@**Insert Data Into Leave & Permission
             $this->insertLeavePermission($user, $request->designation_id, $request->employee_type_id);
-            
+
             if($user){
                 if(isset($photo)){
                     if(!$request->image->storeAs(Session('config_id').'/'.$user->id,$photo)){
